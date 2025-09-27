@@ -33,9 +33,6 @@ jobs:
       - name: Run Spotless check
         run: ./gradlew spotlessCheck
 
-      - name: Run ktlint check
-        run: ./gradlew ktlintCheck
-
       - name: Build application
         run: ./gradlew build
 
