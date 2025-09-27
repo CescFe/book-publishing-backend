@@ -15,6 +15,7 @@ version = "0.1.0"
 
 val bookPublishingApiSpec = "0.1.1"
 val ktLint = "1.7.1"
+val postgresql = "42.7.8"
 
 java {
     toolchain {
@@ -59,8 +60,9 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-core:2.2.37")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 
-    // Database (H2 for development)
-    runtimeOnly("com.h2database:h2")
+    // Database drivers
+    runtimeOnly("com.h2database:h2") // Development
+    runtimeOnly("org.postgresql:postgresql:$postgresql")  // Production
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
