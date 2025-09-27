@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - postgres
+    networks:
+      - book-publishing-network
+
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: book_publishing
+      POSTGRES_USER: book_user
+      POSTGRES_PASSWORD: book_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - book-publishing-network
+
+volumes:
+  postgres_data:
+
+networks:
+  book-publishing-network:
+    driver: bridge

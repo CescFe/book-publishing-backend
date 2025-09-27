@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/book_publishing
+    driver-class-name: org.postgresql.Driver
+    username: book_user
+    password: book_password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.cescfe.bookpublishing: INFO
+    org.springframework.web: INFO
