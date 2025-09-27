@@ -57,7 +57,3 @@ gradle.properties
 ### env
 .env
 
-### gradle
-gradlew
-gradlew.bat
-gradle
