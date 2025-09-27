@@ -27,11 +27,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Configure Gradle for GitHub Packages
-        run: |
-          echo "GITHUB_USERNAME=FrancescFe"
-          echo "TOKEN_PAT=${{ secrets.TOKEN_PAT }}"
-
       - name: Make gradlew executable
         run: chmod +x gradlew
 
@@ -40,6 +35,9 @@ jobs:
 
       - name: Build application
         run: ./gradlew build
+        env:
+          GITHUB_USERNAME: ${{ github.actor }}
+          TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
 
       - name: Run tests
         run: ./gradlew test
