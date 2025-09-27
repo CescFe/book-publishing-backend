@@ -70,7 +70,7 @@ This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vert
 - Spring Validation
 - Kotlin 2.1.21
 - Jackson Kotlin Module
-- PostgreSQL 
+- PostgreSQL
 - book-publishing-api-spec (custom library)
 
 ### Code Quality
