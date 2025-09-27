@@ -51,5 +51,6 @@ logs/
 ### Docker ###
 .dockerignore
 
-### Gradle Properties (contains sensitive tokens)
-gradle.properties
+### env
+.env
+
