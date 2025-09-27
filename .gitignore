@@ -51,9 +51,6 @@ logs/
 ### Docker ###
 .dockerignore
 
-### Gradle Properties
-gradle.properties
-
 ### env
 .env
 

@@ -8,6 +8,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
     id("com.google.cloud.tools.jib") version "3.4.5"
+    id("co.uzzu.dotenv.gradle") version "4.0.0"
 }
 
 group = "org.cescfe"
@@ -31,9 +32,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/CescFe/book-publishing-api-spec")
         credentials {
             username = System.getenv("GITHUB_USERNAME")
-                ?: project.findProperty("github.username")?.toString()
             password = System.getenv("TOKEN_PAT")
-                ?: project.findProperty("github.token")?.toString()
         }
     }
 }
