@@ -2,36 +2,44 @@
 
 Backend service for the Book Publishing platform built with Spring Boot 3.5.6, Kotlin, and Gradle.
 
-## Prerequisites
+## Getting Started
+
+### Prerequisites
 
 - Java 21 or higher
 - Gradle 9.1 (included via wrapper)
-
-## Getting Started
+- Docker and Docker Compose
 
 ### Running the Application
 
-```bash
-# Build the project
-./gradlew build
+#### Local env
+>docker-compose up -d
+>./gradlew bootRun --args='--spring.profiles.active=local'
 
-# Run the application
-./gradlew bootRun
-```
+#### Clean (saving data)
+>docker-compose down
+
+#### Clean ALL (data included)
+>docker-compose down -v
+
+#### Production env (TBD)
+>./gradlew bootRun --args='--spring.profiles.active=prod'
 
 The application will start on `http://localhost:8080`
 
 ### Available Endpoints
 
 - `GET /api/v1/health` - Health check endpoint
-- `GET /h2-console` - H2 Database Console (development only)
 
-### Running with Docker
+### Database
 
-```bash
-# Build and run with Docker Compose
-docker-compose up --build
-```
+- **Local Development**: PostgreSQL (via Docker)
+- **Production**: PostgreSQL (via Docker Compose)
+
+### Environment Profiles
+
+- `local` - Development with local PostgreSQL
+- `docker` - Production with containerized PostgreSQL
 
 ## Project Structure
 ```
@@ -62,21 +70,8 @@ This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vert
 - Spring Validation
 - Kotlin 2.1.21
 - Jackson Kotlin Module
-- H2 Database (development)
-- PostgreSQL (production)
+- PostgreSQL 
 - book-publishing-api-spec (custom library)
-
-## Development
-
-### Database
-
-- **Development**: H2 in-memory database
-- **Production**: PostgreSQL
-
-### Environment Profiles
-
-- `default` - Development with H2
-- `docker` - Production with PostgreSQL
 
 ### Code Quality
 
@@ -137,4 +132,4 @@ docker build -t book-publishing-backend .
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License (see the [LICENSE](LICENSE) file for details).

@@ -61,8 +61,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 
     // Database drivers
-    runtimeOnly("com.h2database:h2") // Development
-    runtimeOnly("org.postgresql:postgresql:$postgresql")  // Production
+    runtimeOnly("org.postgresql:postgresql:$postgresql")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
