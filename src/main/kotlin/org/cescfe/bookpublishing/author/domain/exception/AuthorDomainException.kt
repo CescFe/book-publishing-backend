@@ -4,5 +4,5 @@ import org.cescfe.bookpublishing.shared.domain.exception.DomainException
 
 abstract class AuthorDomainException(
     message: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ) : DomainException(message, cause)

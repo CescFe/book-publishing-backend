@@ -1,5 +1,7 @@
 package org.cescfe.bookpublishing.author.domain.model
 
+import org.cescfe.bookpublishing.author.domain.exception.AuthorValidationException
+import org.cescfe.bookpublishing.author.domain.exception.InvalidAuthorRolesException
 import java.util.UUID
 
 data class Author(
@@ -11,50 +13,60 @@ data class Author(
     val email: Email? = null,
     val website: Website? = null,
 ) {
-
     init {
-        require(roles.isNotEmpty()) { "Author must have at least one role" }
-        require(roles.contains(AuthorRole.AUTHOR)) { "Author must have AUTHOR role" }
+        require(roles.isNotEmpty()) { throw InvalidAuthorRolesException.emptyRoles() }
+        require(roles.contains(AuthorRole.AUTHOR)) { throw InvalidAuthorRolesException.missingAuthorRole() }
     }
 }
 
 @JvmInline
-value class AuthorId(val value: UUID) {
+value class AuthorId(
+    val value: UUID,
+) {
     companion object {
         fun generate(): AuthorId = AuthorId(UUID.randomUUID())
+
         fun fromString(value: String): AuthorId = AuthorId(UUID.fromString(value))
     }
 }
 
 @JvmInline
-value class FullName(val value: String) {
+value class FullName(
+    val value: String,
+) {
     init {
-        require(value.isNotBlank()) { "Full name cannot be blank" }
-        require(value.length in 1..255) { "Full name must be between 1 and 255 characters" }
+        require(value.isNotBlank()) { throw AuthorValidationException.fullNameCannotBeBlank() }
+        require(value.length in 1..255) { throw AuthorValidationException.fullNameTooLong() }
     }
 }
 
 @JvmInline
-value class Pseudonym(val value: String) {
+value class Pseudonym(
+    val value: String,
+) {
     init {
-        require(value.isNotBlank()) { "Pseudonym cannot be blank" }
-        require(value.length in 1..255) { "Pseudonym must be between 1 and 255 characters" }
+        require(value.isNotBlank()) { throw AuthorValidationException.pseudonymCannotBeBlank() }
+        require(value.length in 1..255) { throw AuthorValidationException.pseudonymTooLong() }
     }
 }
 
 @JvmInline
-value class Biography(val value: String) {
+value class Biography(
+    val value: String,
+) {
     init {
-        require(value.length <= 2000) { "Biography cannot exceed 2000 characters" }
+        require(value.length <= 2000) { throw AuthorValidationException.biographyTooLong() }
     }
 }
 
 @JvmInline
-value class Email(val value: String) {
+value class Email(
+    val value: String,
+) {
     init {
-        require(value.isNotBlank()) { "Email cannot be blank" }
-        require(value.contains("@")) { "Email must contain @ symbol" }
-        require(value.matches(EMAIL_REGEX)) { "Email format is invalid" }
+        require(value.isNotBlank()) { throw AuthorValidationException.emailCannotBeBlank() }
+        require(value.contains("@")) { throw AuthorValidationException.emailMissingAtSymbol() }
+        require(value.matches(EMAIL_REGEX)) { throw AuthorValidationException.emailInvalidFormat() }
     }
 
     companion object {
@@ -63,25 +75,29 @@ value class Email(val value: String) {
 }
 
 @JvmInline
-value class Website(val value: String) {
+value class Website(
+    val value: String,
+) {
     init {
-        require(value.isNotBlank()) { "Website cannot be blank" }
+        require(value.isNotBlank()) { throw AuthorValidationException.websiteCannotBeBlank() }
         require(value.startsWith("http://") || value.startsWith("https://")) {
-            "Website must start with http:// or https://"
+            throw AuthorValidationException.websiteInvalidProtocol()
         }
     }
 }
 
-enum class AuthorRole(val value: String) {
+enum class AuthorRole(
+    val value: String,
+) {
     AUTHOR("AUTHOR"),
     ILLUSTRATOR("ILLUSTRATOR"),
     TRANSLATOR("TRANSLATOR"),
-    CURATOR("CURATOR");
+    CURATOR("CURATOR"),
+    ;
 
     companion object {
-        fun fromString(value: String): AuthorRole {
-            return entries.find { it.value == value }
+        fun fromString(value: String): AuthorRole =
+            entries.find { it.value == value }
                 ?: throw IllegalArgumentException("Unknown author role: $value")
-        }
     }
 }
