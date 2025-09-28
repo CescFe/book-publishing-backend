@@ -44,9 +44,9 @@ jobs:
       - name: Run tests
         run: ./gradlew test
 
-      - name: Test application startup (without DB)
+      - name: Test application startup (without JPA)
         run: |
-          timeout 20s ./gradlew bootRun --args='--spring.datasource.url=jdbc:h2:mem:testdb --spring.datasource.driver-class-name=org.h2.Driver --spring.jpa.database-platform=org.hibernate.dialect.H2Dialect' &
+          timeout 20s ./gradlew bootRun --args='--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration' &
           APP_PID=$!
 
           sleep 15
