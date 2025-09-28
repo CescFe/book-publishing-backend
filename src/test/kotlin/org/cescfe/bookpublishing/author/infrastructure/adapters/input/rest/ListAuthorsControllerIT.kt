@@ -18,7 +18,8 @@ class ListAuthorsControllerIT {
     fun `should return 501 Not Implemented when calling getAuthors endpoint`() {
         mockMvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/authors")
+                MockMvcRequestBuilders
+                    .get("/api/v1/authors")
                     .param("page", "1")
                     .param("limit", "10"),
             ).andExpect(MockMvcResultMatchers.status().isNotImplemented)
@@ -35,7 +36,8 @@ class ListAuthorsControllerIT {
     fun `should return 501 Not Implemented with search parameter`() {
         mockMvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/authors")
+                MockMvcRequestBuilders
+                    .get("/api/v1/authors")
                     .param("page", "1")
                     .param("limit", "10")
                     .param("search", "test"),
@@ -52,7 +54,8 @@ class ListAuthorsControllerIT {
     fun `should return 501 Not Implemented with different pagination parameters`() {
         mockMvc
             .perform(
-                MockMvcRequestBuilders.get("/api/v1/authors")
+                MockMvcRequestBuilders
+                    .get("/api/v1/authors")
                     .param("page", "2")
                     .param("limit", "20"),
             ).andExpect(MockMvcResultMatchers.status().isNotImplemented)
