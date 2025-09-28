@@ -91,9 +91,7 @@ class GlobalExceptionHandler {
         )
 
     @ExceptionHandler(NoHandlerFoundException::class)
-    fun handleNoHandlerFound(
-        ex: NoHandlerFoundException,
-    ): ResponseEntity<ApiError> =
+    fun handleNoHandlerFound(ex: NoHandlerFoundException): ResponseEntity<ApiError> =
         buildErrorResponse(
             status = HttpStatus.NOT_FOUND,
             message = "No handler found for ${ex.httpMethod} ${ex.requestURL}",
