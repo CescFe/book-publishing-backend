@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.input
+package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
