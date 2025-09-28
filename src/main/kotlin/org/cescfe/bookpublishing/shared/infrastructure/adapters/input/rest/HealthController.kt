@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input
+package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.rest
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
