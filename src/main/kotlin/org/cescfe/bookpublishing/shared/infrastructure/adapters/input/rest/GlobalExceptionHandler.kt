@@ -19,13 +19,14 @@ class GlobalExceptionHandler {
         ex: NotImplementedError,
         request: WebRequest,
     ): ResponseEntity<ErrorResponse> {
-        val errorResponse = ErrorResponse(
-            timestamp = LocalDateTime.now(),
-            status = HttpStatus.NOT_IMPLEMENTED.value(),
-            error = "Not Implemented",
-            message = ex.message ?: "Not yet implemented",
-            path = request.getDescription(false).replace("uri=", ""),
-        )
+        val errorResponse =
+            ErrorResponse(
+                timestamp = LocalDateTime.now(),
+                status = HttpStatus.NOT_IMPLEMENTED.value(),
+                error = "Not Implemented",
+                message = ex.message ?: "Not yet implemented",
+                path = request.getDescription(false).replace("uri=", ""),
+            )
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(errorResponse)
     }
 
@@ -104,7 +105,7 @@ class GlobalExceptionHandler {
                 status = HttpStatus.NOT_FOUND.value(),
                 error = "Not Found",
                 message = "No handler found for ${ex.httpMethod} ${ex.requestURL}",
-                path = ex.requestURL,
+                path = request.getDescription(false).replace("uri=", ""),
             )
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
     }

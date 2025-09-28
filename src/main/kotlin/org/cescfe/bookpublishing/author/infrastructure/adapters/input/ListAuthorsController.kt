@@ -15,17 +15,17 @@ class ListAuthorsController : GetAllAuthorsApi {
         page: Int,
         limit: Int,
         search: String?,
-    ): ResponseEntity<GetAuthors200ResponseDTO> {
-        return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+    ): ResponseEntity<GetAuthors200ResponseDTO> =
+        ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
             GetAuthors200ResponseDTO(
                 data = emptyList(),
-                meta = GetAuthors200ResponseAllOfMetaDTO(
-                    total = 0,
-                    page = page,
-                    limit = limit,
-                    totalPages = 0
-                ),
-            )
+                meta =
+                    GetAuthors200ResponseAllOfMetaDTO(
+                        total = 0,
+                        page = page,
+                        limit = limit,
+                        totalPages = 0,
+                    ),
+            ),
         )
-    }
 }
