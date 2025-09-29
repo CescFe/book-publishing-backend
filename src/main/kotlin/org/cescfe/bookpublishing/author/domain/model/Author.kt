@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.domain.model
 
-import org.cescfe.bookpublishing.author.domain.exception.AuthorValidationException
-import org.cescfe.bookpublishing.author.domain.exception.InvalidAuthorRolesException
+import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import java.util.UUID
 
 data class Author(
@@ -14,8 +13,8 @@ data class Author(
     val website: Website? = null,
 ) {
     init {
-        require(roles.isNotEmpty()) { throw InvalidAuthorRolesException.emptyRoles() }
-        require(roles.contains(AuthorRole.AUTHOR)) { throw InvalidAuthorRolesException.missingAuthorRole() }
+        require(roles.isNotEmpty()) { throw AuthorDomainException.emptyRoles() }
+        require(roles.contains(AuthorRole.AUTHOR)) { throw AuthorDomainException.missingAuthorRole() }
     }
 }
 
@@ -35,8 +34,8 @@ value class FullName(
     val value: String,
 ) {
     init {
-        require(value.isNotBlank()) { throw AuthorValidationException.fullNameCannotBeBlank() }
-        require(value.length in 1..255) { throw AuthorValidationException.fullNameTooLong() }
+        require(value.isNotBlank()) { throw AuthorDomainException.fullNameCannotBeBlank() }
+        require(value.length in 1..255) { throw AuthorDomainException.fullNameTooLong() }
     }
 }
 
@@ -45,8 +44,8 @@ value class Pseudonym(
     val value: String,
 ) {
     init {
-        require(value.isNotBlank()) { throw AuthorValidationException.pseudonymCannotBeBlank() }
-        require(value.length in 1..255) { throw AuthorValidationException.pseudonymTooLong() }
+        require(value.isNotBlank()) { throw AuthorDomainException.pseudonymCannotBeBlank() }
+        require(value.length in 1..255) { throw AuthorDomainException.pseudonymTooLong() }
     }
 }
 
@@ -55,7 +54,7 @@ value class Biography(
     val value: String,
 ) {
     init {
-        require(value.length <= 2000) { throw AuthorValidationException.biographyTooLong() }
+        require(value.length <= 2000) { throw AuthorDomainException.biographyTooLong() }
     }
 }
 
@@ -64,9 +63,9 @@ value class Email(
     val value: String,
 ) {
     init {
-        require(value.isNotBlank()) { throw AuthorValidationException.emailCannotBeBlank() }
-        require(value.contains("@")) { throw AuthorValidationException.emailMissingAtSymbol() }
-        require(value.matches(EMAIL_REGEX)) { throw AuthorValidationException.emailInvalidFormat() }
+        require(value.isNotBlank()) { throw AuthorDomainException.emailCannotBeBlank() }
+        require(value.contains("@")) { throw AuthorDomainException.emailMissingAtSymbol() }
+        require(value.matches(EMAIL_REGEX)) { throw AuthorDomainException.emailInvalidFormat() }
     }
 
     companion object {
@@ -79,9 +78,9 @@ value class Website(
     val value: String,
 ) {
     init {
-        require(value.isNotBlank()) { throw AuthorValidationException.websiteCannotBeBlank() }
+        require(value.isNotBlank()) { throw AuthorDomainException.websiteCannotBeBlank() }
         require(value.startsWith("http://") || value.startsWith("https://")) {
-            throw AuthorValidationException.websiteInvalidProtocol()
+            throw AuthorDomainException.websiteInvalidProtocol()
         }
     }
 }
