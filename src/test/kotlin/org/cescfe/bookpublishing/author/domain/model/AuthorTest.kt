@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.domain.model
 
-import org.cescfe.bookpublishing.author.domain.exception.AuthorValidationException
-import org.cescfe.bookpublishing.author.domain.exception.InvalidAuthorRolesException
+import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -50,7 +49,7 @@ class AuthorTest {
 
         // When & Then
         val exception =
-            assertThrows<InvalidAuthorRolesException> {
+            assertThrows<AuthorDomainException> {
                 Author(id = id, fullName = fullName, roles = emptyRoles)
             }
         assertEquals("Author must have at least one role", exception.message)
@@ -65,7 +64,7 @@ class AuthorTest {
 
         // When & Then
         val exception =
-            assertThrows<InvalidAuthorRolesException> {
+            assertThrows<AuthorDomainException> {
                 Author(id = id, fullName = fullName, roles = rolesWithoutAuthor)
             }
         assertEquals("Author must have AUTHOR role", exception.message)
@@ -102,7 +101,7 @@ class FullNameTest {
     fun `should throw AuthorValidationException when full name is blank`() {
         // When & Then
         val exception =
-            assertThrows<AuthorValidationException> {
+            assertThrows<AuthorDomainException> {
                 FullName("   ")
             }
         assertEquals("Full name cannot be blank", exception.message)
@@ -115,7 +114,7 @@ class FullNameTest {
 
         // When & Then
         val exception =
-            assertThrows<AuthorValidationException> {
+            assertThrows<AuthorDomainException> {
                 FullName(longName)
             }
         assertEquals("Full name must be between 1 and 255 characters", exception.message)
@@ -135,7 +134,7 @@ class EmailTest {
     @Test
     fun `should throw AuthorValidationException when email is blank`() {
         // When & Then
-        assertThrows<AuthorValidationException> {
+        assertThrows<AuthorDomainException> {
             Email("   ")
         }
     }
@@ -143,7 +142,7 @@ class EmailTest {
     @Test
     fun `should throw AuthorValidationException when email does not contain @`() {
         // When & Then
-        assertThrows<AuthorValidationException> {
+        assertThrows<AuthorDomainException> {
             Email("invalid-email")
         }
     }
@@ -151,7 +150,7 @@ class EmailTest {
     @Test
     fun `should throw AuthorValidationException when email format is invalid`() {
         // When & Then
-        assertThrows<AuthorValidationException> {
+        assertThrows<AuthorDomainException> {
             Email("@example.com")
         }
     }
@@ -170,7 +169,7 @@ class WebsiteTest {
     @Test
     fun `should throw AuthorValidationException when website is blank`() {
         // When & Then
-        assertThrows<AuthorValidationException> {
+        assertThrows<AuthorDomainException> {
             Website("   ")
         }
     }
@@ -178,7 +177,7 @@ class WebsiteTest {
     @Test
     fun `should throw AuthorValidationException when website does not start with http`() {
         // When & Then
-        assertThrows<AuthorValidationException> {
+        assertThrows<AuthorDomainException> {
             Website("www.example.com")
         }
     }
