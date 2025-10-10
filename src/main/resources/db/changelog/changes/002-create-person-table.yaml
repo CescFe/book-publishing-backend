@@ -1,10 +1,11 @@
 databaseChangeLog:
   - changeSet:
-      id: create-persons-table
+      id: create-person-table
       author: francesc
       changes:
         - createTable:
-            tableName: publishing.persons
+            tableName: person
+            schemaName: publishing
             columns:
               - column:
                   name: id
@@ -12,7 +13,6 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
                     nullable: false
-                    primaryKeyName: pk_person
               - column:
                   name: full_name
                   type: VARCHAR(255)
@@ -35,48 +35,42 @@ databaseChangeLog:
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
-                    remarks: Comma-separated list of roles (AUTHOR,ILLUSTRATOR,TRANSLATOR,CURATOR)
               - column:
                   name: version
                   type: BIGINT
                   constraints:
                     nullable: false
-                    default: 0
+                  defaultValue: "1"
               - column:
                   name: created_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
-                    default: CURRENT_TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
               - column:
                   name: updated_at
                   type: TIMESTAMP
                   constraints:
                     nullable: false
-                    default: CURRENT_TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
         - addUniqueConstraint:
-            tableName: publishing.persons
+            tableName: person
+            schemaName: publishing
             columnNames: email
             constraintName: uk_person_email
-        - addCheckConstraint:
-            tableName: publishing.persons
-            constraintName: ck_person_roles_not_empty
-            checkCondition: "roles IS NOT NULL AND LENGTH(TRIM(roles)) > 0"
-        - addCheckConstraint:
-            tableName: publishing.persons
-            constraintName: ck_person_roles_contains_author
-            checkCondition: "roles LIKE '%AUTHOR%'"
+        - sql:
+            sql: "ALTER TABLE publishing.person ADD CONSTRAINT ck_person_roles_not_empty CHECK (roles IS NOT NULL AND LENGTH(TRIM(roles)) > 0)"
         - createIndex:
-            tableName: publishing.persons
+            tableName: person
+            schemaName: publishing
             indexName: idx_person_roles
             columns:
               - column:
                   name: roles
-                  type: VARCHAR(255)
         - createIndex:
-            tableName: publishing.persons
+            tableName: person
+            schemaName: publishing
             indexName: idx_person_email
             columns:
               - column:
                   name: email
-                  type: VARCHAR(255)

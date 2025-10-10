@@ -3,6 +3,6 @@ databaseChangeLog:
       id: create-publishing-schema
       author: francesc
       changes:
-        - createSchema:
-            schemaName: publishing
-            remarks: Schema for book publishing system
+        - sql:
+            sql: "CREATE SCHEMA IF NOT EXISTS publishing"
+

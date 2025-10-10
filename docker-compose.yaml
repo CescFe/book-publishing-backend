@@ -11,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,10 +27,10 @@ services:
         condition: service_healthy
     restart: on-failure
     volumes:
-      - ./src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changelog.yaml
-      - ./src/main/resources/db/changelog/:/liquibase/changes/
+      - ./src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changelog.yaml:ro
+      - ./src/main/resources/db/changelog/changes:/liquibase/changes
     command: [
-      "--changeLogFile=/liquibase/changelog.yaml",
+      "--changeLogFile=changelog.yaml",
       "--url=jdbc:postgresql://postgres:5432/${POSTGRES_DB}",
       "--username=${POSTGRES_USER}",
       "--password=${POSTGRES_PASSWORD}",

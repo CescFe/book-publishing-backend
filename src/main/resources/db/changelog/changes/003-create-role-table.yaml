@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-roles-table
+      author: francesc
+      changes:
+        - createTable:
+            tableName: role
+            schemaName: publishing
+            columns:
+              - column:
+                  name: id
+                  type: BIGSERIAL
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: description
+                  type: TEXT
+        - insert:
+            tableName: role
+            schemaName: publishing
+            columns:
+              - column:
+                  name: name
+                  value: "AUTHOR"
+              - column:
+                  name: description
+                  value: "Author of books"
+        - insert:
+            tableName: role
+            schemaName: publishing
+            columns:
+              - column:
+                  name: name
+                  value: "ILLUSTRATOR"
+              - column:
+                  name: description
+                  value: "Illustrator of books"
+        - insert:
+            tableName: role
+            schemaName: publishing
+            columns:
+              - column:
+                  name: name
+                  value: "TRANSLATOR"
+              - column:
+                  name: description
+                  value: "Translator of books"
+        - insert:
+            tableName: role
+            schemaName: publishing
+            columns:
+              - column:
+                  name: name
+                  value: "CURATOR"
+              - column:
+                  name: description
+                  value: "Curator of books"
