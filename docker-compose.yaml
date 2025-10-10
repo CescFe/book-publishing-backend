@@ -1,14 +1,48 @@
 services:
   postgres:
-    image: postgres:16.3
+    container_name: postgres
+    image: ${POSTGRES_IMAGE_VERSION}
     environment:
-      POSTGRES_DB: book_publishing
-      POSTGRES_USER: developer
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5432:5432"
+      - ${POSTGRES_PORT}:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - book-publishing-network
+
+  liquibase:
+    container_name: liquibase
+    image: ${LIQUIBASE_IMAGE_VERSION}
+    platform: linux/amd64
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+    volumes:
+      - ./src/main/resources/db/changelog/db.changelog-master.yaml:/liquibase/changelog.yaml
+      - ./src/main/resources/db/changelog/:/liquibase/changes/
+    command: [
+      "--changeLogFile=/liquibase/changelog.yaml",
+      "--url=jdbc:postgresql://postgres:5432/${POSTGRES_DB}",
+      "--username=${POSTGRES_USER}",
+      "--password=${POSTGRES_PASSWORD}",
+      "update"
+    ]
+    networks:
+      - book-publishing-network
 
 volumes:
   postgres_data:
+    driver: local
+
+networks:
+  book-publishing-network:
+    name: book-publishing-network

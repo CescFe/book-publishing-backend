@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-publishing-schema
+      author: francesc
+      changes:
+        - createSchema:
+            schemaName: publishing
+            remarks: Schema for book publishing system
