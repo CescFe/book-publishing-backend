@@ -12,28 +12,30 @@ import org.springframework.stereotype.Component
 
 @Component
 class AuthorMapper(
-    private val roleJpaRepository: RoleJpaRepository,
+    private val roleJpaEntityRepository: RoleJpaEntityRepository,
 ) {
-
     fun fromDomain(author: Author): AuthorEntity {
-        val entity = AuthorEntity(
-            id = author.id.value,
-            fullName = author.fullName.value,
-            pseudonym = author.pseudonym?.value,
-            biography = author.biography?.value,
-            email = author.email?.value,
-            website = author.website?.value
-        )
+        val entity =
+            AuthorEntity(
+                id = author.id.value,
+                fullName = author.fullName.value,
+                pseudonym = author.pseudonym?.value,
+                biography = author.biography?.value,
+                email = author.email?.value,
+                website = author.website?.value,
+            )
 
         author.roles.forEach { role ->
-            val roleEntity = roleJpaRepository.findByName(role.value)
-                ?: throw IllegalArgumentException("Role ${role.value} not found")
+            val roleEntity =
+                roleJpaEntityRepository.findByName(role.value)
+                    ?: throw IllegalArgumentException("Role ${role.value} not found")
 
-            val personRole = PersonRoleEntity(
-                id = PersonRoleId(author.id.value, roleEntity.id),
-                person = entity,
-                role = roleEntity
-            )
+            val personRole =
+                PersonRoleEntity(
+                    id = PersonRoleId(author.id.value, roleEntity.id),
+                    person = entity,
+                    role = roleEntity,
+                )
             entity.personRoles.add(personRole)
         }
 
@@ -50,7 +52,7 @@ class AuthorMapper(
             pseudonym = entity.pseudonym?.let { Pseudonym(it) },
             biography = entity.biography?.let { Biography(it) },
             email = entity.email?.let { Email(it) },
-            website = entity.website?.let { Website(it) }
+            website = entity.website?.let { Website(it) },
         )
     }
 }

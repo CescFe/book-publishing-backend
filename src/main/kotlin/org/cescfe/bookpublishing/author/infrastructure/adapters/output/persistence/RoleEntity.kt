@@ -13,10 +13,8 @@ data class RoleEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-
     @Column(name = "name", nullable = false, unique = true)
     val name: String,
-
     @Column(name = "description")
-    val description: String?
+    val description: String?,
 )

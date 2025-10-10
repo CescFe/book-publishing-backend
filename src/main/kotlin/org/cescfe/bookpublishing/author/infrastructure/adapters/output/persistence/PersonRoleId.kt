@@ -8,7 +8,6 @@ import java.util.UUID
 data class PersonRoleId(
     @Column(name = "person_id")
     val personId: UUID,
-
     @Column(name = "role_id")
-    val roleId: Long
+    val roleId: Long,
 )

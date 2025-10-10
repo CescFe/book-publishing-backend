@@ -20,28 +20,21 @@ data class AuthorEntity(
     @Id
     @Column(name = "id", columnDefinition = "UUID")
     val id: UUID,
-
     @Version
     @Column(name = "version")
     val version: Long = 1,
-
     @Column(name = "full_name", nullable = false)
     val fullName: String,
-
     @Column(name = "pseudonym")
     val pseudonym: String?,
-
     @Column(name = "biography", columnDefinition = "TEXT")
     val biography: String?,
-
     @Column(name = "email")
     val email: String?,
-
     @Column(name = "website")
     val website: String?,
-
     @OneToMany(mappedBy = "person", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val personRoles: MutableList<PersonRoleEntity> = mutableListOf()
+    val personRoles: MutableList<PersonRoleEntity> = mutableListOf(),
 ) {
     @Column(name = "created_at", nullable = false, updatable = false)
     lateinit var createdAt: Timestamp

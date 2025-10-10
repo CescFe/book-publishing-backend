@@ -12,12 +12,10 @@ import jakarta.persistence.Table
 data class PersonRoleEntity(
     @EmbeddedId
     val id: PersonRoleId,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id", insertable = false, updatable = false)
     val person: AuthorEntity,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", insertable = false, updatable = false)
-    val role: RoleEntity
+    val role: RoleEntity,
 )

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface PersonRoleJpaRepository : JpaRepository<PersonRoleEntity, PersonRoleId> {
+interface PersonRoleJpaEntityRepository : JpaRepository<PersonRoleEntity, PersonRoleId> {
     @Query("""
         SELECT pr FROM PersonRoleEntity pr
         WHERE pr.id.personId = :personId AND pr.id.roleId = :roleId
