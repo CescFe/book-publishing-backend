@@ -1,8 +1,9 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
+package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
 import org.springframework.stereotype.Repository
 
 @Repository

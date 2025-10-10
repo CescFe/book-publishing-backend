@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
+package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper
 
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
@@ -8,6 +8,10 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.RoleJpaEntityRepository
 import org.springframework.stereotype.Component
 
 @Component
@@ -43,7 +47,7 @@ class AuthorMapper(
     }
 
     fun toDomain(entity: AuthorEntity): Author {
-        val rolesSet = entity.personRoles.map { AuthorRole.fromString(it.role.name) }.toSet()
+        val rolesSet = entity.personRoles.map { AuthorRole.Companion.fromString(it.role.name) }.toSet()
 
         return Author(
             id = AuthorId(entity.id),

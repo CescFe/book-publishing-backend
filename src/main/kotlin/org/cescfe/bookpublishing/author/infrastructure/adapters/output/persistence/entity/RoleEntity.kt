@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
+package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

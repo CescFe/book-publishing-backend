@@ -1,5 +1,6 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
+package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository

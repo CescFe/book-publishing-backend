@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
+package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity
 
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
@@ -10,6 +10,7 @@ import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
 import jakarta.persistence.Version
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
 import java.sql.Timestamp
 import java.time.Instant
 import java.util.UUID
