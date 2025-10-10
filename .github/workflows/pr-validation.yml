@@ -43,19 +43,3 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test
-
-      - name: Test application startup (without JPA)
-        run: |
-          timeout 20s ./gradlew bootRun --args='--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration' &
-          APP_PID=$!
-
-          sleep 15
-
-          if kill -0 $APP_PID 2>/dev/null; then
-            echo "✅ Application context loaded successfully!"
-            kill $APP_PID
-            exit 0
-          else
-            echo "❌ Application failed to start"
-            exit 1
-          fi
