@@ -7,11 +7,16 @@ import java.util.UUID
 
 @Repository
 interface PersonRoleJpaEntityRepository : JpaRepository<PersonRoleEntity, PersonRoleId> {
-    @Query("""
+    @Query(
+        """
         SELECT pr FROM PersonRoleEntity pr
         WHERE pr.id.personId = :personId AND pr.id.roleId = :roleId
-    """)
-    fun findByPersonIdAndRoleId(personId: UUID, roleId: Long): List<PersonRoleEntity>
+    """,
+    )
+    fun findByPersonIdAndRoleId(
+        personId: UUID,
+        roleId: Long,
+    ): List<PersonRoleEntity>
 
     fun deleteByPersonId(personId: UUID)
 }
