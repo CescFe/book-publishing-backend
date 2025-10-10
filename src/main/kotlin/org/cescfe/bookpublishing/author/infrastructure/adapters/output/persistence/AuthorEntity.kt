@@ -36,6 +36,9 @@ data class AuthorEntity(
 
     @Column(name = "website")
     val website: String?,
+
+    @Column(name = "roles", nullable = false)
+    val roles: String,
 ) {
     @Column(name = "created_at", nullable = false, updatable = false)
     lateinit var createdAt: Timestamp
