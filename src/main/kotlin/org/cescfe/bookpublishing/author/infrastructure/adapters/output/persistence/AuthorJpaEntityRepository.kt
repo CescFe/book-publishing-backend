@@ -8,12 +8,28 @@ import java.util.UUID
 
 @Repository
 interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
-    @Query("SELECT a FROM AuthorEntity a WHERE a.roles LIKE '%AUTHOR%'")
+    @Query("""
+        SELECT DISTINCT p FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE r.name = 'AUTHOR'
+    """)
     fun findAllAuthors(): List<AuthorEntity>
 
-    @Query("SELECT a FROM AuthorEntity a WHERE a.id = :id AND a.roles LIKE '%AUTHOR%'")
+    @Query("""
+        SELECT p FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE p.id = :id AND r.name = 'AUTHOR'
+    """)
     fun findAuthorById(id: UUID): Optional<AuthorEntity>
 
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM AuthorEntity a WHERE a.id = :id AND a.roles LIKE '%AUTHOR%'")
+    @Query("""
+        SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
+        FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE p.id = :id AND r.name = 'AUTHOR'
+    """)
     fun existsAuthorById(id: UUID): Boolean
 }

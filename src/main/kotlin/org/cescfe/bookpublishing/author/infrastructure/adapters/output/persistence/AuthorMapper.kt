@@ -11,25 +11,37 @@ import org.cescfe.bookpublishing.author.domain.model.Website
 import org.springframework.stereotype.Component
 
 @Component
-class AuthorMapper {
+class AuthorMapper(
+    private val roleJpaRepository: RoleJpaRepository,
+) {
 
     fun fromDomain(author: Author): AuthorEntity {
-        return AuthorEntity(
+        val entity = AuthorEntity(
             id = author.id.value,
             fullName = author.fullName.value,
             pseudonym = author.pseudonym?.value,
             biography = author.biography?.value,
             email = author.email?.value,
-            website = author.website?.value,
-            roles = author.roles.joinToString(",") { it.value }
+            website = author.website?.value
         )
+
+        author.roles.forEach { role ->
+            val roleEntity = roleJpaRepository.findByName(role.value)
+                ?: throw IllegalArgumentException("Role ${role.value} not found")
+
+            val personRole = PersonRoleEntity(
+                id = PersonRoleId(author.id.value, roleEntity.id),
+                person = entity,
+                role = roleEntity
+            )
+            entity.personRoles.add(personRole)
+        }
+
+        return entity
     }
 
     fun toDomain(entity: AuthorEntity): Author {
-        val rolesSet = entity.roles.split(",")
-            .map { it.trim() }
-            .map { AuthorRole.fromString(it) }
-            .toSet()
+        val rolesSet = entity.personRoles.map { AuthorRole.fromString(it.role.name) }.toSet()
 
         return Author(
             id = AuthorId(entity.id),

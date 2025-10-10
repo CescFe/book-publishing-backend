@@ -1,8 +1,11 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.PrePersist
 import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
@@ -37,8 +40,8 @@ data class AuthorEntity(
     @Column(name = "website")
     val website: String?,
 
-    @Column(name = "roles", nullable = false)
-    val roles: String,
+    @OneToMany(mappedBy = "person", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val personRoles: MutableList<PersonRoleEntity> = mutableListOf()
 ) {
     @Column(name = "created_at", nullable = false, updatable = false)
     lateinit var createdAt: Timestamp
