@@ -1,0 +1,76 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-person-table
+      author: francesc
+      changes:
+        - createTable:
+            tableName: person
+            schemaName: publishing
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pseudonym
+                  type: VARCHAR(255)
+              - column:
+                  name: biography
+                  type: TEXT
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: website
+                  type: VARCHAR(500)
+              - column:
+                  name: roles
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                  defaultValue: "1"
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+        - addUniqueConstraint:
+            tableName: person
+            schemaName: publishing
+            columnNames: email
+            constraintName: uk_person_email
+        - sql:
+            sql: "ALTER TABLE publishing.person ADD CONSTRAINT ck_person_roles_not_empty CHECK (roles IS NOT NULL AND LENGTH(TRIM(roles)) > 0)"
+        - createIndex:
+            tableName: person
+            schemaName: publishing
+            indexName: idx_person_roles
+            columns:
+              - column:
+                  name: roles
+        - createIndex:
+            tableName: person
+            schemaName: publishing
+            indexName: idx_person_email
+            columns:
+              - column:
+                  name: email

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-publishing-schema
+      author: francesc
+      changes:
+        - sql:
+            sql: "CREATE SCHEMA IF NOT EXISTS publishing"
+

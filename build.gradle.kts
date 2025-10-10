@@ -16,6 +16,7 @@ version = "0.1.0"
 val bookPublishingApiSpec = "0.1.2"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
+val liquibase = "4.33.0"
 
 java {
     toolchain {
@@ -60,6 +61,9 @@ dependencies {
 
     // Database drivers
     runtimeOnly("org.postgresql:postgresql:$postgresql")
+
+    // Database migration
+    implementation("org.liquibase:liquibase-core:$liquibase")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
