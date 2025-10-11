@@ -13,7 +13,7 @@ interface PersonRoleJpaEntityRepository : JpaRepository<PersonRoleEntity, Person
         """
         SELECT pr FROM PersonRoleEntity pr
         WHERE pr.id.personId = :personId AND pr.id.roleId = :roleId
-    """,
+        """,
     )
     fun findByPersonIdAndRoleId(
         personId: UUID,
