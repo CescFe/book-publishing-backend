@@ -1,14 +1,8 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
-import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
-import org.cescfe.bookpublishing.author.domain.model.Biography
-import org.cescfe.bookpublishing.author.domain.model.Email
-import org.cescfe.bookpublishing.author.domain.model.FullName
-import org.cescfe.bookpublishing.author.domain.model.Pseudonym
-import org.cescfe.bookpublishing.author.domain.model.Website
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorEntityObjectMother
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
 import org.junit.jupiter.api.AfterEach
@@ -67,7 +61,7 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should save and find author by id`() {
         // Given
-        val author = AuthorEntityObjectMother.createTolkien()
+        val author = AuthorObjectMother.createTolkien()
 
         // When
         val savedAuthor = jpaAuthorRepository.save(author)
@@ -93,11 +87,11 @@ class JpaAuthorRepositoryIT {
     fun `should find all authors`() {
         // Given
         val author1 =
-            AuthorEntityObjectMother.create(
+            AuthorObjectMother.create(
                 fullName = "Author One",
             )
         val author2 =
-            AuthorEntityObjectMother.create(
+            AuthorObjectMother.create(
                 fullName = "Author Two",
                 roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             )

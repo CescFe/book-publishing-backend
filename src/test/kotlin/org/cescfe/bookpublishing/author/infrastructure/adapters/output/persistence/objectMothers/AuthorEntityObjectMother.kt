@@ -1,42 +1,61 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers
 
-import org.cescfe.bookpublishing.author.domain.model.Author
-import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
-import org.cescfe.bookpublishing.author.domain.model.Biography
-import org.cescfe.bookpublishing.author.domain.model.Email
-import org.cescfe.bookpublishing.author.domain.model.FullName
-import org.cescfe.bookpublishing.author.domain.model.Pseudonym
-import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.RoleEntity
 import java.util.UUID
 
 object AuthorEntityObjectMother {
     fun create(
         id: UUID = UUID.randomUUID(),
+        version: Long = 1L,
         fullName: String = "Test Author",
-        roles: Set<AuthorRole> = setOf(AuthorRole.AUTHOR),
         pseudonym: String? = null,
         biography: String? = null,
         email: String? = null,
         website: String? = null,
-    ): Author =
-        Author(
-            id = AuthorId(id),
-            fullName = FullName(fullName),
-            roles = roles,
-            pseudonym = pseudonym?.let { Pseudonym(it) },
-            biography = biography?.let { Biography(it) },
-            email = email?.let { Email(it) },
-            website = website?.let { Website(it) },
+        personRoles: List<RoleEntity> = listOf(RoleEntityObjectMother.createAuthorRole())
+    ): AuthorEntity {
+        val entity = AuthorEntity(
+            id = id,
+            version = version,
+            fullName = fullName,
+            pseudonym = pseudonym,
+            biography = biography,
+            email = email,
+            website = website
         )
 
-    fun createTolkien(): Author =
+        personRoles.forEach { role ->
+            entity.personRoles.add(
+                PersonRoleEntity(
+                    id = PersonRoleId(id, role.id),
+                    person = entity,
+                    role = role
+                )
+            )
+        }
+
+        return entity
+    }
+
+    fun createTolkien(): AuthorEntity =
         create(
             fullName = "J.R.R. Tolkien",
-            roles = setOf(AuthorRole.AUTHOR),
-            pseudonym = "Tolkien",
+            pseudonym = "John Ronald Reuel Tolkien",
             biography = "English writer and philologist",
             email = "tolkien@example.com",
-            website = "https://www.tolkiensociety.org",
+            website = "https://tolkiensociety.org",
+            personRoles = listOf(
+                RoleEntityObjectMother.createAuthorRole(),
+                RoleEntityObjectMother.createIllustratorRole()
+            )
+        )
+
+    fun createSimple(): AuthorEntity =
+        create(
+            fullName = "Simple Author",
+            personRoles = listOf(RoleEntityObjectMother.createAuthorRole())
         )
 }
