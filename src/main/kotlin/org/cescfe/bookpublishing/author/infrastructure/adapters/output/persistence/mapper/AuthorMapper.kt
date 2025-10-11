@@ -11,6 +11,7 @@ import org.cescfe.bookpublishing.author.domain.model.Website
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.exception.RoleNotFoundException
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.RoleJpaEntityRepository
 import org.springframework.stereotype.Component
 
@@ -32,7 +33,7 @@ class AuthorMapper(
         author.roles.forEach { role ->
             val roleEntity =
                 roleJpaEntityRepository.findByName(role.value)
-                    ?: throw IllegalArgumentException("Role ${role.value} not found")
+                    ?: throw RoleNotFoundException.forRoleName(role.value)
 
             val personRole =
                 PersonRoleEntity(

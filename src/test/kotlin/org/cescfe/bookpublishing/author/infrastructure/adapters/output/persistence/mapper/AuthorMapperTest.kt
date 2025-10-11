@@ -7,6 +7,7 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.exception.RoleNotFoundException
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorEntityObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.RoleEntityObjectMother
@@ -78,7 +79,7 @@ class AuthorMapperTest {
     }
 
     @Test
-    fun `fromDomain should throw exception when role not found`() {
+    fun `fromDomain should throw RoleNotFoundException when role not found`() {
         // Given
         val author = AuthorObjectMother.create()
 
@@ -86,10 +87,10 @@ class AuthorMapperTest {
 
         // When & Then
         val exception =
-            assertThrows<IllegalArgumentException> {
+            assertThrows<RoleNotFoundException> {
                 authorMapper.fromDomain(author)
             }
-        assertEquals("Role AUTHOR not found", exception.message)
+        assertEquals("Role 'AUTHOR' not found in database", exception.message)
     }
 
     @Test
