@@ -20,7 +20,6 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class AuthorMapperTest {
-
     private val roleJpaEntityRepository: RoleJpaEntityRepository = mock()
     private val authorMapper = AuthorMapper(roleJpaEntityRepository)
 
@@ -70,7 +69,12 @@ class AuthorMapperTest {
         assertNull(result.email)
         assertNull(result.website)
         assertEquals(author.roles.size, result.personRoles.size)
-        assertEquals(author.roles.first().name, result.personRoles.first().role.name)
+        assertEquals(
+            author.roles.first().name,
+            result.personRoles
+                .first()
+                .role.name,
+        )
     }
 
     @Test
@@ -81,9 +85,10 @@ class AuthorMapperTest {
         whenever(roleJpaEntityRepository.findByName("AUTHOR")).thenReturn(null)
 
         // When & Then
-        val exception = assertThrows<IllegalArgumentException> {
-            authorMapper.fromDomain(author)
-        }
+        val exception =
+            assertThrows<IllegalArgumentException> {
+                authorMapper.fromDomain(author)
+            }
         assertEquals("Role AUTHOR not found", exception.message)
     }
 
@@ -129,11 +134,12 @@ class AuthorMapperTest {
     @Test
     fun `should maintain bidirectional mapping consistency`() {
         // Given
-        val originalAuthor = AuthorObjectMother.create(
-            fullName = "Test Author",
-            pseudonym = "Test Pseudonym",
-            email = "test@example.com"
-        )
+        val originalAuthor =
+            AuthorObjectMother.create(
+                fullName = "Test Author",
+                pseudonym = "Test Pseudonym",
+                email = "test@example.com",
+            )
 
         whenever(roleJpaEntityRepository.findByName("AUTHOR"))
             .thenReturn(RoleEntityObjectMother.createAuthorRole())

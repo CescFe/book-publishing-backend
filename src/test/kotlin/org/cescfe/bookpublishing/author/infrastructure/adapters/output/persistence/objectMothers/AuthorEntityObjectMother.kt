@@ -15,25 +15,26 @@ object AuthorEntityObjectMother {
         biography: String? = null,
         email: String? = null,
         website: String? = null,
-        personRoles: List<RoleEntity> = listOf(RoleEntityObjectMother.createAuthorRole())
+        personRoles: List<RoleEntity> = listOf(RoleEntityObjectMother.createAuthorRole()),
     ): AuthorEntity {
-        val entity = AuthorEntity(
-            id = id,
-            version = version,
-            fullName = fullName,
-            pseudonym = pseudonym,
-            biography = biography,
-            email = email,
-            website = website
-        )
+        val entity =
+            AuthorEntity(
+                id = id,
+                version = version,
+                fullName = fullName,
+                pseudonym = pseudonym,
+                biography = biography,
+                email = email,
+                website = website,
+            )
 
         personRoles.forEach { role ->
             entity.personRoles.add(
                 PersonRoleEntity(
                     id = PersonRoleId(id, role.id),
                     person = entity,
-                    role = role
-                )
+                    role = role,
+                ),
             )
         }
 
@@ -47,15 +48,16 @@ object AuthorEntityObjectMother {
             biography = "English writer and philologist",
             email = "tolkien@example.com",
             website = "https://tolkiensociety.org",
-            personRoles = listOf(
-                RoleEntityObjectMother.createAuthorRole(),
-                RoleEntityObjectMother.createIllustratorRole()
-            )
+            personRoles =
+                listOf(
+                    RoleEntityObjectMother.createAuthorRole(),
+                    RoleEntityObjectMother.createIllustratorRole(),
+                ),
         )
 
     fun createSimple(): AuthorEntity =
         create(
             fullName = "Simple Author",
-            personRoles = listOf(RoleEntityObjectMother.createAuthorRole())
+            personRoles = listOf(RoleEntityObjectMother.createAuthorRole()),
         )
 }

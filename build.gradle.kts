@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.spring") version "2.1.21"
     kotlin("plugin.jpa") version "2.1.21"
-    //kotlin("kapt") version "2.1.21" // Mapstruct
+    // kotlin("kapt") version "2.1.21" // Mapstruct
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
@@ -68,8 +68,8 @@ dependencies {
     implementation("org.liquibase:liquibase-core:$liquibase")
 
     // MapStruct
-    //implementation("org.mapstruct:mapstruct:1.6.3")
-    //kapt("org.mapstruct:mapstruct-processor:1.6.3")
+    // implementation("org.mapstruct:mapstruct:1.6.3")
+    // kapt("org.mapstruct:mapstruct-processor:1.6.3")
 
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -77,7 +77,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoKotlin}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlin")
 }
 
 kotlin {
