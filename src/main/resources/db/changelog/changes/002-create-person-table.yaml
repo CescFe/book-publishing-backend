@@ -23,18 +23,13 @@ databaseChangeLog:
                   type: VARCHAR(255)
               - column:
                   name: biography
-                  type: TEXT
+                  type: VARCHAR(2000)
               - column:
                   name: email
                   type: VARCHAR(255)
               - column:
                   name: website
                   type: VARCHAR(500)
-              - column:
-                  name: roles
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
               - column:
                   name: version
                   type: BIGINT
@@ -53,20 +48,23 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
         - addUniqueConstraint:
             tableName: person
             schemaName: publishing
             columnNames: email
             constraintName: uk_person_email
-        - sql:
-            sql: "ALTER TABLE publishing.person ADD CONSTRAINT ck_person_roles_not_empty CHECK (roles IS NOT NULL AND LENGTH(TRIM(roles)) > 0)"
-        - createIndex:
-            tableName: person
-            schemaName: publishing
-            indexName: idx_person_roles
-            columns:
-              - column:
-                  name: roles
         - createIndex:
             tableName: person
             schemaName: publishing

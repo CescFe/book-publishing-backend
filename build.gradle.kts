@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.spring") version "2.1.21"
     kotlin("plugin.jpa") version "2.1.21"
+    // kotlin("kapt") version "2.1.21" // Mapstruct
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
@@ -17,6 +18,7 @@ val bookPublishingApiSpec = "0.1.2"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
+val mockitoKotlin = "6.1.0"
 
 java {
     toolchain {
@@ -65,9 +67,17 @@ dependencies {
     // Database migration
     implementation("org.liquibase:liquibase-core:$liquibase")
 
+    // MapStruct
+    // implementation("org.mapstruct:mapstruct:1.6.3")
+    // kapt("org.mapstruct:mapstruct-processor:1.6.3")
+
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlin")
 }
 
 kotlin {
