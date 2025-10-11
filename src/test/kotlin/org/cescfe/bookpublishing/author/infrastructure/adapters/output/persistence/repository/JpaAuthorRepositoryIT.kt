@@ -8,7 +8,7 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -32,19 +32,19 @@ import kotlin.test.assertTrue
 @Testcontainers
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(TestJpaAuditingConfig::class)
+@Import(
+    TestJpaAuditingConfig::class,
+    JpaAuthorRepositoryTestConfig::class
+)
 class JpaAuthorRepositoryIT {
     @Autowired
     private lateinit var authorJpaEntityRepository: AuthorJpaEntityRepository
 
     @Autowired
-    private lateinit var roleJpaEntityRepository: RoleJpaEntityRepository
-
-    @Autowired
     private lateinit var testEntityManager: TestEntityManager
 
+    @Autowired
     private lateinit var jpaAuthorRepository: JpaAuthorRepository
-    private lateinit var authorMapper: AuthorMapper
 
     companion object {
         @Container
@@ -66,9 +66,6 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should save and find author by id`() {
         // Given
-        authorMapper = AuthorMapper(roleJpaEntityRepository)
-        jpaAuthorRepository = JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
-
         val author =
             Author(
                 id = AuthorId.generate(),
@@ -103,9 +100,6 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should find all authors`() {
         // Given
-        authorMapper = AuthorMapper(roleJpaEntityRepository)
-        jpaAuthorRepository = JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
-
         val author1 =
             Author(
                 id = AuthorId.generate(),
@@ -133,8 +127,6 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should return null when author not found`() {
         // Given
-        authorMapper = AuthorMapper(roleJpaEntityRepository)
-        jpaAuthorRepository = JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
         val nonExistentId = AuthorId.generate()
 
         // When
