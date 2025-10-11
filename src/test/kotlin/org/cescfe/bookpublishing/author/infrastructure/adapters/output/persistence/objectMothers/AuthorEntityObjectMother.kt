@@ -39,10 +39,4 @@ object AuthorEntityObjectMother {
             email = "tolkien@example.com",
             website = "https://www.tolkiensociety.org",
         )
-
-    fun createMinimal(): Author =
-        create(
-            fullName = "Minimal Author",
-            roles = setOf(AuthorRole.AUTHOR),
-        )
 }

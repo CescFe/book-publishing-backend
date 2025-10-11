@@ -10,19 +10,15 @@ import org.springframework.context.annotation.Primary
 
 @TestConfiguration
 class JpaAuthorRepositoryTestConfig {
-
     @Bean
     @Primary
-    fun authorMapper(roleJpaEntityRepository: RoleJpaEntityRepository): AuthorMapper {
-        return AuthorMapper(roleJpaEntityRepository)
-    }
+    fun authorMapper(roleJpaEntityRepository: RoleJpaEntityRepository): AuthorMapper =
+        AuthorMapper(roleJpaEntityRepository)
 
     @Bean
     @Primary
     fun jpaAuthorRepository(
         authorJpaEntityRepository: AuthorJpaEntityRepository,
-        authorMapper: AuthorMapper
-    ): JpaAuthorRepository {
-        return JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
-    }
+        authorMapper: AuthorMapper,
+    ): JpaAuthorRepository = JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
 }

@@ -8,6 +8,7 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorEntityObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
 import org.junit.jupiter.api.AfterEach
@@ -34,7 +35,7 @@ import kotlin.test.assertTrue
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(
     TestJpaAuditingConfig::class,
-    JpaAuthorRepositoryTestConfig::class
+    JpaAuthorRepositoryTestConfig::class,
 )
 class JpaAuthorRepositoryIT {
     @Autowired
@@ -66,16 +67,7 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should save and find author by id`() {
         // Given
-        val author =
-            Author(
-                id = AuthorId.generate(),
-                fullName = FullName("J.R.R. Tolkien"),
-                roles = setOf(AuthorRole.AUTHOR),
-                pseudonym = Pseudonym("Tolkien"),
-                biography = Biography("English writer and philologist"),
-                email = Email("tolkien@example.com"),
-                website = Website("https://www.tolkiensociety.org"),
-            )
+        val author = AuthorEntityObjectMother.createTolkien()
 
         // When
         val savedAuthor = jpaAuthorRepository.save(author)
@@ -101,15 +93,12 @@ class JpaAuthorRepositoryIT {
     fun `should find all authors`() {
         // Given
         val author1 =
-            Author(
-                id = AuthorId.generate(),
-                fullName = FullName("Author One"),
-                roles = setOf(AuthorRole.AUTHOR),
+            AuthorEntityObjectMother.create(
+                fullName = "Author One",
             )
         val author2 =
-            Author(
-                id = AuthorId.generate(),
-                fullName = FullName("Author Two"),
+            AuthorEntityObjectMother.create(
+                fullName = "Author Two",
                 roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             )
 
