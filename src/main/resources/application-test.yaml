@@ -8,13 +8,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-    enabled: false
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
 
 logging:
   level:
     org.cescfe.bookpublishing: DEBUG
     org.springframework.web: DEBUG
     org.hibernate.SQL: DEBUG
-    org.hibernate.orm.jdbc.bind: TRACE
-    liquibase: INFO
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

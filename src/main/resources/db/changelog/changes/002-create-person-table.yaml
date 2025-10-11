@@ -48,6 +48,18 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
         - addUniqueConstraint:
             tableName: person
             schemaName: publishing

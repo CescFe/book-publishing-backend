@@ -11,6 +11,7 @@ import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
 import jakarta.persistence.Version
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.AuditableEntity
 import java.sql.Timestamp
 import java.time.Instant
 import java.util.UUID
@@ -36,20 +37,4 @@ data class AuthorEntity(
     val website: String?,
     @OneToMany(mappedBy = "person", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val personRoles: MutableList<PersonRoleEntity> = mutableListOf(),
-) {
-    @Column(name = "created_at", nullable = false, updatable = false)
-    lateinit var createdAt: Timestamp
-
-    @Column(name = "updated_at", nullable = false, updatable = false)
-    lateinit var updatedAt: Timestamp
-
-    @PrePersist
-    fun prePersist() {
-        this.createdAt = Timestamp.from(Instant.now())
-    }
-
-    @PreUpdate
-    fun preUpdate() {
-        this.updatedAt = Timestamp.from(Instant.now())
-    }
-}
+) : AuditableEntity()

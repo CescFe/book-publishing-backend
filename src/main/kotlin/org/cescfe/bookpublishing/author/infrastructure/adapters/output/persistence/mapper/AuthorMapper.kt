@@ -47,7 +47,7 @@ class AuthorMapper(
     }
 
     fun toDomain(entity: AuthorEntity): Author {
-        val rolesSet = entity.personRoles.map { AuthorRole.Companion.fromString(it.role.name) }.toSet()
+        val rolesSet = entity.personRoles.map { AuthorRole.fromString(it.role.name) }.toSet()
 
         return Author(
             id = AuthorId(entity.id),
