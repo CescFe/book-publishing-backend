@@ -29,6 +29,9 @@ class AuthorDomainException(
 
         fun emailInvalidFormat(): AuthorDomainException = AuthorDomainException("Email format is invalid")
 
+        fun emailAlreadyExists(email: String): AuthorDomainException =
+            AuthorDomainException("Author with email '$email' already exists")
+
         // Website exceptions
         fun websiteCannotBeBlank(): AuthorDomainException = AuthorDomainException("Website cannot be blank")
 

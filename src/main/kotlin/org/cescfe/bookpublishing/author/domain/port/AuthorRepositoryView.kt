@@ -13,4 +13,6 @@ interface AuthorRepositoryView {
     fun deleteById(id: AuthorId)
 
     fun existsById(id: AuthorId): Boolean
+
+    fun findByEmail(email: String): Author?
 }

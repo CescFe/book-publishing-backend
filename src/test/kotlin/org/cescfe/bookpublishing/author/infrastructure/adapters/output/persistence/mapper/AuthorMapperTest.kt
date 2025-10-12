@@ -8,10 +8,10 @@ import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.exception.RoleNotFoundException
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorEntityObjectMother
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorObjectMother
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.RoleEntityObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.RoleJpaEntityRepository
+import org.cescfe.bookpublishing.author.objectMothers.AuthorEntityObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.RoleEntityObjectMother
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock

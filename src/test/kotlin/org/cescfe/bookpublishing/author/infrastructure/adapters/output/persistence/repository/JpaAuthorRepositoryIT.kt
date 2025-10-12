@@ -2,8 +2,8 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
+import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test

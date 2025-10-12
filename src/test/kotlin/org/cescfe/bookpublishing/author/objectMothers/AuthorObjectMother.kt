@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers
+package org.cescfe.bookpublishing.author.objectMothers
 
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
@@ -38,5 +38,24 @@ object AuthorObjectMother {
             biography = "English writer and philologist",
             email = "tolkien@example.com",
             website = "https://www.tolkiensociety.org",
+        )
+
+    fun createMinimal(): Author =
+        create(
+            fullName = "Minimal Author",
+            roles = setOf(AuthorRole.AUTHOR),
+        )
+
+    fun createWithEmail(email: String): Author =
+        create(
+            fullName = "Test Author",
+            roles = setOf(AuthorRole.AUTHOR),
+            email = email,
+        )
+
+    fun createWithMultipleRoles(): Author =
+        create(
+            fullName = "Multi-role Author",
+            roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
         )
 }

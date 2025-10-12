@@ -32,4 +32,10 @@ class JpaAuthorRepository(
     }
 
     override fun existsById(id: AuthorId): Boolean = authorJpaEntityRepository.existsAuthorById(id.value)
+
+    override fun findByEmail(email: String): Author? =
+        authorJpaEntityRepository
+            .findByEmail(email)
+            .map { authorMapper.toDomain(it) }
+            .orElse(null)
 }
