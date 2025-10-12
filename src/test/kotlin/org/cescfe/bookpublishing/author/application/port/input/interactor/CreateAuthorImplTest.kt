@@ -1,5 +1,6 @@
 package org.cescfe.bookpublishing.author.application.port.input.interactor
 
+import org.cescfe.bookpublishing.author.application.port.input.mapper.CreateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
@@ -16,7 +17,8 @@ import kotlin.test.assertEquals
 
 class CreateAuthorImplTest {
     private val authorRepository = mock<AuthorRepositoryView>()
-    private val createAuthorUseCase = CreateAuthorImpl(authorRepository)
+    private val mapper = mock<CreateAuthorUseCaseMapper>()
+    private val createAuthorUseCase = CreateAuthorImpl(authorRepository, mapper)
 
     companion object {
         private const val TOLKIEN_EMAIL = "tolkien@example.com"
@@ -30,6 +32,7 @@ class CreateAuthorImplTest {
         val input = CreateAuthorInputValuesObjectMother.createTolkien()
         val expectedAuthor = AuthorObjectMother.createTolkien()
 
+        whenever(mapper.toDomain(input)).thenReturn(expectedAuthor)
         whenever(authorRepository.findByEmail(TOLKIEN_EMAIL)).thenReturn(null)
         whenever(authorRepository.save(any())).thenReturn(expectedAuthor)
 
@@ -45,6 +48,7 @@ class CreateAuthorImplTest {
         assertEquals(expectedAuthor.email!!.value, result.email!!.value)
         assertEquals(expectedAuthor.website!!.value, result.website!!.value)
 
+        verify(mapper).toDomain(input)
         verify(authorRepository).findByEmail(TOLKIEN_EMAIL)
         verify(authorRepository).save(any())
     }
@@ -74,6 +78,7 @@ class CreateAuthorImplTest {
         val input = CreateAuthorInputValuesObjectMother.createMinimal()
         val expectedAuthor = AuthorObjectMother.createMinimal()
 
+        whenever(mapper.toDomain(input)).thenReturn(expectedAuthor)
         whenever(authorRepository.save(any())).thenReturn(expectedAuthor)
 
         // When
@@ -87,5 +92,8 @@ class CreateAuthorImplTest {
         assertEquals(null, result.biography)
         assertEquals(null, result.email)
         assertEquals(null, result.website)
+
+        verify(mapper).toDomain(input)
+        verify(authorRepository).save(expectedAuthor)
     }
 }
