@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.objectMothers
+package org.cescfe.bookpublishing.author.objectMothers
 
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.RoleEntity
 

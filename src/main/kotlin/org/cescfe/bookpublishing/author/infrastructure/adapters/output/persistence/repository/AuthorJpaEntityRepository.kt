@@ -39,4 +39,12 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     """,
     )
     fun existsAuthorById(id: UUID): Boolean
+
+    @Query(
+        """
+        SELECT p FROM AuthorEntity p
+        WHERE p.email = :email
+    """,
+    )
+    fun findByEmail(email: String): Optional<AuthorEntity>
 }
