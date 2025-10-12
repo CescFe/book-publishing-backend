@@ -18,3 +18,4 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     liquibase: INFO
+    org.springframework.cloud.contract: DEBUG

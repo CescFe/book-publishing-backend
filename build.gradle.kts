@@ -9,6 +9,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
     id("com.google.cloud.tools.jib") version "3.4.5"
+    id("org.springframework.cloud.contract") version "4.3.0"
 }
 
 group = "org.cescfe"
@@ -19,6 +20,7 @@ val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
 val mockitoKotlin = "6.1.0"
+val contractTest = "4.3.0"
 
 java {
     toolchain {
@@ -78,6 +80,11 @@ dependencies {
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlin")
+    testImplementation("com.h2database:h2")
+
+    // Spring Cloud Contract
+    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier:$contractTest")
+    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$contractTest")
 }
 
 kotlin {
@@ -130,4 +137,12 @@ jib {
         ports = listOf("8080")
         workingDirectory = "/book-publishing-backend"
     }
+}
+
+contracts {
+    testMode.set(org.springframework.cloud.contract.verifier.config.TestMode.MOCKMVC)
+    baseClassForTests.set(
+        "org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.CreateAuthorContractTestBase",
+    )
+    basePackageForTests.set("org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest")
 }
