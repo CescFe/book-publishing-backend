@@ -26,7 +26,7 @@ abstract class CreateAuthorContractTestBase {
     fun setup(context: WebApplicationContext) {
         RestAssuredMockMvc.mockMvc(mockMvc)
 
-        val mockAuthor = AuthorObjectMother.createTolkien()
+        val mockAuthor = AuthorObjectMother.createWithMultipleRoles()
         whenever(createAuthorUseCase.execute(any())).thenReturn(mockAuthor)
     }
 }

@@ -55,7 +55,11 @@ object AuthorObjectMother {
 
     fun createWithMultipleRoles(): Author =
         create(
-            fullName = "Multi-role Author",
+            fullName = "J.R.R. Tolkien",
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
+            pseudonym = "Tolkien",
+            biography = "English writer and philologist",
+            email = "tolkien@example.com",
+            website = "https://www.tolkiensociety.org",
         )
 }

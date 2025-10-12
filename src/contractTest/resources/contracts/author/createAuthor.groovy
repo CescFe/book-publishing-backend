@@ -7,12 +7,12 @@ Contract.make {
 
     request {
         method POST()
-        url '/authors'
+        url '/api/v1/authors'
         headers {
             contentType(applicationJson())
         }
         body([
-                fullName: "J.R.R. Tolkien",
+                full_name: "J.R.R. Tolkien",
                 roles: ["AUTHOR", "ILLUSTRATOR"],
                 pseudonym: "Tolkien",
                 biography: "English writer and philologist",
@@ -28,15 +28,15 @@ Contract.make {
         }
         body([
                 id: $(regex('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')),
-                fullName: "J.R.R. Tolkien",
+                full_name: "J.R.R. Tolkien",
                 roles: ["AUTHOR", "ILLUSTRATOR"],
                 pseudonym: "Tolkien",
                 biography: "English writer and philologist",
                 email: "tolkien@example.com",
                 website: "https://www.tolkiensociety.org",
                 version: 1,
-                createdAt: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*')),
-                updatedAt: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*'))
+                created_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*')),
+                updated_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*'))
         ])
     }
 }
