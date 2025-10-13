@@ -1,11 +1,11 @@
 package org.cescfe.bookpublishing.author.application.port.input.interactor
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.GetAuthorUseCaseMapper
+import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.GetAuthorInputValuesObjectMother
-import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -38,7 +38,7 @@ class GetAuthorImplTest {
     }
 
     @Test
-    fun `should return null when author not found`() {
+    fun `should return AuthorDomainException when author not found`() {
         // Given
         val input = GetAuthorInputValuesObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
@@ -46,11 +46,12 @@ class GetAuthorImplTest {
         whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
-        // When
-        val result = getAuthorUseCase.execute(input)
-
-        // Then
-        assertNull(result)
+        // When & Then
+        val exception =
+            assertThrows<AuthorDomainException> {
+                getAuthorUseCase.execute(input)
+            }
+        assertEquals("Author with id ${input.authorId} not found", exception.message)
         verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
     }

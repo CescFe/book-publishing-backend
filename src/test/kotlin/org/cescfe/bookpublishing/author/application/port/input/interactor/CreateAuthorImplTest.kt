@@ -2,6 +2,7 @@ package org.cescfe.bookpublishing.author.application.port.input.interactor
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.CreateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
+import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorInputValuesObjectMother
@@ -95,5 +96,27 @@ class CreateAuthorImplTest {
 
         verify(mapper).toDomain(input)
         verify(authorRepository).save(expectedAuthor)
+    }
+
+    @Test
+    fun `should throw AuthorDomainException when email already exists`() {
+        // Given
+        val existingEmail = "existing@example.com"
+        val input =
+            CreateAuthorInputValuesObjectMother.create(
+                fullName = "Test Author",
+                roles = setOf("AUTHOR"),
+                email = existingEmail,
+            )
+        val existingAuthor = mock<Author>()
+
+        whenever(authorRepository.findByEmail(existingEmail)).thenReturn(existingAuthor)
+
+        // When & Then
+        val exception =
+            assertThrows<AuthorDomainException> {
+                createAuthorUseCase.execute(input)
+            }
+        assertEquals("Author with email '$existingEmail' already exists", exception.message)
     }
 }
