@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception
 
 import jakarta.validation.ConstraintViolationException
+import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.ApiException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.NotFoundException
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception.model.ApiError
@@ -15,6 +16,22 @@ import org.springframework.web.servlet.NoHandlerFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    @ExceptionHandler(AuthorDomainException::class)
+    fun handleAuthorDomainException(
+        ex: AuthorDomainException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> =
+        buildErrorResponse(
+            status = HttpStatus.BAD_REQUEST,
+            message = ex.message ?: "Invalid author data",
+            code = "AUTHOR_VALIDATION_ERROR",
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+
     @ExceptionHandler(NotImplementedError::class)
     fun handleNotImplementedError(
         ex: NotImplementedError,
