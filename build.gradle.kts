@@ -142,7 +142,7 @@ jib {
 contracts {
     testMode.set(org.springframework.cloud.contract.verifier.config.TestMode.MOCKMVC)
     baseClassForTests.set(
-        "org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.CreateAuthorContractTestBase",
+        "org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.AuthorContractTestBase",
     )
     basePackageForTests.set("org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest")
 }
