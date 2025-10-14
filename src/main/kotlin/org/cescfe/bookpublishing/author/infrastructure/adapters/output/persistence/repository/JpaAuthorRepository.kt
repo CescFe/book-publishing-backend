@@ -45,6 +45,10 @@ class JpaAuthorRepository(
         authorJpaEntityRepository.deleteById(id.value)
     }
 
+    override fun removeAuthorRole(id: AuthorId) {
+        authorJpaEntityRepository.removeAuthorRole(id.value)
+    }
+
     override fun existsById(id: AuthorId): Boolean = authorJpaEntityRepository.existsAuthorById(id.value)
 
     override fun findByEmail(email: String): Author? =
