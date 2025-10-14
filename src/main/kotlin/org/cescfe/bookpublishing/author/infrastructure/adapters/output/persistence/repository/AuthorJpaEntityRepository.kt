@@ -4,7 +4,6 @@ import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persisten
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.Optional
 import java.util.UUID
@@ -17,37 +16,31 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
         JOIN p.personRoles pr
         JOIN pr.role r
         WHERE r.name = 'AUTHOR'
+        ORDER BY p.fullName ASC
     """,
     )
     fun findAllAuthors(): List<AuthorEntity>
 
     @Query(
         """
-            SELECT DISTINCT p FROM AuthorEntity p
-            JOIN p.personRoles pr
-            JOIN pr.role r
-            WHERE r.name = 'AUTHOR'
-            AND (:searchTerm IS NULL OR p.fullName ILIKE :searchPattern)
-            ORDER BY p.fullName ASC
-        """,
+        SELECT DISTINCT p FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE r.name = 'AUTHOR'
+        ORDER BY p.fullName ASC
+    """,
     )
-    fun findAllAuthorsWithSearch(
-        @Param("searchTerm") searchTerm: String?,
-        pageable: Pageable,
-    ): List<AuthorEntity>
+    fun findAllAuthors(pageable: Pageable): List<AuthorEntity>
 
     @Query(
         """
-            SELECT COUNT(DISTINCT p) FROM AuthorEntity p
-            JOIN p.personRoles pr
-            JOIN pr.role r
-            WHERE r.name = 'AUTHOR'
-            AND (:searchTerm IS NULL OR p.fullName ILIKE :searchPattern)
-        """,
+        SELECT COUNT(DISTINCT p) FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE r.name = 'AUTHOR'
+    """,
     )
-    fun countAuthorsWithSearch(
-        @Param("searchTerm") searchTerm: String?,
-    ): Long
+    fun countAllAuthors(): Long
 
     @Query(
         """

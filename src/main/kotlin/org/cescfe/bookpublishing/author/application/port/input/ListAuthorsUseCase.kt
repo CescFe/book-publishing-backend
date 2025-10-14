@@ -9,6 +9,5 @@ interface ListAuthorsUseCase {
     data class InputValues(
         val page: Int,
         val limit: Int,
-        val search: String? = null,
     )
 }

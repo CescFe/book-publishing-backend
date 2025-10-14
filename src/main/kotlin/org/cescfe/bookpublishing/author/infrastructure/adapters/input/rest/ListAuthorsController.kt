@@ -23,7 +23,7 @@ class ListAuthorsController(
         limit: Int,
         search: String?,
     ): ResponseEntity<GetAuthors200ResponseDTO> {
-        val inputValues = mapParametersToInputValues(page, limit, search)
+        val inputValues = mapParametersToInputValues(page, limit)
         val result = listAuthorsUseCase.execute(inputValues)
         val responseDto = mapResultToDto(result)
         return ResponseEntity.ok(responseDto)
@@ -32,12 +32,10 @@ class ListAuthorsController(
     private fun mapParametersToInputValues(
         page: Int,
         limit: Int,
-        search: String?,
     ): ListAuthorsUseCase.InputValues =
         ListAuthorsUseCase.InputValues(
             page = page,
             limit = limit,
-            search = search,
         )
 
     private fun mapResultToDto(result: PaginatedResult<Author>): GetAuthors200ResponseDTO =

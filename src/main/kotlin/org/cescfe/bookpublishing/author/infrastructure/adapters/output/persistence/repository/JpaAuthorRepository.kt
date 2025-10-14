@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.SearchCriteria
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
 import org.springframework.data.domain.PageRequest
@@ -25,22 +24,17 @@ class JpaAuthorRepository(
             .findAllAuthors()
             .map { authorMapper.toDomain(it) }
 
-    override fun findAll(searchCriteria: SearchCriteria): List<Author> {
-        val pageable: Pageable = PageRequest.of(searchCriteria.page - 1, searchCriteria.limit)
-
-        return if (searchCriteria.searchTerm.isNullOrBlank()) {
-            authorJpaEntityRepository
-                .findAllAuthors()
-                .map { authorMapper.toDomain(it) }
-        } else {
-            authorJpaEntityRepository
-                .findAllAuthorsWithSearch(searchCriteria.searchTerm, pageable)
-                .map { authorMapper.toDomain(it) }
-        }
+    override fun findAll(
+        page: Int,
+        limit: Int,
+    ): List<Author> {
+        val pageable: Pageable = PageRequest.of(page - 1, limit)
+        return authorJpaEntityRepository
+            .findAllAuthors(pageable)
+            .map { authorMapper.toDomain(it) }
     }
 
-    override fun count(searchCriteria: SearchCriteria): Long =
-        authorJpaEntityRepository.countAuthorsWithSearch(searchCriteria.searchTerm)
+    override fun countAll(): Long = authorJpaEntityRepository.countAllAuthors()
 
     override fun save(author: Author): Author {
         val entity = authorMapper.fromDomain(author)
