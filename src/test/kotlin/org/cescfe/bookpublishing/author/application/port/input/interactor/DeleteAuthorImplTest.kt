@@ -24,10 +24,11 @@ class DeleteAuthorImplTest {
         // Given
         val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
-        val authorWithSingleRole = AuthorObjectMother.create(
-            fullName = "J.R.R. Tolkien",
-            roles = setOf(AuthorRole.AUTHOR)
-        )
+        val authorWithSingleRole =
+            AuthorObjectMother.create(
+                fullName = "J.R.R. Tolkien",
+                roles = setOf(AuthorRole.AUTHOR),
+            )
 
         whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(authorWithSingleRole)
@@ -70,9 +71,10 @@ class DeleteAuthorImplTest {
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
         // When & Then
-        val exception = assertThrows<AuthorDomainException> {
-            deleteAuthorUseCase.execute(input)
-        }
+        val exception =
+            assertThrows<AuthorDomainException> {
+                deleteAuthorUseCase.execute(input)
+            }
         assertEquals("Author with id ${input.authorId} not found", exception.message)
         verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)

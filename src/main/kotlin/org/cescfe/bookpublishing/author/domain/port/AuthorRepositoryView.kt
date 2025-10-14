@@ -8,7 +8,10 @@ interface AuthorRepositoryView {
 
     fun findAll(): List<Author>
 
-    fun findAll(page: Int, limit: Int, ): List<Author>
+    fun findAll(
+        page: Int,
+        limit: Int,
+    ): List<Author>
 
     fun countAll(): Long
 

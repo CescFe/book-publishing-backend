@@ -81,5 +81,7 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
         AND pr.role.name = 'AUTHOR'
     """,
     )
-    fun removeAuthorRole(@Param("personId") personId: UUID): Int
+    fun removeAuthorRole(
+        @Param("personId") personId: UUID,
+    ): Int
 }
