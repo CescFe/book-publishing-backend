@@ -3,7 +3,10 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
+import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
+import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
@@ -19,6 +22,7 @@ import java.util.UUID
 @WebMvcTest(
     CreateAuthorController::class,
     GetAuthorController::class,
+    ListAuthorsController::class,
 )
 @ActiveProfiles("contract-test")
 abstract class AuthorContractTestBase {
@@ -31,6 +35,9 @@ abstract class AuthorContractTestBase {
     @MockitoBean
     private lateinit var getAuthorUseCase: GetAuthorUseCase
 
+    @MockitoBean
+    private lateinit var listAuthorsUseCase: ListAuthorsUseCase
+
     @BeforeEach
     fun setup(context: WebApplicationContext) {
         RestAssuredMockMvc.mockMvc(mockMvc)
@@ -39,7 +46,7 @@ abstract class AuthorContractTestBase {
         whenever(createAuthorUseCase.execute(any())).thenReturn(mockAuthorForCreate)
 
         val specificId = UUID.fromString("477537ff-7e8b-4930-bd41-d7f3589120b1")
-        val mockAuthorForGet =
+        val mockAuthorTolkien =
             AuthorObjectMother.create(
                 id = specificId,
                 fullName = "J.R.R. Tolkien",
@@ -49,6 +56,27 @@ abstract class AuthorContractTestBase {
                 email = "tolkien@example.com",
                 website = "https://www.tolkiensociety.org",
             )
-        whenever(getAuthorUseCase.execute(any())).thenReturn(mockAuthorForGet)
+        whenever(getAuthorUseCase.execute(any())).thenReturn(mockAuthorTolkien)
+
+        val mockMinimalAuthor =
+            AuthorObjectMother.create(
+                id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
+                fullName = "Minimal Author",
+                roles = setOf(AuthorRole.AUTHOR),
+            )
+
+        val authorsList = listOf(mockAuthorTolkien, mockMinimalAuthor)
+        val paginatedResult =
+            PaginatedResult(
+                data = authorsList,
+                meta =
+                    PaginationMeta(
+                        total = 2,
+                        page = 1,
+                        limit = 20,
+                        totalPages = 1,
+                    ),
+            )
+        whenever(listAuthorsUseCase.execute(any())).thenReturn(paginatedResult)
     }
 }

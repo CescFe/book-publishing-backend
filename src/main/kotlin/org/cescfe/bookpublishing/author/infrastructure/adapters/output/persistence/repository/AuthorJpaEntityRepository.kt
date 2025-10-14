@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
@@ -15,9 +16,31 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
         JOIN p.personRoles pr
         JOIN pr.role r
         WHERE r.name = 'AUTHOR'
+        ORDER BY p.fullName ASC
     """,
     )
     fun findAllAuthors(): List<AuthorEntity>
+
+    @Query(
+        """
+        SELECT DISTINCT p FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE r.name = 'AUTHOR'
+        ORDER BY p.fullName ASC
+    """,
+    )
+    fun findAllAuthors(pageable: Pageable): List<AuthorEntity>
+
+    @Query(
+        """
+        SELECT COUNT(DISTINCT p) FROM AuthorEntity p
+        JOIN p.personRoles pr
+        JOIN pr.role r
+        WHERE r.name = 'AUTHOR'
+    """,
+    )
+    fun countAllAuthors(): Long
 
     @Query(
         """

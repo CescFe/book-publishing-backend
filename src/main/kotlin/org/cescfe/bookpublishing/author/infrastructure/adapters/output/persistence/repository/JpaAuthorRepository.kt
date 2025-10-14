@@ -4,6 +4,8 @@ import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -21,6 +23,18 @@ class JpaAuthorRepository(
         authorJpaEntityRepository
             .findAllAuthors()
             .map { authorMapper.toDomain(it) }
+
+    override fun findAll(
+        page: Int,
+        limit: Int,
+    ): List<Author> {
+        val pageable: Pageable = PageRequest.of(page - 1, limit)
+        return authorJpaEntityRepository
+            .findAllAuthors(pageable)
+            .map { authorMapper.toDomain(it) }
+    }
+
+    override fun countAll(): Long = authorJpaEntityRepository.countAllAuthors()
 
     override fun save(author: Author): Author {
         val entity = authorMapper.fromDomain(author)
