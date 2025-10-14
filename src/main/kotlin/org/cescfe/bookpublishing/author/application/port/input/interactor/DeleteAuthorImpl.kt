@@ -3,7 +3,6 @@ package org.cescfe.bookpublishing.author.application.port.input.interactor
 import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.DeleteAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -21,7 +20,7 @@ class DeleteAuthorImpl(
             authorRepository.findById(authorId)
                 ?: throw AuthorDomainException.authorNotFound(input.authorId)
 
-        if (author.roles.size == 1 && author.roles.contains(AuthorRole.AUTHOR)) {
+        if (author.hasOnlyAuthorRole()) {
             authorRepository.deleteById(authorId)
         } else {
             authorRepository.removeAuthorRole(authorId)
