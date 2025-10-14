@@ -8,6 +8,8 @@ import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAu
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
+import java.time.OffsetDateTime
 
 @RestController
 @Tag(name = "CreateAuthor")
@@ -44,9 +46,9 @@ class CreateAuthorController(
             pseudonym = author.pseudonym?.value,
             biography = author.biography?.value,
             email = author.email?.value,
-            website = author.website?.value?.let { java.net.URI(it) },
+            website = author.website?.value?.let { URI(it) },
             version = 1L,
-            createdAt = java.time.OffsetDateTime.now(),
-            updatedAt = java.time.OffsetDateTime.now(),
+            createdAt = OffsetDateTime.now(),
+            updatedAt = OffsetDateTime.now(),
         )
 }
