@@ -20,17 +20,24 @@ class GlobalExceptionHandler {
     fun handleAuthorDomainException(
         ex: AuthorDomainException,
         request: WebRequest,
-    ): ResponseEntity<ApiError> =
-        buildErrorResponse(
-            status = HttpStatus.BAD_REQUEST,
+    ): ResponseEntity<ApiError> {
+        val status =
+            when (ex.exceptionSubType) {
+                "AUTHOR_NOT_FOUND" -> HttpStatus.NOT_FOUND
+                else -> HttpStatus.BAD_REQUEST
+            }
+
+        return buildErrorResponse(
+            status = status,
             message = ex.message ?: "Invalid author data",
-            code = "AUTHOR_VALIDATION_ERROR",
+            code = ex.exceptionSubType,
             details =
                 mapOf(
                     "path" to getPath(request),
                     "exceptionType" to ex.javaClass.simpleName,
                 ),
         )
+    }
 
     @ExceptionHandler(NotImplementedError::class)
     fun handleNotImplementedError(

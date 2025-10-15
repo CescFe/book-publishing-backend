@@ -4,46 +4,57 @@ import org.cescfe.bookpublishing.shared.domain.exception.DomainException
 
 class AuthorDomainException(
     message: String,
+    val exceptionSubType: String,
     cause: Throwable? = null,
 ) : DomainException(message, cause) {
     companion object {
         // FullName exceptions
-        fun fullNameCannotBeBlank(): AuthorDomainException = AuthorDomainException("Full name cannot be blank")
+        fun fullNameCannotBeBlank(): AuthorDomainException =
+            AuthorDomainException("Full name cannot be blank", "FULL_NAME_CANNOT_BE_BLANK")
 
         fun fullNameTooLong(): AuthorDomainException =
-            AuthorDomainException("Full name must be between 1 and 255 characters")
+            AuthorDomainException("Full name must be between 1 and 255 characters", "FULL_NAME_TOO_LONG")
 
         // Pseudonym exceptions
-        fun pseudonymCannotBeBlank(): AuthorDomainException = AuthorDomainException("Pseudonym cannot be blank")
+        fun pseudonymCannotBeBlank(): AuthorDomainException =
+            AuthorDomainException("Pseudonym cannot be blank", "PSEUDONYM_CANNOT_BE_BLANK")
 
         fun pseudonymTooLong(): AuthorDomainException =
-            AuthorDomainException("Pseudonym must be between 1 and 255 characters")
+            AuthorDomainException("Pseudonym must be between 1 and 255 characters", "PSEUDONYM_TOO_LONG")
 
         // Biography exceptions
-        fun biographyTooLong(): AuthorDomainException = AuthorDomainException("Biography cannot exceed 2000 characters")
+        fun biographyTooLong(): AuthorDomainException =
+            AuthorDomainException("Biography cannot exceed 2000 characters", "BIOGRAPHY_TOO_LONG")
 
         // Email exceptions
-        fun emailCannotBeBlank(): AuthorDomainException = AuthorDomainException("Email cannot be blank")
+        fun emailCannotBeBlank(): AuthorDomainException =
+            AuthorDomainException("Email cannot be blank", "EMAIL_CANNOT_BE_BLANK")
 
-        fun emailMissingAtSymbol(): AuthorDomainException = AuthorDomainException("Email must contain @ symbol")
+        fun emailMissingAtSymbol(): AuthorDomainException =
+            AuthorDomainException("Email must contain @ symbol", "EMAIL_MISSING_AT_SYMBOL")
 
-        fun emailInvalidFormat(): AuthorDomainException = AuthorDomainException("Email format is invalid")
+        fun emailInvalidFormat(): AuthorDomainException =
+            AuthorDomainException("Email format is invalid", "EMAIL_INVALID_FORMAT")
 
         fun emailAlreadyExists(email: String): AuthorDomainException =
-            AuthorDomainException("Author with email '$email' already exists")
+            AuthorDomainException("Author with email '$email' already exists", "EMAIL_ALREADY_EXISTS")
 
         // Website exceptions
-        fun websiteCannotBeBlank(): AuthorDomainException = AuthorDomainException("Website cannot be blank")
+        fun websiteCannotBeBlank(): AuthorDomainException =
+            AuthorDomainException("Website cannot be blank", "WEBSITE_CANNOT_BE_BLANK")
 
         fun websiteInvalidProtocol(): AuthorDomainException =
-            AuthorDomainException("Website must start with http:// or https://")
+            AuthorDomainException("Website must start with http:// or https://", "WEBSITE_INVALID_PROTOCOL")
 
         // Author roles exceptions
-        fun emptyRoles(): AuthorDomainException = AuthorDomainException("Author must have at least one role")
+        fun emptyRoles(): AuthorDomainException =
+            AuthorDomainException("Author must have at least one role", "EMPTY_ROLES")
 
-        fun missingAuthorRole(): AuthorDomainException = AuthorDomainException("Author must have AUTHOR role")
+        fun missingAuthorRole(): AuthorDomainException =
+            AuthorDomainException("Author must have AUTHOR role", "MISSING_AUTHOR_ROLE")
 
         // Author not found exception
-        fun authorNotFound(id: String): AuthorDomainException = AuthorDomainException("Author with id $id not found")
+        fun authorNotFound(id: String): AuthorDomainException =
+            AuthorDomainException("Author with id $id not found", "AUTHOR_NOT_FOUND")
     }
 }
