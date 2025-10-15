@@ -7,7 +7,7 @@ import java.net.URI
 import java.time.OffsetDateTime
 
 @Component
-class AuthorMapper {
+class AuthorRestMapper {
     fun toDto(author: Author): GetAuthors200ResponseAllOfDataInnerDTO =
         GetAuthors200ResponseAllOfDataInnerDTO(
             id = author.id.value,

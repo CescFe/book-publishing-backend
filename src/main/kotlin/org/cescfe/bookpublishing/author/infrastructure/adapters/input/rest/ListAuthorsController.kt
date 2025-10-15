@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorMapper
+import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseDTO
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "GetAllAuthors")
 class ListAuthorsController(
     private val listAuthorsUseCase: ListAuthorsUseCase,
-    private val mapper: AuthorMapper,
+    private val mapper: AuthorRestMapper,
 ) : GetAllAuthorsApi {
     override fun getAuthors(
         page: Int,

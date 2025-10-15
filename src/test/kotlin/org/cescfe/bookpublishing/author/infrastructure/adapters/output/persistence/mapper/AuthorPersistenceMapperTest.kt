@@ -20,9 +20,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
-class AuthorMapperTest {
+class AuthorPersistenceMapperTest {
     private val roleJpaEntityRepository: RoleJpaEntityRepository = mock()
-    private val authorMapper = AuthorMapper(roleJpaEntityRepository)
+    private val authorMapper = AuthorPersistenceMapper(roleJpaEntityRepository)
 
     @Test
     fun `fromDomain should map author domain to entity correctly`() {

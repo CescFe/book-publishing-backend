@@ -16,7 +16,7 @@ import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persisten
 import org.springframework.stereotype.Component
 
 @Component
-class AuthorMapper(
+class AuthorPersistenceMapper(
     private val roleJpaEntityRepository: RoleJpaEntityRepository,
 ) {
     fun fromDomain(author: Author): AuthorEntity {

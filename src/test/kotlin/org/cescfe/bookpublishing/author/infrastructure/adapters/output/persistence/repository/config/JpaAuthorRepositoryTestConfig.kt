@@ -1,6 +1,6 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config
 
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorPersistenceMapper
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.AuthorJpaEntityRepository
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.JpaAuthorRepository
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.RoleJpaEntityRepository
@@ -12,13 +12,13 @@ import org.springframework.context.annotation.Primary
 class JpaAuthorRepositoryTestConfig {
     @Bean
     @Primary
-    fun authorMapper(roleJpaEntityRepository: RoleJpaEntityRepository): AuthorMapper =
-        AuthorMapper(roleJpaEntityRepository)
+    fun authorMapper(roleJpaEntityRepository: RoleJpaEntityRepository): AuthorPersistenceMapper =
+        AuthorPersistenceMapper(roleJpaEntityRepository)
 
     @Bean
     @Primary
     fun jpaAuthorRepository(
         authorJpaEntityRepository: AuthorJpaEntityRepository,
-        authorMapper: AuthorMapper,
+        authorMapper: AuthorPersistenceMapper,
     ): JpaAuthorRepository = JpaAuthorRepository(authorJpaEntityRepository, authorMapper)
 }
