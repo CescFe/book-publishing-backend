@@ -2,15 +2,18 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
+import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
+import org.cescfe.bookpublishing.author.infrastructure.adapters.DeleteAuthorController
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -24,6 +27,7 @@ import java.util.UUID
     CreateAuthorController::class,
     GetAuthorController::class,
     ListAuthorsController::class,
+    DeleteAuthorController::class,
     AuthorRestMapper::class,
 )
 @ActiveProfiles("contract-test")
@@ -39,6 +43,9 @@ abstract class AuthorContractTestBase {
 
     @MockitoBean
     private lateinit var listAuthorsUseCase: ListAuthorsUseCase
+
+    @MockitoBean
+    private lateinit var deleteAuthorUseCase: DeleteAuthorUseCase
 
     @BeforeEach
     fun setup(context: WebApplicationContext) {
@@ -80,5 +87,7 @@ abstract class AuthorContractTestBase {
                     ),
             )
         whenever(listAuthorsUseCase.execute(any())).thenReturn(paginatedResult)
+
+        doAnswer { }.whenever(deleteAuthorUseCase).execute(any())
     }
 }
