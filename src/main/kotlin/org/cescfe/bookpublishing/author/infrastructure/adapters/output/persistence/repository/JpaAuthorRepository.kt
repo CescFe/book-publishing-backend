@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorMapper
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorPersistenceMapper
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class JpaAuthorRepository(
     private val authorJpaEntityRepository: AuthorJpaEntityRepository,
-    private val authorMapper: AuthorMapper,
+    private val authorMapper: AuthorPersistenceMapper,
 ) : AuthorRepositoryView {
     override fun findById(id: AuthorId): Author? =
         authorJpaEntityRepository
