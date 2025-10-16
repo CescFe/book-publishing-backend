@@ -65,6 +65,21 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     )
     fun existsAuthorById(id: UUID): Boolean
 
+    @Query(
+        """
+        SELECT p FROM AuthorEntity p
+        WHERE p.email = :email
+    """,
+    )
+    fun findByEmail(email: String): Optional<AuthorEntity>
+
+    @Query(
+        """
+        SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
+        FROM AuthorEntity p
+        WHERE p.email = :email
+    """,
+    )
     fun existsByEmail(email: String): Boolean
 
     @Modifying

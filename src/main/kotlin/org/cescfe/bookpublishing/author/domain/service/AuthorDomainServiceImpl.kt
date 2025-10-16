@@ -13,4 +13,16 @@ class AuthorDomainServiceImpl(
             throw AuthorDomainException.emailAlreadyExists(email)
         }
     }
+
+    override fun ensureEmailUniquenessForUpdate(
+        email: String?,
+        authorId: String,
+    ) {
+        if (email != null) {
+            val existingAuthor = authorRepository.findByEmail(email)
+            if (existingAuthor != null && existingAuthor.id.value.toString() != authorId) {
+                throw AuthorDomainException.emailAlreadyExists(email)
+            }
+        }
+    }
 }
