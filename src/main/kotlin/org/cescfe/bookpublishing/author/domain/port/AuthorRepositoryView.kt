@@ -23,5 +23,7 @@ interface AuthorRepositoryView {
 
     fun existsById(id: AuthorId): Boolean
 
+    fun findByEmail(email: String): Author?
+
     fun existsByEmail(email: String): Boolean
 }
