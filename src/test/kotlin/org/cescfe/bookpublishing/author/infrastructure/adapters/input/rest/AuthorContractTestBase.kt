@@ -8,7 +8,6 @@ import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCas
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.author.infrastructure.adapters.DeleteAuthorController
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.junit.jupiter.api.BeforeEach
