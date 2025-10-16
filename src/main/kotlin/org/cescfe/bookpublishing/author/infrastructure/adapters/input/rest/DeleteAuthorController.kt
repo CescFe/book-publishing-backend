@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters
+package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
