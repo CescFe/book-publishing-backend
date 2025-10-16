@@ -5,6 +5,7 @@ import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCa
 import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
+import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
@@ -27,6 +28,7 @@ import java.util.UUID
     GetAuthorController::class,
     ListAuthorsController::class,
     DeleteAuthorController::class,
+    UpdateAuthorController::class,
     AuthorRestMapper::class,
 )
 @ActiveProfiles("contract-test")
@@ -46,13 +48,18 @@ abstract class AuthorContractTestBase {
     @MockitoBean
     private lateinit var deleteAuthorUseCase: DeleteAuthorUseCase
 
+    @MockitoBean
+    private lateinit var updateAuthorUseCase: UpdateAuthorUseCase
+
     @BeforeEach
     fun setup(context: WebApplicationContext) {
         RestAssuredMockMvc.mockMvc(mockMvc)
 
+        // CreateAuthor Setup
         val mockAuthorForCreate = AuthorObjectMother.createWithMultipleRoles()
         whenever(createAuthorUseCase.execute(any())).thenReturn(mockAuthorForCreate)
 
+        // GetAuthor Setup
         val specificId = UUID.fromString("477537ff-7e8b-4930-bd41-d7f3589120b1")
         val mockAuthorTolkien =
             AuthorObjectMother.create(
@@ -66,6 +73,7 @@ abstract class AuthorContractTestBase {
             )
         whenever(getAuthorUseCase.execute(any())).thenReturn(mockAuthorTolkien)
 
+        // ListAuthors Setup
         val mockMinimalAuthor =
             AuthorObjectMother.create(
                 id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
@@ -87,6 +95,20 @@ abstract class AuthorContractTestBase {
             )
         whenever(listAuthorsUseCase.execute(any())).thenReturn(paginatedResult)
 
+        // DeleteAuthor Setup
         doAnswer { }.whenever(deleteAuthorUseCase).execute(any())
+
+        // UpdateAuthor Setup
+        val updatedAuthor =
+            AuthorObjectMother.create(
+                id = specificId,
+                fullName = "Updated J.R.R. Tolkien",
+                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
+                pseudonym = "Updated Tolkien",
+                biography = "Updated English writer and philologist",
+                email = "updated.tolkien@example.com",
+                website = "https://www.updated-tolkiensociety.org",
+            )
+        whenever(updateAuthorUseCase.execute(any())).thenReturn(updatedAuthor)
     }
 }
