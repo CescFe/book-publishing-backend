@@ -6,7 +6,7 @@ import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCa
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
+import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
@@ -21,7 +21,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.web.context.WebApplicationContext
-import java.util.UUID
 
 @WebMvcTest(
     CreateAuthorController::class,
@@ -60,55 +59,37 @@ abstract class AuthorContractTestBase {
         whenever(createAuthorUseCase.execute(any())).thenReturn(mockAuthorForCreate)
 
         // GetAuthor Setup
-        val specificId = UUID.fromString("477537ff-7e8b-4930-bd41-d7f3589120b1")
-        val mockAuthorTolkien =
-            AuthorObjectMother.create(
-                id = specificId,
-                fullName = "J.R.R. Tolkien",
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
-                pseudonym = "Tolkien",
-                biography = "English writer and philologist",
-                email = "tolkien@example.com",
-                website = "https://www.tolkiensociety.org",
-            )
+        val mockAuthorTolkien = AuthorObjectMother.createForGetContractTest()
         whenever(getAuthorUseCase.execute(any())).thenReturn(mockAuthorTolkien)
 
         // ListAuthors Setup
-        val mockMinimalAuthor =
-            AuthorObjectMother.create(
-                id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
-                fullName = "Minimal Author",
-                roles = setOf(AuthorRole.AUTHOR),
+        val authors =
+            listOf(
+                AuthorObjectMother.createForGetContractTest(),
+                AuthorObjectMother.createForGetAllContractTest(),
             )
-
-        val authorsList = listOf(mockAuthorTolkien, mockMinimalAuthor)
-        val paginatedResult =
-            PaginatedResult(
-                data = authorsList,
-                meta =
-                    PaginationMeta(
-                        total = 2,
-                        page = 1,
-                        limit = 20,
-                        totalPages = 1,
-                    ),
-            )
-        whenever(listAuthorsUseCase.execute(any())).thenReturn(paginatedResult)
+        whenever(listAuthorsUseCase.execute(any())).thenReturn(authors.toPaginatedResult())
 
         // DeleteAuthor Setup
         doAnswer { }.whenever(deleteAuthorUseCase).execute(any())
 
         // UpdateAuthor Setup
-        val updatedAuthor =
-            AuthorObjectMother.create(
-                id = specificId,
-                fullName = "Updated J.R.R. Tolkien",
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
-                pseudonym = "Updated Tolkien",
-                biography = "Updated English writer and philologist",
-                email = "updated.tolkien@example.com",
-                website = "https://www.updated-tolkiensociety.org",
-            )
+        val updatedAuthor = AuthorObjectMother.createForUpdateContractTest()
         whenever(updateAuthorUseCase.execute(any())).thenReturn(updatedAuthor)
     }
+
+    private fun List<Author>.toPaginatedResult(
+        page: Int = 1,
+        limit: Int = 20,
+    ): PaginatedResult<Author> =
+        PaginatedResult(
+            data = this,
+            meta =
+                PaginationMeta(
+                    total = size.toLong(),
+                    page = page,
+                    limit = limit,
+                    totalPages = if (isEmpty()) 0 else ((size - 1) / limit + 1),
+                ),
+        )
 }
