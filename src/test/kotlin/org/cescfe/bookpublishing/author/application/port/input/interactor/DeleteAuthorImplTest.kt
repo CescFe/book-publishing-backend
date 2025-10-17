@@ -47,7 +47,7 @@ class DeleteAuthorImplTest {
         // Given
         val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
-        val authorWithMultipleRoles = AuthorObjectMother.createWithMultipleRoles() // AUTHOR + ILLUSTRATOR
+        val authorWithMultipleRoles = AuthorObjectMother.createWithMultipleRoles()
 
         whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(authorWithMultipleRoles)
