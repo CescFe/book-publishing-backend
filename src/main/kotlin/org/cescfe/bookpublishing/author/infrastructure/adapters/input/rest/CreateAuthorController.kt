@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateAuthorApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
@@ -17,10 +17,8 @@ class CreateAuthorController(
     private val createAuthorUseCase: CreateAuthorUseCase,
     private val mapper: AuthorRestMapper,
 ) : CreateAuthorApi {
-    override fun createAuthor(
-        getAuthors200ResponseAllOfDataInnerDTO: GetAuthors200ResponseAllOfDataInnerDTO,
-    ): ResponseEntity<GetAuthors200ResponseAllOfDataInnerDTO> {
-        val inputValues = mapDtoToInputValues(getAuthors200ResponseAllOfDataInnerDTO)
+    override fun createAuthor(createAuthorRequestDTO: CreateAuthorRequestDTO): ResponseEntity<CreateAuthorRequestDTO> {
+        val inputValues = mapDtoToInputValues(createAuthorRequestDTO)
         val createdAuthor = createAuthorUseCase.execute(inputValues)
         val responseDto = mapper.toDto(createdAuthor)
         val uri = buildResourceUri(createdAuthor.id.value)
@@ -34,7 +32,7 @@ class CreateAuthorController(
             .buildAndExpand(authorId)
             .toUri()
 
-    private fun mapDtoToInputValues(dto: GetAuthors200ResponseAllOfDataInnerDTO): CreateAuthorUseCase.InputValues =
+    private fun mapDtoToInputValues(dto: CreateAuthorRequestDTO): CreateAuthorUseCase.InputValues =
         CreateAuthorUseCase.InputValues(
             fullName = dto.fullName,
             roles = dto.roles.map { it.value }.toSet(),

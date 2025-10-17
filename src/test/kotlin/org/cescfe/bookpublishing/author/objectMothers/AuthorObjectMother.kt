@@ -89,11 +89,4 @@ object AuthorObjectMother {
             email = "updated.tolkien@example.com",
             website = "https://www.updated-tolkiensociety.org",
         )
-
-    fun createForGetAllContractTest(): Author =
-        create(
-            id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
-            fullName = "Minimal Author",
-            roles = setOf(AuthorRole.AUTHOR),
-        )
 }

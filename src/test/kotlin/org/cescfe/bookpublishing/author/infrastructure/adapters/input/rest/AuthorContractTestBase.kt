@@ -11,6 +11,7 @@ import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -65,8 +66,8 @@ abstract class AuthorContractTestBase {
         // ListAuthors Setup
         val authors =
             listOf(
-                AuthorObjectMother.createForGetContractTest(),
-                AuthorObjectMother.createForGetAllContractTest(),
+                AuthorSummaryObjectMother.createFirstAuthorSummary(),
+                AuthorSummaryObjectMother.createSecondAuthorSummary(),
             )
         whenever(listAuthorsUseCase.execute(any())).thenReturn(authors.toPaginatedResult())
 

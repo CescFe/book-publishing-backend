@@ -30,24 +30,16 @@ Contract.make {
                                 full_name: "J.R.R. Tolkien",
                                 roles: ["AUTHOR", "ILLUSTRATOR"],
                                 pseudonym: "Tolkien",
-                                biography: "English writer and philologist",
                                 email: "tolkien@example.com",
-                                website: "https://www.tolkiensociety.org",
                                 version: 1,
-                                created_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*')),
-                                updated_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*'))
                         ],
                         [
                                 id: "12345678-1234-1234-1234-123456789012",
                                 full_name: "Minimal Author",
                                 roles: ["AUTHOR"],
                                 pseudonym: null,
-                                biography: null,
                                 email: null,
-                                website: null,
                                 version: 1,
-                                created_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*')),
-                                updated_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*'))
                         ]
                 ],
                 meta: [

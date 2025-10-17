@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAuthorByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -15,7 +15,7 @@ class GetAuthorController(
     private val getAuthorUseCase: GetAuthorUseCase,
     private val mapper: AuthorRestMapper,
 ) : GetAuthorByIdApi {
-    override fun getAuthorByID(id: UUID): ResponseEntity<GetAuthors200ResponseAllOfDataInnerDTO> {
+    override fun getAuthorByID(id: UUID): ResponseEntity<CreateAuthorRequestDTO> {
         val inputValues = mapPathToInputValues(id)
         val author = getAuthorUseCase.execute(inputValues)
         val responseDto = mapper.toDto(author)
