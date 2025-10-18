@@ -51,6 +51,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // API Specification Library
     implementation("org.cescfe:book-publishing-api-spec:$bookPublishingApiSpec")
 
     // Swagger/OpenAPI dependencies (required by book-publishing-api-spec)
