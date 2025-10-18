@@ -6,7 +6,7 @@ import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCa
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
-import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
@@ -79,10 +79,10 @@ abstract class AuthorContractTestBase {
         whenever(updateAuthorUseCase.execute(any())).thenReturn(updatedAuthor)
     }
 
-    private fun List<Author>.toPaginatedResult(
+    private fun List<AuthorSummary>.toPaginatedResult(
         page: Int = 1,
         limit: Int = 20,
-    ): PaginatedResult<Author> =
+    ): PaginatedResult<AuthorSummary> =
         PaginatedResult(
             data = this,
             meta =

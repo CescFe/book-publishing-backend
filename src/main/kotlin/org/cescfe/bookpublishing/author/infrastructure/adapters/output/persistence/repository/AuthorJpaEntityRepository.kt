@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorSummaryProjection
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Modifying
@@ -33,6 +34,32 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     """,
     )
     fun findAllAuthors(pageable: Pageable): List<AuthorEntity>
+
+    @Query(
+        """
+    SELECT DISTINCT p.id as id, p.fullName as fullName, p.pseudonym as pseudonym,
+           p.email as email, p.version as version, pr.role as role
+    FROM AuthorEntity p
+    JOIN p.personRoles pr
+    JOIN pr.role r
+    WHERE r.name = 'AUTHOR'
+    ORDER BY p.fullName ASC
+""",
+    )
+    fun findAllAuthorsSummary(): List<AuthorSummaryProjection>
+
+    @Query(
+        """
+    SELECT DISTINCT p.id as id, p.fullName as fullName, p.pseudonym as pseudonym,
+           p.email as email, p.version as version, pr.role as role
+    FROM AuthorEntity p
+    JOIN p.personRoles pr
+    JOIN pr.role r
+    WHERE r.name = 'AUTHOR'
+    ORDER BY p.fullName ASC
+""",
+    )
+    fun findAllAuthorsSummary(pageable: Pageable): List<AuthorSummaryProjection>
 
     @Query(
         """

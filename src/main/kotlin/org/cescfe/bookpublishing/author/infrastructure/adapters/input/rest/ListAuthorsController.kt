@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
-import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
@@ -36,7 +36,7 @@ class ListAuthorsController(
             limit = limit,
         )
 
-    private fun mapResultToDto(result: PaginatedResult<Author>): GetAuthors200ResponseDTO =
+    private fun mapResultToDto(result: PaginatedResult<AuthorSummary>): GetAuthors200ResponseDTO =
         GetAuthors200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =
@@ -48,16 +48,16 @@ class ListAuthorsController(
                 ),
         )
 
-    private fun toDto(author: Author): GetAuthors200ResponseAllOfDataInnerDTO =
+    private fun toDto(authorSummary: AuthorSummary): GetAuthors200ResponseAllOfDataInnerDTO =
         GetAuthors200ResponseAllOfDataInnerDTO(
-            id = author.id.value,
-            fullName = author.fullName.value,
+            id = authorSummary.id.value,
+            fullName = authorSummary.fullName.value,
             roles =
-                author.roles.map {
+                authorSummary.roles.map {
                     GetAuthors200ResponseAllOfDataInnerDTO.Roles.forValue(it.value)
                 },
-            pseudonym = author.pseudonym?.value,
-            email = author.email?.value,
+            pseudonym = authorSummary.pseudonym?.value,
+            email = authorSummary.email?.value,
             version = 1L,
         )
 }

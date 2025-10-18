@@ -1,8 +1,8 @@
 package org.cescfe.bookpublishing.author.objectMothers
 
-import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
@@ -17,8 +17,8 @@ object AuthorSummaryObjectMother {
         roles: Set<AuthorRole> = setOf(AuthorRole.AUTHOR),
         pseudonym: String? = null,
         email: String? = null,
-    ): Author =
-        Author(
+    ): AuthorSummary =
+        AuthorSummary(
             id = AuthorId(id),
             fullName = FullName(fullName),
             roles = roles,
@@ -26,8 +26,8 @@ object AuthorSummaryObjectMother {
             email = email?.let { Email(it) },
         )
 
-    fun createFirstAuthorSummary(): Author =
-        AuthorObjectMother.create(
+    fun createFirstAuthorSummary(): AuthorSummary =
+        create(
             id = UUID.fromString(AUTHOR_ID_CONTRACT_TEST),
             fullName = "J.R.R. Tolkien",
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
@@ -35,8 +35,8 @@ object AuthorSummaryObjectMother {
             email = "tolkien@example.com",
         )
 
-    fun createSecondAuthorSummary(): Author =
-        AuthorObjectMother.create(
+    fun createSecondAuthorSummary(): AuthorSummary =
+        create(
             id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
             fullName = "Minimal Author",
             roles = setOf(AuthorRole.AUTHOR),

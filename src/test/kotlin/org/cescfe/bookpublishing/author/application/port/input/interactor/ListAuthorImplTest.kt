@@ -1,11 +1,11 @@
 package org.cescfe.bookpublishing.author.application.port.input.interactor
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthorsUseCaseMapper
-import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
-import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.ListAuthorsInputValuesObjectMother
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -24,8 +24,8 @@ class ListAuthorImplTest {
         val input = ListAuthorsInputValuesObjectMother.create(page = 1, limit = 2)
         val authors =
             listOf(
-                AuthorObjectMother.createTolkien(),
-                AuthorObjectMother.createMinimal(),
+                AuthorSummaryObjectMother.createFirstAuthorSummary(),
+                AuthorSummaryObjectMother.createSecondAuthorSummary(),
             )
         val totalCount = 2L
         val expectedResult =
@@ -40,7 +40,7 @@ class ListAuthorImplTest {
                     ),
             )
 
-        whenever(authorRepository.findAll(input.page, input.limit)).thenReturn(authors)
+        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(authors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
         whenever(mapper.toPaginatedResult(authors, totalCount, input.page, input.limit))
             .thenReturn(expectedResult)
@@ -50,7 +50,7 @@ class ListAuthorImplTest {
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAll(input.page, input.limit)
+        verify(authorRepository).findAllSummary(input.page, input.limit)
         verify(authorRepository).countAll()
         verify(mapper).toPaginatedResult(authors, totalCount, input.page, input.limit)
     }
@@ -59,7 +59,7 @@ class ListAuthorImplTest {
     fun `should return empty result when no authors found`() {
         // Given
         val input = ListAuthorsInputValuesObjectMother.create(page = 1, limit = 10)
-        val emptyAuthors = emptyList<Author>()
+        val emptyAuthors = emptyList<AuthorSummary>()
         val totalCount = 0L
         val expectedResult =
             PaginatedResult(
@@ -73,7 +73,7 @@ class ListAuthorImplTest {
                     ),
             )
 
-        whenever(authorRepository.findAll(input.page, input.limit)).thenReturn(emptyAuthors)
+        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(emptyAuthors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
         whenever(mapper.toPaginatedResult(emptyAuthors, totalCount, input.page, input.limit))
             .thenReturn(expectedResult)
@@ -83,7 +83,7 @@ class ListAuthorImplTest {
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAll(input.page, input.limit)
+        verify(authorRepository).findAllSummary(input.page, input.limit)
         verify(authorRepository).countAll()
         verify(mapper).toPaginatedResult(emptyAuthors, totalCount, input.page, input.limit)
     }
@@ -92,7 +92,7 @@ class ListAuthorImplTest {
     fun `should handle pagination correctly for second page`() {
         // Given
         val input = ListAuthorsInputValuesObjectMother.create(page = 2, limit = 1)
-        val authors = listOf(AuthorObjectMother.createMinimal())
+        val authors = listOf(AuthorSummaryObjectMother.createFirstAuthorSummary())
         val totalCount = 3L
         val expectedResult =
             PaginatedResult(
@@ -106,7 +106,7 @@ class ListAuthorImplTest {
                     ),
             )
 
-        whenever(authorRepository.findAll(input.page, input.limit)).thenReturn(authors)
+        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(authors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
         whenever(mapper.toPaginatedResult(authors, totalCount, input.page, input.limit))
             .thenReturn(expectedResult)
@@ -116,7 +116,7 @@ class ListAuthorImplTest {
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAll(input.page, input.limit)
+        verify(authorRepository).findAllSummary(input.page, input.limit)
         verify(authorRepository).countAll()
         verify(mapper).toPaginatedResult(authors, totalCount, input.page, input.limit)
     }

@@ -2,6 +2,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.mapper.AuthorPersistenceMapper
 import org.springframework.data.domain.PageRequest
@@ -31,6 +32,16 @@ class JpaAuthorRepository(
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return authorJpaEntityRepository
             .findAllAuthors(pageable)
+            .map { authorMapper.toDomain(it) }
+    }
+
+    override fun findAllSummary(
+        page: Int,
+        limit: Int,
+    ): List<AuthorSummary> {
+        val pageable: Pageable = PageRequest.of(page - 1, limit)
+        return authorJpaEntityRepository
+            .findAllAuthorsSummary(pageable)
             .map { authorMapper.toDomain(it) }
     }
 
