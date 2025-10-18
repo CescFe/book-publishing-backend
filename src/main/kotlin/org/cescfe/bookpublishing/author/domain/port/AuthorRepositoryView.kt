@@ -7,12 +7,7 @@ import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 interface AuthorRepositoryView {
     fun findById(id: AuthorId): Author?
 
-    fun findAll(): List<Author>
-
-    fun findAll(
-        page: Int,
-        limit: Int,
-    ): List<Author>
+    fun findAllSummary(): List<AuthorSummary>
 
     fun findAllSummary(
         page: Int,

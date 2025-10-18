@@ -3,6 +3,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.AuthorRole
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.Biography
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -58,6 +59,18 @@ class AuthorPersistenceMapper(
             biography = entity.biography?.let { Biography(it) },
             email = entity.email?.let { Email(it) },
             website = entity.website?.let { Website(it) },
+        )
+    }
+
+    fun toDomainSummary(entity: AuthorEntity): AuthorSummary {
+        val rolesSet = entity.personRoles.map { AuthorRole.fromString(it.role.name) }.toSet()
+
+        return AuthorSummary(
+            id = AuthorId(entity.id),
+            fullName = FullName(entity.fullName),
+            roles = rolesSet,
+            pseudonym = entity.pseudonym?.let { Pseudonym(it) },
+            email = entity.email?.let { Email(it) },
         )
     }
 }

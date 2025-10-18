@@ -99,7 +99,7 @@ class JpaAuthorRepositoryIT {
         // When
         jpaAuthorRepository.save(author1)
         jpaAuthorRepository.save(author2)
-        val authors = jpaAuthorRepository.findAll()
+        val authors = jpaAuthorRepository.findAllSummary()
 
         // Then
         assertEquals(2, authors.size)
