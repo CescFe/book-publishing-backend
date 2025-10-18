@@ -1,7 +1,7 @@
 package org.cescfe.bookpublishing.author.application.port.input.mapper
 
-import org.cescfe.bookpublishing.author.domain.model.Author
-import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
+import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -13,8 +13,8 @@ class ListAuthorsUseCaseMapperTest {
         // Given
         val authors =
             listOf(
-                AuthorObjectMother.createTolkien(),
-                AuthorObjectMother.createMinimal(),
+                AuthorSummaryObjectMother.createFirstAuthorSummary(),
+                AuthorSummaryObjectMother.createSecondAuthorSummary(),
             )
         val totalCount = 2L
         val page = 1
@@ -34,7 +34,7 @@ class ListAuthorsUseCaseMapperTest {
     @Test
     fun `should calculate total pages correctly for multiple pages`() {
         // Given
-        val authors = listOf(AuthorObjectMother.createMinimal())
+        val authors = listOf(AuthorSummaryObjectMother.createFirstAuthorSummary())
         val totalCount = 5L
         val page = 2
         val limit = 2
@@ -52,7 +52,7 @@ class ListAuthorsUseCaseMapperTest {
     @Test
     fun `should handle empty result correctly`() {
         // Given
-        val authors = emptyList<Author>()
+        val authors = emptyList<AuthorSummary>()
         val totalCount = 0L
         val page = 1
         val limit = 10
@@ -71,7 +71,7 @@ class ListAuthorsUseCaseMapperTest {
     @Test
     fun `should convert Long to Int correctly`() {
         // Given
-        val authors = emptyList<Author>()
+        val authors = emptyList<AuthorSummary>()
         val totalCount = 2147483647L
         val page = 1
         val limit = 1

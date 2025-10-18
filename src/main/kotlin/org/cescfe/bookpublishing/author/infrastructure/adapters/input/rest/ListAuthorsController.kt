@@ -2,10 +2,10 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
-import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseDTO
 import org.springframework.http.ResponseEntity
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 @Tag(name = "GetAllAuthors")
 class ListAuthorsController(
     private val listAuthorsUseCase: ListAuthorsUseCase,
-    private val mapper: AuthorRestMapper,
 ) : GetAllAuthorsApi {
     override fun getAuthors(
         page: Int,
@@ -37,9 +36,9 @@ class ListAuthorsController(
             limit = limit,
         )
 
-    private fun mapResultToDto(result: PaginatedResult<Author>): GetAuthors200ResponseDTO =
+    private fun mapResultToDto(result: PaginatedResult<AuthorSummary>): GetAuthors200ResponseDTO =
         GetAuthors200ResponseDTO(
-            data = result.data.map { mapper.toDto(it) },
+            data = result.data.map { toDto(it) },
             meta =
                 GetAuthors200ResponseAllOfMetaDTO(
                     total = result.meta.total.toInt(),
@@ -47,5 +46,18 @@ class ListAuthorsController(
                     limit = result.meta.limit,
                     totalPages = result.meta.totalPages,
                 ),
+        )
+
+    private fun toDto(authorSummary: AuthorSummary): GetAuthors200ResponseAllOfDataInnerDTO =
+        GetAuthors200ResponseAllOfDataInnerDTO(
+            id = authorSummary.id.value,
+            fullName = authorSummary.fullName.value,
+            roles =
+                authorSummary.roles.map {
+                    GetAuthors200ResponseAllOfDataInnerDTO.Roles.forValue(it.value)
+                },
+            pseudonym = authorSummary.pseudonym?.value,
+            email = authorSummary.email?.value,
+            version = 1L,
         )
 }

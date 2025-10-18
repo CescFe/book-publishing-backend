@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.UpdateAuthorByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -17,9 +17,9 @@ class UpdateAuthorController(
 ) : UpdateAuthorByIdApi {
     override fun updateAuthor(
         id: UUID,
-        getAuthors200ResponseAllOfDataInnerDTO: GetAuthors200ResponseAllOfDataInnerDTO,
-    ): ResponseEntity<GetAuthors200ResponseAllOfDataInnerDTO> {
-        val inputValues = mapPathAndDtoToInputValues(id, getAuthors200ResponseAllOfDataInnerDTO)
+        createAuthorRequestDTO: CreateAuthorRequestDTO,
+    ): ResponseEntity<CreateAuthorRequestDTO> {
+        val inputValues = mapPathAndDtoToInputValues(id, createAuthorRequestDTO)
         val updatedAuthor = updateAuthorUseCase.execute(inputValues)
         val responseDto = mapper.toDto(updatedAuthor)
         return ResponseEntity.ok(responseDto)
@@ -27,7 +27,7 @@ class UpdateAuthorController(
 
     private fun mapPathAndDtoToInputValues(
         authorId: UUID,
-        dto: GetAuthors200ResponseAllOfDataInnerDTO,
+        dto: CreateAuthorRequestDTO,
     ): UpdateAuthorUseCase.InputValues =
         UpdateAuthorUseCase.InputValues(
             authorId = authorId.toString(),

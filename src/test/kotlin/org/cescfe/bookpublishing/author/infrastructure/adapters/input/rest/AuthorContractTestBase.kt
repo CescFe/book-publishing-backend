@@ -6,11 +6,12 @@ import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCa
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
-import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -65,8 +66,8 @@ abstract class AuthorContractTestBase {
         // ListAuthors Setup
         val authors =
             listOf(
-                AuthorObjectMother.createForGetContractTest(),
-                AuthorObjectMother.createForGetAllContractTest(),
+                AuthorSummaryObjectMother.createFirstAuthorSummary(),
+                AuthorSummaryObjectMother.createSecondAuthorSummary(),
             )
         whenever(listAuthorsUseCase.execute(any())).thenReturn(authors.toPaginatedResult())
 
@@ -78,10 +79,10 @@ abstract class AuthorContractTestBase {
         whenever(updateAuthorUseCase.execute(any())).thenReturn(updatedAuthor)
     }
 
-    private fun List<Author>.toPaginatedResult(
+    private fun List<AuthorSummary>.toPaginatedResult(
         page: Int = 1,
         limit: Int = 20,
-    ): PaginatedResult<Author> =
+    ): PaginatedResult<AuthorSummary> =
         PaginatedResult(
             data = this,
             meta =
