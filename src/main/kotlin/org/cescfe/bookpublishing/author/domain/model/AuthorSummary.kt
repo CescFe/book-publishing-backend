@@ -13,6 +13,4 @@ data class AuthorSummary(
         require(roles.isNotEmpty()) { throw AuthorDomainException.emptyRoles() }
         require(roles.contains(AuthorRole.AUTHOR)) { throw AuthorDomainException.missingAuthorRole() }
     }
-
-    fun hasOnlyAuthorRole(): Boolean = roles.size == 1 && roles.contains(AuthorRole.AUTHOR)
 }
