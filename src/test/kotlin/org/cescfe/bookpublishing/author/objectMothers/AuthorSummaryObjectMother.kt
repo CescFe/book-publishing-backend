@@ -17,6 +17,7 @@ object AuthorSummaryObjectMother {
         roles: Set<AuthorRole> = setOf(AuthorRole.AUTHOR),
         pseudonym: String? = null,
         email: String? = null,
+        version: Long,
     ): AuthorSummary =
         AuthorSummary(
             id = AuthorId(id),
@@ -24,6 +25,7 @@ object AuthorSummaryObjectMother {
             roles = roles,
             pseudonym = pseudonym?.let { Pseudonym(it) },
             email = email?.let { Email(it) },
+            version = version,
         )
 
     fun createFirstAuthorSummary(): AuthorSummary =
@@ -33,6 +35,7 @@ object AuthorSummaryObjectMother {
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             pseudonym = "Tolkien",
             email = "tolkien@example.com",
+            version = 1L,
         )
 
     fun createSecondAuthorSummary(): AuthorSummary =
@@ -40,5 +43,6 @@ object AuthorSummaryObjectMother {
             id = UUID.fromString("12345678-1234-1234-1234-123456789012"),
             fullName = "Minimal Author",
             roles = setOf(AuthorRole.AUTHOR),
+            version = 1L,
         )
 }

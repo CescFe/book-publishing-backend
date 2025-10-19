@@ -6,14 +6,8 @@ import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
-import jakarta.persistence.PrePersist
-import jakarta.persistence.PreUpdate
 import jakarta.persistence.Table
-import jakarta.persistence.Version
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.AuditableEntity
-import java.sql.Timestamp
-import java.time.Instant
 import java.util.UUID
 
 @Entity
@@ -22,9 +16,8 @@ data class AuthorEntity(
     @Id
     @Column(name = "id", columnDefinition = "UUID")
     val id: UUID,
-    @Version
     @Column(name = "version")
-    val version: Long = 1,
+    val version: Long,
     @Column(name = "full_name", nullable = false)
     val fullName: String,
     @Column(name = "pseudonym")

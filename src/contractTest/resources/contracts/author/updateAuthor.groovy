@@ -17,7 +17,8 @@ Contract.make {
                 pseudonym: "Updated Tolkien",
                 biography: "Updated English writer and philologist",
                 email: "updated.tolkien@example.com",
-                website: "https://www.updated-tolkiensociety.org"
+                website: "https://www.updated-tolkiensociety.org",
+                version: 1L
         ])
     }
 

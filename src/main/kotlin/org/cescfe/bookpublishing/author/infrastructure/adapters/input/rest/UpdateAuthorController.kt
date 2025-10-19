@@ -5,6 +5,7 @@ import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCa
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.UpdateAuthorByIdApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
@@ -17,9 +18,9 @@ class UpdateAuthorController(
 ) : UpdateAuthorByIdApi {
     override fun updateAuthor(
         id: UUID,
-        createAuthorRequestDTO: CreateAuthorRequestDTO,
+        updateAuthorRequestDTO: UpdateAuthorRequestDTO,
     ): ResponseEntity<CreateAuthorRequestDTO> {
-        val inputValues = mapPathAndDtoToInputValues(id, createAuthorRequestDTO)
+        val inputValues = mapPathAndDtoToInputValues(id, updateAuthorRequestDTO)
         val updatedAuthor = updateAuthorUseCase.execute(inputValues)
         val responseDto = mapper.toDto(updatedAuthor)
         return ResponseEntity.ok(responseDto)
@@ -27,7 +28,7 @@ class UpdateAuthorController(
 
     private fun mapPathAndDtoToInputValues(
         authorId: UUID,
-        dto: CreateAuthorRequestDTO,
+        dto: UpdateAuthorRequestDTO,
     ): UpdateAuthorUseCase.InputValues =
         UpdateAuthorUseCase.InputValues(
             authorId = authorId.toString(),
@@ -37,5 +38,6 @@ class UpdateAuthorController(
             biography = dto.biography,
             email = dto.email,
             website = dto.website?.toString(),
+            version = dto.version,
         )
 }

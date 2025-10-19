@@ -8,6 +8,7 @@ data class AuthorSummary(
     val roles: Set<AuthorRole>,
     val pseudonym: Pseudonym? = null,
     val email: Email? = null,
+    val version: Long,
 ) {
     init {
         require(roles.isNotEmpty()) { throw AuthorDomainException.emptyRoles() }

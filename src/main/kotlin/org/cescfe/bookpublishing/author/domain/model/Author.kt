@@ -11,6 +11,7 @@ data class Author(
     val biography: Biography? = null,
     val email: Email? = null,
     val website: Website? = null,
+    val version: Long,
 ) {
     init {
         require(roles.isNotEmpty()) { throw AuthorDomainException.emptyRoles() }

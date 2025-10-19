@@ -22,6 +22,7 @@ class CreateAuthorUseCaseMapper {
             biography = input.biography?.let { Biography(it) },
             email = input.email?.let { Email(it) },
             website = input.website?.let { Website(it) },
+            version = 1L,
         )
 
     fun toInputValues(author: Author): CreateAuthorUseCase.InputValues =

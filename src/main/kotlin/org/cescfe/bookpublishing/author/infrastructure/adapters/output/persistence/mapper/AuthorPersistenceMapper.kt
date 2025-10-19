@@ -29,6 +29,7 @@ class AuthorPersistenceMapper(
                 biography = author.biography?.value,
                 email = author.email?.value,
                 website = author.website?.value,
+                version = author.version,
             )
 
         author.roles.forEach { role ->
@@ -59,6 +60,7 @@ class AuthorPersistenceMapper(
             biography = entity.biography?.let { Biography(it) },
             email = entity.email?.let { Email(it) },
             website = entity.website?.let { Website(it) },
+            version = entity.version,
         )
     }
 
@@ -71,6 +73,7 @@ class AuthorPersistenceMapper(
             roles = rolesSet,
             pseudonym = entity.pseudonym?.let { Pseudonym(it) },
             email = entity.email?.let { Email(it) },
+            version = entity.version,
         )
     }
 }

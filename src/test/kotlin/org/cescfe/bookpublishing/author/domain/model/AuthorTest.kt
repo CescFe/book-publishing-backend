@@ -28,6 +28,7 @@ class AuthorTest {
                 email = email,
                 website = website,
                 biography = biography,
+                version = 1L,
             )
 
         // Then
@@ -50,7 +51,12 @@ class AuthorTest {
         // When & Then
         val exception =
             assertThrows<AuthorDomainException> {
-                Author(id = id, fullName = fullName, roles = emptyRoles)
+                Author(
+                    id = id,
+                    fullName = fullName,
+                    roles = emptyRoles,
+                    version = 1L,
+                )
             }
         assertEquals("Author must have at least one role", exception.message)
     }
@@ -65,7 +71,12 @@ class AuthorTest {
         // When & Then
         val exception =
             assertThrows<AuthorDomainException> {
-                Author(id = id, fullName = fullName, roles = rolesWithoutAuthor)
+                Author(
+                    id = id,
+                    fullName = fullName,
+                    roles = rolesWithoutAuthor,
+                    version = 1L,
+                )
             }
         assertEquals("Author must have AUTHOR role", exception.message)
     }
@@ -78,7 +89,13 @@ class AuthorTest {
         val roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR)
 
         // When
-        val author = Author(id = id, fullName = fullName, roles = roles)
+        val author =
+            Author(
+                id = id,
+                fullName = fullName,
+                roles = roles,
+                version = 1L,
+            )
 
         // Then
         assertEquals(roles, author.roles)
