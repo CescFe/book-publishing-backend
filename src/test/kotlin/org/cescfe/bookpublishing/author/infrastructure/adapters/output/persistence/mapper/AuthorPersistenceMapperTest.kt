@@ -44,7 +44,6 @@ class AuthorPersistenceMapperTest {
         assertEquals(author.biography!!.value, result.biography)
         assertEquals(author.email!!.value, result.email)
         assertEquals(author.website!!.value, result.website)
-        assertEquals(1L, result.version)
         assertEquals(author.roles.size, result.personRoles.size)
 
         val roleNames = result.personRoles.map { it.role.name }.toSet()

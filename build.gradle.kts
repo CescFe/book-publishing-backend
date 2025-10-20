@@ -15,7 +15,7 @@ plugins {
 group = "org.cescfe"
 version = "0.1.0"
 
-val bookPublishingApiSpec = "0.2.0"
+val bookPublishingApiSpec = "0.2.2"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
@@ -51,6 +51,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // API Specification Library
     implementation("org.cescfe:book-publishing-api-spec:$bookPublishingApiSpec")
 
     // Swagger/OpenAPI dependencies (required by book-publishing-api-spec)

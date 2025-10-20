@@ -9,7 +9,6 @@ import java.util.UUID
 object AuthorEntityObjectMother {
     fun create(
         id: UUID = UUID.randomUUID(),
-        version: Long = 1L,
         fullName: String = "Test Author",
         pseudonym: String? = null,
         biography: String? = null,
@@ -20,7 +19,6 @@ object AuthorEntityObjectMother {
         val entity =
             AuthorEntity(
                 id = id,
-                version = version,
                 fullName = fullName,
                 pseudonym = pseudonym,
                 biography = biography,

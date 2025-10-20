@@ -20,20 +20,10 @@ class JpaAuthorRepository(
             .map { authorMapper.toDomain(it) }
             .orElse(null)
 
-    override fun findAll(): List<Author> =
+    override fun findAllSummary(): List<AuthorSummary> =
         authorJpaEntityRepository
             .findAllAuthors()
-            .map { authorMapper.toDomain(it) }
-
-    override fun findAll(
-        page: Int,
-        limit: Int,
-    ): List<Author> {
-        val pageable: Pageable = PageRequest.of(page - 1, limit)
-        return authorJpaEntityRepository
-            .findAllAuthors(pageable)
-            .map { authorMapper.toDomain(it) }
-    }
+            .map { authorMapper.toDomainSummary(it) }
 
     override fun findAllSummary(
         page: Int,
@@ -41,8 +31,8 @@ class JpaAuthorRepository(
     ): List<AuthorSummary> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return authorJpaEntityRepository
-            .findAllAuthorsSummary(pageable)
-            .map { authorMapper.toDomain(it) }
+            .findAllAuthors(pageable)
+            .map { authorMapper.toDomainSummary(it) }
     }
 
     override fun countAll(): Long = authorJpaEntityRepository.countAllAuthors()

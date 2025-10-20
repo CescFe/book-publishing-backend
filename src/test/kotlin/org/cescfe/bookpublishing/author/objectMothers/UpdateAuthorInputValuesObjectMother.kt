@@ -24,7 +24,12 @@ object UpdateAuthorInputValuesObjectMother {
         )
 
     fun createWithTolkienId(): UpdateAuthorUseCase.InputValues =
-        create(authorId = "477537ff-7e8b-4930-bd41-d7f3589120b1")
+        create(
+            authorId = "477537ff-7e8b-4930-bd41-d7f3589120b1",
+        )
 
-    fun createWithMultipleRoles(): UpdateAuthorUseCase.InputValues = create(roles = setOf("AUTHOR", "ILLUSTRATOR"))
+    fun createWithMultipleRoles(): UpdateAuthorUseCase.InputValues =
+        create(
+            roles = setOf("AUTHOR", "ILLUSTRATOR"),
+        )
 }

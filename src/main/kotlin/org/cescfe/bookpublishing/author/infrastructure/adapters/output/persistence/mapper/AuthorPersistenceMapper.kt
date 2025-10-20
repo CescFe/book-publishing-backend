@@ -10,7 +10,6 @@ import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorSummaryProjection
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.exception.RoleNotFoundException
@@ -63,15 +62,15 @@ class AuthorPersistenceMapper(
         )
     }
 
-    fun toDomain(entity: AuthorSummaryProjection): AuthorSummary {
-        val rolesSet = setOf(AuthorRole.fromString(entity.getRole()))
+    fun toDomainSummary(entity: AuthorEntity): AuthorSummary {
+        val rolesSet = entity.personRoles.map { AuthorRole.fromString(it.role.name) }.toSet()
 
         return AuthorSummary(
-            id = AuthorId(entity.getId()),
-            fullName = FullName(entity.getFullName()),
+            id = AuthorId(entity.id),
+            fullName = FullName(entity.fullName),
             roles = rolesSet,
-            pseudonym = entity.getPseudonym()?.let { Pseudonym(it) },
-            email = entity.getEmail()?.let { Email(it) },
+            pseudonym = entity.pseudonym?.let { Pseudonym(it) },
+            email = entity.email?.let { Email(it) },
         )
     }
 }
