@@ -31,7 +31,6 @@ Contract.make {
                                 roles: ["AUTHOR", "ILLUSTRATOR"],
                                 pseudonym: "Tolkien",
                                 email: "tolkien@example.com",
-                                version: 1,
                         ],
                         [
                                 id: "12345678-1234-1234-1234-123456789012",
@@ -39,7 +38,6 @@ Contract.make {
                                 roles: ["AUTHOR"],
                                 pseudonym: null,
                                 email: null,
-                                version: 1,
                         ]
                 ],
                 meta: [

@@ -79,7 +79,6 @@ class UpdateAuthorImplTest {
             UpdateAuthorInputValuesObjectMother.create(
                 authorId = EXISTING_ID,
                 email = EXISTING_EMAIL,
-                version = 1L,
             )
         val authorId = AuthorId.fromString(input.authorId)
         val existingAuthor = AuthorObjectMother.createTolkien()

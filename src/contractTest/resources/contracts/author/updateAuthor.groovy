@@ -18,7 +18,6 @@ Contract.make {
                 biography: "Updated English writer and philologist",
                 email: "updated.tolkien@example.com",
                 website: "https://www.updated-tolkiensociety.org",
-                version: 1L
         ])
     }
 
@@ -35,7 +34,6 @@ Contract.make {
                 biography: "Updated English writer and philologist",
                 email: "updated.tolkien@example.com",
                 website: "https://www.updated-tolkiensociety.org",
-                version: 1,
                 created_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*')),
                 updated_at: $(regex('[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.*'))
         ])

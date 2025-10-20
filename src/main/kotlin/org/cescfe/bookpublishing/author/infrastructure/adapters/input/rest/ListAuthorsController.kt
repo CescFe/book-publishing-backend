@@ -58,6 +58,5 @@ class ListAuthorsController(
                 },
             pseudonym = authorSummary.pseudonym?.value,
             email = authorSummary.email?.value,
-            version = authorSummary.version,
         )
 }

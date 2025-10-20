@@ -20,7 +20,6 @@ class AuthorRestMapper {
             biography = author.biography?.value,
             email = author.email?.value,
             website = author.website?.value?.let { URI(it) },
-            version = author.version,
             createdAt = OffsetDateTime.now(),
             updatedAt = OffsetDateTime.now(),
         )

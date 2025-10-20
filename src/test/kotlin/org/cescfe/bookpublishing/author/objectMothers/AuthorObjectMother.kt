@@ -30,7 +30,6 @@ object AuthorObjectMother {
             biography = biography?.let { Biography(it) },
             email = email?.let { Email(it) },
             website = website?.let { Website(it) },
-            version = 1L,
         )
 
     fun createTolkien(): Author =

@@ -13,6 +13,5 @@ interface UpdateAuthorUseCase {
         val biography: String? = null,
         val email: String? = null,
         val website: String? = null,
-        val version: Long,
     )
 }

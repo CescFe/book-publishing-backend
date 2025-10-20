@@ -16,8 +16,6 @@ data class AuthorEntity(
     @Id
     @Column(name = "id", columnDefinition = "UUID")
     val id: UUID,
-    @Column(name = "version")
-    val version: Long,
     @Column(name = "full_name", nullable = false)
     val fullName: String,
     @Column(name = "pseudonym")

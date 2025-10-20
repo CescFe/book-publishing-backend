@@ -28,7 +28,6 @@ class AuthorTest {
                 email = email,
                 website = website,
                 biography = biography,
-                version = 1L,
             )
 
         // Then
@@ -55,7 +54,6 @@ class AuthorTest {
                     id = id,
                     fullName = fullName,
                     roles = emptyRoles,
-                    version = 1L,
                 )
             }
         assertEquals("Author must have at least one role", exception.message)
@@ -75,7 +73,6 @@ class AuthorTest {
                     id = id,
                     fullName = fullName,
                     roles = rolesWithoutAuthor,
-                    version = 1L,
                 )
             }
         assertEquals("Author must have AUTHOR role", exception.message)
@@ -94,7 +91,6 @@ class AuthorTest {
                 id = id,
                 fullName = fullName,
                 roles = roles,
-                version = 1L,
             )
 
         // Then
