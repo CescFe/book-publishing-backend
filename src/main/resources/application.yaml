@@ -18,6 +18,10 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: false
 
+jwt:
+  secret: "mySecretKeyThatIsAtLeast32CharactersLong"
+  expiration: 86400
+
 server:
   port: ${SERVER_PORT:8080}
 
