@@ -27,16 +27,22 @@ class SecurityConfig(
             .csrf { it.disable() }
             .authorizeHttpRequests { authz ->
                 authz
-                    .requestMatchers("/api/v1/authors", "/api/v1/authors/*")
-                    .hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.POST, "/api/v1/authors")
                     .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.PUT, "/api/v1/authors/*")
                     .hasRole("ADMIN")
                     .requestMatchers(HttpMethod.DELETE, "/api/v1/authors/*")
                     .hasRole("ADMIN")
-                    .anyRequest()
+                    .requestMatchers(HttpMethod.GET, "/api/v1/authors")
+                    .hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/api/v1/authors/*")
+                    .hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/v1/auth/login")
                     .permitAll()
+                    .requestMatchers("/api/v1/health")
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
             }.sessionManagement { session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             }
