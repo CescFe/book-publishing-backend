@@ -12,6 +12,8 @@ import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtRequestFilter
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
@@ -51,9 +53,20 @@ abstract class AuthorContractTestBase {
     @MockitoBean
     private lateinit var updateAuthorUseCase: UpdateAuthorUseCase
 
+    @MockitoBean
+    private lateinit var jwtRequestFilter: JwtRequestFilter
+
+    @MockitoBean
+    private lateinit var jwtUtil: JwtUtil
+
+
     @BeforeEach
     fun setup(context: WebApplicationContext) {
         RestAssuredMockMvc.mockMvc(mockMvc)
+
+        val validJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.invalid-signature-for-testing"
+        whenever(jwtUtil.validateToken(any(), any())).thenReturn(true)
+        whenever(jwtUtil.getUsernameFromToken(any())).thenReturn("user@example.com")
 
         // CreateAuthor Setup
         val mockAuthorForCreate = AuthorObjectMother.createWithMultipleRoles()

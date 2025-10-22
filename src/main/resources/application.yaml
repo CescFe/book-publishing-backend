@@ -20,7 +20,7 @@ spring:
 
 jwt:
   secret: "mySecretKeyThatIsAtLeast32CharactersLong"
-  expiration: 86400
+  expiration: 900
 
 server:
   port: ${SERVER_PORT:8080}

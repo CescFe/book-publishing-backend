@@ -14,8 +14,8 @@ class JwtUtil {
     @Value("\${jwt.secret:mySecretKeyThatIsAtLeast32CharactersLong}")
     private lateinit var secret: String
 
-    @Value("\${jwt.expiration:86400}")
-    private var expiration: Long = 86400
+    @Value("\${jwt.expiration:900}")
+    private var expiration: Long = 900
 
     private val key: SecretKey by lazy {
         Keys.hmacShaKeyFor(secret.toByteArray())
@@ -35,6 +35,8 @@ class JwtUtil {
     }
 
     fun getUsernameFromToken(token: String): String = getClaimsFromToken(token).subject
+
+    fun getExpirationTime(): Long = expiration
 
     fun isTokenExpired(token: String): Boolean {
         val expiration = getClaimsFromToken(token).expiration

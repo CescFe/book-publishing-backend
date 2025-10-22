@@ -10,6 +10,7 @@ Contract.make {
         url '/api/v1/authors'
         headers {
             contentType(applicationJson())
+            header('Authorization', 'Bearer ${jwt.validToken}')
         }
         body([
                 full_name: "J.R.R. Tolkien",
