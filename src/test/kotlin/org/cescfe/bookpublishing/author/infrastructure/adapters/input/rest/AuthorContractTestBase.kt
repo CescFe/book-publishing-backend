@@ -59,12 +59,10 @@ abstract class AuthorContractTestBase {
     @MockitoBean
     private lateinit var jwtUtil: JwtUtil
 
-
     @BeforeEach
     fun setup(context: WebApplicationContext) {
         RestAssuredMockMvc.mockMvc(mockMvc)
 
-        val validJwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.invalid-signature-for-testing"
         whenever(jwtUtil.validateToken(any(), any())).thenReturn(true)
         whenever(jwtUtil.getUsernameFromToken(any())).thenReturn("user@example.com")
 

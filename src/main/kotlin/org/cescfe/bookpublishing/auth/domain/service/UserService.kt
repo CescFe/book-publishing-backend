@@ -23,16 +23,19 @@ class UserService(
             users[username]
                 ?: throw UsernameNotFoundException("User not found: $username")
 
-        val authorities = when (username) {
-            "admin@example.com" -> listOf(
-                SimpleGrantedAuthority("ROLE_ADMIN"),
-                SimpleGrantedAuthority("ROLE_USER")
-            )
-            "user@example.com" -> listOf(
-                SimpleGrantedAuthority("ROLE_USER")
-            )
-            else -> listOf(SimpleGrantedAuthority("ROLE_USER"))
-        }
+        val authorities =
+            when (username) {
+                "admin@example.com" ->
+                    listOf(
+                        SimpleGrantedAuthority("ROLE_ADMIN"),
+                        SimpleGrantedAuthority("ROLE_USER"),
+                    )
+                "user@example.com" ->
+                    listOf(
+                        SimpleGrantedAuthority("ROLE_USER"),
+                    )
+                else -> listOf(SimpleGrantedAuthority("ROLE_USER"))
+            }
 
         return User
             .builder()

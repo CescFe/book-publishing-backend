@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class ScopeService {
-
     fun getScopeFromAuthorities(authorities: Collection<GrantedAuthority>): String {
         val roles = authorities.map { it.authority }
 
