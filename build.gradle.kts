@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.withType
-
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.spring") version "2.1.21"
@@ -76,6 +74,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlin")
     testImplementation("com.h2database:h2")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.security:spring-security-oauth2-resource-server")
+    testImplementation("org.springframework.security:spring-security-oauth2-jose")
 
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:$jjwtSecurity")

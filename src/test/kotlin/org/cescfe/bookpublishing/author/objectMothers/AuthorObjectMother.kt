@@ -11,7 +11,7 @@ import org.cescfe.bookpublishing.author.domain.model.Website
 import java.util.UUID
 
 object AuthorObjectMother {
-    private const val AUTHOR_ID_CONTRACT_TEST = "477537ff-7e8b-4930-bd41-d7f3589120b1"
+    private const val AUTHOR_ID_CONTROLLER_IT = "123e4567-e89b-12d3-a456-426614174000"
 
     fun create(
         id: UUID = UUID.randomUUID(),
@@ -56,10 +56,11 @@ object AuthorObjectMother {
         )
 
     // ==============
-    // Contract Tests
+    // Controller IT
     // ==============
     fun createWithMultipleRoles(): Author =
         create(
+            id = UUID.fromString(AUTHOR_ID_CONTROLLER_IT),
             fullName = "J.R.R. Tolkien",
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             pseudonym = "Tolkien",
@@ -70,7 +71,7 @@ object AuthorObjectMother {
 
     fun createForGetContractTest(): Author =
         create(
-            id = UUID.fromString(AUTHOR_ID_CONTRACT_TEST),
+            id = UUID.fromString(AUTHOR_ID_CONTROLLER_IT),
             fullName = "J.R.R. Tolkien",
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             pseudonym = "Tolkien",
@@ -81,7 +82,7 @@ object AuthorObjectMother {
 
     fun createForUpdateContractTest(): Author =
         create(
-            id = UUID.fromString(AUTHOR_ID_CONTRACT_TEST),
+            id = UUID.fromString(AUTHOR_ID_CONTROLLER_IT),
             fullName = "Updated J.R.R. Tolkien",
             roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             pseudonym = "Updated Tolkien",
