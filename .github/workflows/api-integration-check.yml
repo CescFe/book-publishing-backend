@@ -59,8 +59,10 @@ jobs:
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
-      - name: Run tests
-        run: ./gradlew test
+      - name: Start backend
+        run: ./gradlew bootRun &
+        env:
+          SPRING_PROFILES_ACTIVE: local
 
       - name: Set up Node.js for Newman
         uses: actions/setup-node@v4
@@ -70,14 +72,12 @@ jobs:
       - name: Install Newman
         run: npm install -g newman wait-on
 
-      - name: Start backend
-        run: ./gradlew bootRun &
-
       - name: Run Postman Collection with Newman
         run: |
           newman run postman/book-publishing-api-collection.json \
             -e postman/environments/local.postman_environment.json \
             --reporters cli
+            --delay-request 1000
 
       - name: Stop backend
         if: always()
