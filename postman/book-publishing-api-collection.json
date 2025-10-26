@@ -8,8 +8,134 @@
   },
   "item": [
     {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let jsonData = pm.response.json();",
+                  "pm.environment.set(\"token\", jsonData.access_token);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/auth/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "{{api_version}}",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "Authors",
       "item": [
+        {
+          "name": "Create author",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Parse the JSON response",
+                  "let response = pm.response.json();",
+                  "",
+                  "// verify backend returns id property",
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "    pm.expect(response).to.have.property(\"id\");",
+                  "});",
+                  "",
+                  "// Save id as env variable",
+                  "if (response.id) {",
+                  "    pm.environment.set(\"author_id\", response.id);",
+                  "    console.log(\"✅ Saved author_id:\", response.id);",
+                  "} else {",
+                  "    console.warn(\"⚠️ No 'id' found in response:\", response);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "packages": {},
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"roles\": [\n        \"AUTHOR\",\n        \"ILLUSTRATOR\"\n    ],\n    \"pseudonym\": \"Tolkien\",\n    \"biography\": \"English writer and philologist\",\n    \"email\": \"tolkien@example.com\",\n    \"website\": \"https://www.tolkiensociety.org\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/authors",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "{{api_version}}",
+                "authors"
+              ]
+            },
+            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+          },
+          "response": []
+        },
         {
           "name": "Get author by ID",
           "event": [
@@ -28,6 +154,16 @@
             }
           ],
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -44,8 +180,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "a9cf9bd3-acf8-484c-9a65-9d7c4397b414",
-                  "description": "uuid"
+                  "value": "{{author_id}}"
                 }
               ]
             },
@@ -76,7 +211,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlhdCI6MTc2MTE1ODYxNiwiZXhwIjoxNzYxMjQ1MDE2fQ.l_-2bLt8WB9xl9C2hh6U5OStvm0WXbyIZDNA-LxLnDs",
+                  "value": "{{token}}",
                   "type": "string"
                 }
               ]
@@ -123,51 +258,6 @@
           "response": []
         },
         {
-          "name": "Create author",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Successful POST request\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-                  "});",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/{{api_version}}/authors",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "{{api_version}}",
-                "authors"
-              ]
-            },
-            "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
-          },
-          "response": []
-        },
-        {
           "name": "Update author by ID",
           "event": [
             {
@@ -186,11 +276,21 @@
             }
           ],
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"roles\": [\n        \"AUTHOR\"\n    ],\n    \"pseudonym\": \"update Tolkien\",\n    \"biography\": \"update English writer and philologist\",\n    \"email\": \"updatedtolkien@example.com\",\n    \"website\": \"https://www.updatetolkiensociety.org\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -211,7 +311,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "",
+                  "value": "{{author_id}}",
                   "description": "uuid"
                 }
               ]
@@ -239,6 +339,16 @@
             }
           ],
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "body": {
@@ -264,7 +374,7 @@
               "variable": [
                 {
                   "key": "id",
-                  "value": "",
+                  "value": "{{author_id}}",
                   "description": "uuid"
                 }
               ]
@@ -276,56 +386,18 @@
       ]
     },
     {
-      "name": "Auth",
-      "item": [
-        {
-          "name": "login",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "let jsonData = pm.response.json();",
-                  "pm.collectionVariables.set(\"token\", jsonData.access_token);"
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"username\": \"admin@example.com\",\n    \"password\": \"admin123\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{base_url}}/api/{{api_version}}/auth/login",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "{{api_version}}",
-                "auth",
-                "login"
-              ]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
       "name": "Health",
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [],
         "url": {
@@ -343,11 +415,22 @@
       "response": []
     }
   ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
   "event": [
     {
       "listen": "prerequest",
       "script": {
         "type": "text/javascript",
+        "requests": {},
         "exec": [
           ""
         ]
@@ -357,6 +440,7 @@
       "listen": "test",
       "script": {
         "type": "text/javascript",
+        "requests": {},
         "exec": [
           ""
         ]
@@ -374,8 +458,7 @@
     },
     {
       "key": "token",
-      "value": "",
-      "type": "default"
+      "value": ""
     }
   ]
 }
