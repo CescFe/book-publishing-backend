@@ -6,12 +6,15 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  GITHUB_USERNAME: ${{ github.actor }}
+  TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
+
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_USERNAME: ${{ github.actor }}
-      TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
+    environment: development
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -41,5 +44,40 @@ jobs:
       - name: Build application
         run: ./gradlew build
 
+      - name: Start Docker services (Postgres + Liquibase)
+        run: |
+          docker compose up -d
+          echo "Waiting for database to become healthy..."
+          until [ "$(docker inspect -f '{{.State.Health.Status}}' postgres)" == "healthy" ]; do
+            echo "Waiting for Postgres..."
+            sleep 5
+          done
+          echo "Database ready!"
+
       - name: Run tests
         run: ./gradlew test
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Set up Node.js for Newman
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION || '20' }}
+
+      - name: Install Newman
+        run: npm install -g newman wait-on
+
+      - name: Start backend
+        run: ./gradlew bootRun &
+        env:
+          SPRING_PROFILES_ACTIVE: local
+
+      - name: Wait for backend
+        run: npx wait-on http://localhost:8080/actuator/health
+
+      - name: Run Postman Collection with Newman
+        run: |
+          newman run postman/book-publishing-backend.postman_collection.json \
+            -e postman/local.postman_environment.json \
+            --reporters cli
