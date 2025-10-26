@@ -1,0 +1,94 @@
+name: API Integration Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  GITHUB_USERNAME: ${{ github.actor }}
+  TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
+
+jobs:
+  api-integration-check:
+    runs-on: ubuntu-latest
+    environment: development
+    if: github.event.pull_request.draft == false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build application
+        run: ./gradlew build
+
+      - name: Start Docker services (Postgres + Liquibase)
+        run: |
+          docker compose up -d
+          echo "Waiting for database to become healthy..."
+          until [ "$(docker inspect -f '{{.State.Health.Status}}' postgres)" == "healthy" ]; do
+            echo "Waiting for Postgres..."
+            sleep 5
+          done
+          echo "Database ready!"
+        env:
+          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
+          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+
+      - name: Start backend
+        run: ./gradlew bootRun &
+        env:
+          SPRING_PROFILES_ACTIVE: local
+
+      - name: Set up Node.js for Newman
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION || '20' }}
+
+      - name: Install Newman
+        run: npm install -g newman wait-on
+
+      - name: Run Postman Collection with Newman
+        run: |
+          newman run postman/book-publishing-api-collection.json \
+            -e postman/environments/local.postman_environment.json \
+            --reporters cli
+
+      - name: Stop backend
+        if: always()
+        run: pkill -f 'bootRun' || true
+
+      - name: Stop Docker services
+        if: always()
+        run: docker compose down -v
+        env:
+          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
+          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
