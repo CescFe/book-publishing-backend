@@ -1,15 +1,11 @@
-import org.gradle.kotlin.dsl.withType
-
 plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.spring") version "2.1.21"
     kotlin("plugin.jpa") version "2.1.21"
-    // kotlin("kapt") version "2.1.21" // Mapstruct
     id("org.springframework.boot") version "3.5.6"
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
     id("com.google.cloud.tools.jib") version "3.4.5"
-    id("org.springframework.cloud.contract") version "4.3.0"
 }
 
 group = "org.cescfe"
@@ -20,7 +16,7 @@ val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
 val mockitoKotlin = "6.1.0"
-val contractTest = "4.3.0"
+val jjwtSecurity = "0.13.0"
 
 java {
     toolchain {
@@ -46,6 +42,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-security")
 
     // Kotlin
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -55,7 +52,7 @@ dependencies {
     // API Specification Library
     implementation("org.cescfe:book-publishing-api-spec:$bookPublishingApiSpec")
 
-    // Swagger/OpenAPI dependencies (required by book-publishing-api-spec)
+    // Swagger/OpenAPI dependencies
     implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
     implementation("jakarta.validation:jakarta.validation-api:3.1.1")
     implementation("io.swagger.core.v3:swagger-annotations:2.2.37")
@@ -69,10 +66,6 @@ dependencies {
     // Database migration
     implementation("org.liquibase:liquibase-core:$liquibase")
 
-    // MapStruct
-    // implementation("org.mapstruct:mapstruct:1.6.3")
-    // kapt("org.mapstruct:mapstruct-processor:1.6.3")
-
     // Testing
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
@@ -81,10 +74,14 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlin")
     testImplementation("com.h2database:h2")
+    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.springframework.security:spring-security-oauth2-resource-server")
+    testImplementation("org.springframework.security:spring-security-oauth2-jose")
 
-    // Spring Cloud Contract
-    testImplementation("org.springframework.cloud:spring-cloud-starter-contract-verifier:$contractTest")
-    testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:$contractTest")
+    // JWT
+    implementation("io.jsonwebtoken:jjwt-api:$jjwtSecurity")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:$jjwtSecurity")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jjwtSecurity")
 }
 
 kotlin {
@@ -105,7 +102,12 @@ spotless {
     kotlin {
         ktlint(ktLint)
             .setEditorConfigPath("$rootDir/.editorconfig")
-        targetExclude("**/build/generated-sources/**/*.kt")
+        targetExclude(
+            "**/build/**/*.kt",
+            "**/generated/**/*.kt",
+            "**/build/generated-sources/**/*.kt",
+            "**/build/generated-test-sources/**/*.kt",
+        )
     }
     kotlinGradle {
         ktlint(ktLint)
@@ -137,12 +139,4 @@ jib {
         ports = listOf("8080")
         workingDirectory = "/book-publishing-backend"
     }
-}
-
-contracts {
-    testMode.set(org.springframework.cloud.contract.verifier.config.TestMode.MOCKMVC)
-    baseClassForTests.set(
-        "org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.AuthorContractTestBase",
-    )
-    basePackageForTests.set("org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest")
 }

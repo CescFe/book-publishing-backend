@@ -8,6 +8,8 @@ import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception.
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.context.request.WebRequest
@@ -35,6 +37,44 @@ class GlobalExceptionHandler {
                 mapOf(
                     "path" to getPath(request),
                     "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException::class)
+    fun handleHttpMessageNotReadable(
+        ex: HttpMessageNotReadableException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> =
+        buildErrorResponse(
+            status = HttpStatus.BAD_REQUEST,
+            message = "Malformed JSON request: ${ex.message ?: "Invalid request body"}",
+            code = "MALFORMED_REQUEST",
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleMethodArgumentNotValid(
+        ex: MethodArgumentNotValidException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> {
+        val violations =
+            ex.bindingResult.fieldErrors.associate { error ->
+                error.field to (error.defaultMessage ?: "Invalid value")
+            }
+
+        return buildErrorResponse(
+            status = HttpStatus.BAD_REQUEST,
+            message = "Validation failed",
+            code = "VALIDATION_ERROR",
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "violations" to violations,
                 ),
         )
     }
