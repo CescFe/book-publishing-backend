@@ -53,6 +53,13 @@ jobs:
             sleep 5
           done
           echo "Database ready!"
+        env:
+          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
+          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Run tests
         run: ./gradlew test
