@@ -75,7 +75,7 @@ jobs:
       - name: Run Postman Collection with Newman
         run: |
           newman run postman/book-publishing-backend.postman_collection.json \
-            -e postman/local.postman_environment.json \
+            -e postman/environments/local.postman_environment.json \
             --reporters cli
 
       - name: Stop backend
