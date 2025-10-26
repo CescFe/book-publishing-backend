@@ -1,16 +1,17 @@
-name: Integration Check
+name: API Integration Check
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    branches: [ main ]
 
 env:
   GITHUB_USERNAME: ${{ github.actor }}
   TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
 
 jobs:
-  integration-tests:
+  api-integration-check:
     runs-on: ubuntu-latest
     environment: development
     if: github.event.pull_request.draft == false
@@ -74,7 +75,7 @@ jobs:
 
       - name: Run Postman Collection with Newman
         run: |
-          newman run postman/book-publishing-backend.postman_collection.json \
+          newman run postman/book-publishing-api-collection.json \
             -e postman/environments/local.postman_environment.json \
             --reporters cli
 
