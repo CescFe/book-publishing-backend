@@ -77,7 +77,6 @@ jobs:
           newman run postman/book-publishing-api-collection.json \
             -e postman/environments/local.postman_environment.json \
             --reporters cli
-            --delay-request 1000
 
       - name: Stop backend
         if: always()
@@ -86,3 +85,10 @@ jobs:
       - name: Stop Docker services
         if: always()
         run: docker compose down -v
+        env:
+          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
+          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
