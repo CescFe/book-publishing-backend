@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.domain.model
 
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
@@ -12,7 +11,6 @@ class AuthorTest {
         // Given
         val id = AuthorId.generate()
         val fullName = FullName("John Ronald Reuel Tolkien")
-        val roles = setOf(AuthorRole.AUTHOR)
         val pseudonym = Pseudonym("J.R.R. Tolkien")
         val email = Email("tolkien@example.com")
         val website = Website("https://www.tolkiensociety.org")
@@ -23,7 +21,6 @@ class AuthorTest {
             Author(
                 id = id,
                 fullName = fullName,
-                roles = roles,
                 pseudonym = pseudonym,
                 email = email,
                 website = website,
@@ -33,70 +30,10 @@ class AuthorTest {
         // Then
         assertEquals(id, author.id)
         assertEquals(fullName, author.fullName)
-        assertEquals(roles, author.roles)
         assertEquals(pseudonym, author.pseudonym)
         assertEquals(email, author.email)
         assertEquals(website, author.website)
         assertEquals(biography, author.biography)
-    }
-
-    @Test
-    fun `should throw InvalidAuthorRolesException when roles is empty`() {
-        // Given
-        val id = AuthorId.generate()
-        val fullName = FullName("John Ronald Reuel Tolkien")
-        val emptyRoles = emptySet<AuthorRole>()
-
-        // When & Then
-        val exception =
-            assertThrows<AuthorDomainException> {
-                Author(
-                    id = id,
-                    fullName = fullName,
-                    roles = emptyRoles,
-                )
-            }
-        assertEquals("Author must have at least one role", exception.message)
-    }
-
-    @Test
-    fun `should throw InvalidAuthorRolesException when roles does not contain AUTHOR`() {
-        // Given
-        val id = AuthorId.generate()
-        val fullName = FullName("John Ronald Reuel Tolkien")
-        val rolesWithoutAuthor = setOf(AuthorRole.ILLUSTRATOR)
-
-        // When & Then
-        val exception =
-            assertThrows<AuthorDomainException> {
-                Author(
-                    id = id,
-                    fullName = fullName,
-                    roles = rolesWithoutAuthor,
-                )
-            }
-        assertEquals("Author must have AUTHOR role", exception.message)
-    }
-
-    @Test
-    fun `should create author with multiple roles`() {
-        // Given
-        val id = AuthorId.generate()
-        val fullName = FullName("John Ronald Reuel Tolkien")
-        val roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR)
-
-        // When
-        val author =
-            Author(
-                id = id,
-                fullName = fullName,
-                roles = roles,
-            )
-
-        // Then
-        assertEquals(roles, author.roles)
-        assertTrue(author.roles.contains(AuthorRole.AUTHOR))
-        assertTrue(author.roles.contains(AuthorRole.ILLUSTRATOR))
     }
 }
 
@@ -192,25 +129,6 @@ class WebsiteTest {
         // When & Then
         assertThrows<AuthorDomainException> {
             Website("www.example.com")
-        }
-    }
-}
-
-class AuthorRoleTest {
-    @Test
-    fun `should create role from string`() {
-        // When
-        val role = AuthorRole.fromString("AUTHOR")
-
-        // Then
-        assertEquals(AuthorRole.AUTHOR, role)
-    }
-
-    @Test
-    fun `should throw exception for unknown role`() {
-        // When & Then
-        assertThrows<IllegalArgumentException> {
-            AuthorRole.fromString("UNKNOWN")
         }
     }
 }

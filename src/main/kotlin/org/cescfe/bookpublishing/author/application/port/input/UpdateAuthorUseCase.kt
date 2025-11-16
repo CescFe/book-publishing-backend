@@ -8,7 +8,6 @@ interface UpdateAuthorUseCase {
     data class InputValues(
         val authorId: String,
         val fullName: String,
-        val roles: Set<String>,
         val pseudonym: String? = null,
         val biography: String? = null,
         val email: String? = null,

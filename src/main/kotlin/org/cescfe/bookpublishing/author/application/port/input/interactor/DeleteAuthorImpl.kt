@@ -16,14 +16,9 @@ class DeleteAuthorImpl(
     override fun execute(input: DeleteAuthorUseCase.InputValues) {
         val authorId = mapper.toDomain(input.authorId)
 
-        val author =
-            authorRepository.findById(authorId)
-                ?: throw AuthorDomainException.authorNotFound(input.authorId)
+        authorRepository.findById(authorId)
+            ?: throw AuthorDomainException.authorNotFound(input.authorId)
 
-        if (author.hasOnlyAuthorRole()) {
-            authorRepository.deleteById(authorId)
-        } else {
-            authorRepository.removeAuthorRole(authorId)
-        }
+        authorRepository.deleteById(authorId)
     }
 }

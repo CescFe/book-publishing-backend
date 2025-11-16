@@ -3,7 +3,6 @@ package org.cescfe.bookpublishing.author.application.port.input.interactor
 import org.cescfe.bookpublishing.author.application.port.input.mapper.UpdateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
@@ -36,7 +35,6 @@ class UpdateAuthorImplTest {
             AuthorObjectMother.create(
                 id = authorId.value,
                 fullName = "Updated Name",
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             )
 
         whenever(authorRepository.findById(authorId)).thenReturn(existingAuthor)

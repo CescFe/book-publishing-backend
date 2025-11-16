@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -52,7 +51,6 @@ class ListAuthorsControllerIT {
             AuthorSummary(
                 id = AuthorId(UUID.fromString(TEST_AUTHOR_ID)),
                 fullName = FullName("J.R.R. Tolkien"),
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
                 pseudonym = Pseudonym("Tolkien"),
                 email = Email("tolkien@example.com"),
             )
@@ -84,9 +82,6 @@ class ListAuthorsControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(TEST_AUTHOR_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].full_name").value("J.R.R. Tolkien"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].roles").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].roles[0]").value("AUTHOR"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].roles[1]").value("ILLUSTRATOR"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.page").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.limit").value(20))

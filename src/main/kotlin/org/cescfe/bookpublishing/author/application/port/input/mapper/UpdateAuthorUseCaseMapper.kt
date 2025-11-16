@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.author.application.port.input.mapper
 
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.model.Author
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.Biography
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -19,7 +18,6 @@ class UpdateAuthorUseCaseMapper {
         Author(
             id = existingAuthor.id,
             fullName = FullName(input.fullName),
-            roles = input.roles.map { AuthorRole.fromString(it) }.toSet(),
             pseudonym = input.pseudonym?.let { Pseudonym(it) },
             biography = input.biography?.let { Biography(it) },
             email = input.email?.let { Email(it) },
@@ -30,7 +28,6 @@ class UpdateAuthorUseCaseMapper {
         UpdateAuthorUseCase.InputValues(
             authorId = author.id.value.toString(),
             fullName = author.fullName.value,
-            roles = author.roles.map { it.value }.toSet(),
             pseudonym = author.pseudonym?.value,
             biography = author.biography?.value,
             email = author.email?.value,

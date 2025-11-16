@@ -6,19 +6,11 @@ import java.util.UUID
 data class Author(
     val id: AuthorId,
     val fullName: FullName,
-    val roles: Set<AuthorRole>,
     val pseudonym: Pseudonym? = null,
     val biography: Biography? = null,
     val email: Email? = null,
     val website: Website? = null,
-) {
-    init {
-        require(roles.isNotEmpty()) { throw AuthorDomainException.emptyRoles() }
-        require(roles.contains(AuthorRole.AUTHOR)) { throw AuthorDomainException.missingAuthorRole() }
-    }
-
-    fun hasOnlyAuthorRole(): Boolean = roles.size == 1 && roles.contains(AuthorRole.AUTHOR)
-}
+)
 
 @JvmInline
 value class AuthorId(
@@ -84,21 +76,5 @@ value class Website(
         require(value.startsWith("http://") || value.startsWith("https://")) {
             throw AuthorDomainException.websiteInvalidProtocol()
         }
-    }
-}
-
-enum class AuthorRole(
-    val value: String,
-) {
-    AUTHOR("AUTHOR"),
-    ILLUSTRATOR("ILLUSTRATOR"),
-    TRANSLATOR("TRANSLATOR"),
-    CURATOR("CURATOR"),
-    ;
-
-    companion object {
-        fun fromString(value: String): AuthorRole =
-            entries.find { it.value == value }
-                ?: throw IllegalArgumentException("Unknown author role: $value")
     }
 }

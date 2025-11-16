@@ -4,7 +4,6 @@ import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.Biography
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -53,7 +52,6 @@ class GetAuthorControllerIT {
             Author(
                 id = AuthorId(UUID.fromString(TEST_AUTHOR_ID)),
                 fullName = FullName("J.R.R. Tolkien"),
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
                 pseudonym = Pseudonym("Tolkien"),
                 biography = Biography("English writer and philologist"),
                 email = Email("tolkien@example.com"),
@@ -72,9 +70,6 @@ class GetAuthorControllerIT {
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(TEST_AUTHOR_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.full_name").value("J.R.R. Tolkien"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles[0]").value("AUTHOR"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles[1]").value("ILLUSTRATOR"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.pseudonym").value("Tolkien"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.biography").value("English writer and philologist"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("tolkien@example.com"))

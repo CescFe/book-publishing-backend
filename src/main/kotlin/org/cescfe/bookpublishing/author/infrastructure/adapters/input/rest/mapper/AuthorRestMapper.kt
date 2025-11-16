@@ -12,10 +12,6 @@ class AuthorRestMapper {
         CreateAuthorRequestDTO(
             id = author.id.value,
             fullName = author.fullName.value,
-            roles =
-                author.roles.map {
-                    CreateAuthorRequestDTO.Roles.forValue(it.value)
-                },
             pseudonym = author.pseudonym?.value,
             biography = author.biography?.value,
             email = author.email?.value,

@@ -1,7 +1,8 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
@@ -41,6 +42,9 @@ class JpaAuthorRepositoryIT {
     @Autowired
     private lateinit var jpaAuthorRepository: JpaAuthorRepository
 
+    @Autowired
+    private lateinit var roleJpaEntityRepository: RoleJpaEntityRepository
+
     companion object {
         @Container
         @ServiceConnection
@@ -65,13 +69,27 @@ class JpaAuthorRepositoryIT {
 
         // When
         val savedAuthor = jpaAuthorRepository.save(author)
+
+        val authorRole = roleJpaEntityRepository.findByName("AUTHOR")
+        if (authorRole != null) {
+            val authorEntity = authorJpaEntityRepository.findById(savedAuthor.id.value).orElseThrow()
+            authorEntity.personRoles.add(
+                PersonRoleEntity(
+                    id = PersonRoleId(savedAuthor.id.value, authorRole.id),
+                    person = authorEntity,
+                    role = authorRole,
+                ),
+            )
+            authorJpaEntityRepository.save(authorEntity)
+            testEntityManager.flush()
+        }
+
         val foundAuthor = jpaAuthorRepository.findById(author.id)
 
         // Then
         assertNotNull(savedAuthor)
         assertEquals(author.id.value, savedAuthor.id.value)
         assertEquals(author.fullName.value, savedAuthor.fullName.value)
-        assertEquals(author.roles, savedAuthor.roles)
         assertEquals(author.pseudonym!!.value, savedAuthor.pseudonym!!.value)
         assertEquals(author.biography!!.value, savedAuthor.biography!!.value)
         assertEquals(author.email!!.value, savedAuthor.email!!.value)
@@ -80,7 +98,6 @@ class JpaAuthorRepositoryIT {
         assertNotNull(foundAuthor)
         assertEquals(author.id.value, foundAuthor.id.value)
         assertEquals(author.fullName.value, foundAuthor.fullName.value)
-        assertEquals(author.roles, foundAuthor.roles)
     }
 
     @Test
@@ -93,12 +110,36 @@ class JpaAuthorRepositoryIT {
         val author2 =
             AuthorObjectMother.create(
                 fullName = "Author Two",
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             )
 
         // When
-        jpaAuthorRepository.save(author1)
-        jpaAuthorRepository.save(author2)
+        val savedAuthor1 = jpaAuthorRepository.save(author1)
+        val savedAuthor2 = jpaAuthorRepository.save(author2)
+
+        val authorRole = roleJpaEntityRepository.findByName("AUTHOR")
+        if (authorRole != null) {
+            val authorEntity1 = authorJpaEntityRepository.findById(savedAuthor1.id.value).orElseThrow()
+            val authorEntity2 = authorJpaEntityRepository.findById(savedAuthor2.id.value).orElseThrow()
+
+            authorEntity1.personRoles.add(
+                PersonRoleEntity(
+                    id = PersonRoleId(savedAuthor1.id.value, authorRole.id),
+                    person = authorEntity1,
+                    role = authorRole,
+                ),
+            )
+            authorEntity2.personRoles.add(
+                PersonRoleEntity(
+                    id = PersonRoleId(savedAuthor2.id.value, authorRole.id),
+                    person = authorEntity2,
+                    role = authorRole,
+                ),
+            )
+
+            authorJpaEntityRepository.save(authorEntity1)
+            authorJpaEntityRepository.save(authorEntity2)
+            testEntityManager.flush()
+        }
         val authors = jpaAuthorRepository.findAllSummary()
 
         // Then
