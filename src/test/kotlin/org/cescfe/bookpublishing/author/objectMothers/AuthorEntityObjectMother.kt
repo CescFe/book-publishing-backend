@@ -1,9 +1,6 @@
 package org.cescfe.bookpublishing.author.objectMothers
 
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleEntity
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.PersonRoleId
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.RoleEntity
 import java.util.UUID
 
 object AuthorEntityObjectMother {
@@ -14,7 +11,6 @@ object AuthorEntityObjectMother {
         biography: String? = null,
         email: String? = null,
         website: String? = null,
-        personRoles: List<RoleEntity> = listOf(RoleEntityObjectMother.createAuthorRole()),
     ): AuthorEntity {
         val entity =
             AuthorEntity(
@@ -25,17 +21,6 @@ object AuthorEntityObjectMother {
                 email = email,
                 website = website,
             )
-
-        personRoles.forEach { role ->
-            entity.personRoles.add(
-                PersonRoleEntity(
-                    id = PersonRoleId(id, role.id),
-                    person = entity,
-                    role = role,
-                ),
-            )
-        }
-
         return entity
     }
 
@@ -46,16 +31,10 @@ object AuthorEntityObjectMother {
             biography = "English writer and philologist",
             email = "tolkien@example.com",
             website = "https://tolkiensociety.org",
-            personRoles =
-                listOf(
-                    RoleEntityObjectMother.createAuthorRole(),
-                    RoleEntityObjectMother.createIllustratorRole(),
-                ),
         )
 
     fun createSimple(): AuthorEntity =
         create(
             fullName = "Simple Author",
-            personRoles = listOf(RoleEntityObjectMother.createAuthorRole()),
         )
 }

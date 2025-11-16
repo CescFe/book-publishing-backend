@@ -13,9 +13,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT DISTINCT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
         ORDER BY p.fullName ASC
     """,
     )
@@ -24,9 +21,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT DISTINCT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
         ORDER BY p.fullName ASC
     """,
     )
@@ -35,9 +29,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT COUNT(DISTINCT p) FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
     """,
     )
     fun countAllAuthors(): Long
@@ -45,8 +36,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
         WHERE p.id = :id
     """,
     )
@@ -56,9 +45,7 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
         """
         SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
         FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE p.id = :id AND r.name = 'AUTHOR'
+        WHERE p.id = :id
     """,
     )
     fun existsAuthorById(id: UUID): Boolean

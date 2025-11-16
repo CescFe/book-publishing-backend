@@ -3,11 +3,5 @@ databaseChangeLog:
       file: changes/001-create-schema.yaml
       relativeToChangelogFile: true
   - include:
-      file: changes/002-create-person-table.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/003-create-role-table.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changes/004-create-person-role-table.yaml
+      file: changes/002-create-author-table.yaml
       relativeToChangelogFile: true

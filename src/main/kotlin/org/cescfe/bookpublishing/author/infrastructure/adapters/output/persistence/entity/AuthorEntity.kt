@@ -1,17 +1,14 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.AuditableEntity
 import java.util.UUID
 
 @Entity
-@Table(name = "person", schema = "publishing")
+@Table(name = "author", schema = "publishing")
 data class AuthorEntity(
     @Id
     @Column(name = "id", columnDefinition = "UUID")
@@ -20,12 +17,10 @@ data class AuthorEntity(
     val fullName: String,
     @Column(name = "pseudonym")
     val pseudonym: String?,
-    @Column(name = "biography", columnDefinition = "TEXT")
+    @Column(name = "biography")
     val biography: String?,
     @Column(name = "email")
     val email: String?,
     @Column(name = "website")
     val website: String?,
-    @OneToMany(mappedBy = "person", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val personRoles: MutableList<PersonRoleEntity> = mutableListOf(),
 ) : AuditableEntity()

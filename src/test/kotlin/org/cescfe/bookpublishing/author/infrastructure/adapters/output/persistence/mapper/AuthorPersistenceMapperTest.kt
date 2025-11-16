@@ -6,29 +6,19 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
-import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.RoleJpaEntityRepository
 import org.cescfe.bookpublishing.author.objectMothers.AuthorEntityObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
-import org.cescfe.bookpublishing.author.objectMothers.RoleEntityObjectMother
 import org.junit.jupiter.api.Test
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class AuthorPersistenceMapperTest {
-    private val roleJpaEntityRepository: RoleJpaEntityRepository = mock()
     private val authorMapper = AuthorPersistenceMapper()
 
     @Test
     fun `fromDomain should map author domain to entity correctly`() {
         // Given
         val author = AuthorObjectMother.createTolkien()
-        val authorRoleEntity = RoleEntityObjectMother.createAuthorRole()
-        val translatorRoleEntity = RoleEntityObjectMother.createTranslatorRole()
-
-        whenever(roleJpaEntityRepository.findByName("AUTHOR")).thenReturn(authorRoleEntity)
-        whenever(roleJpaEntityRepository.findByName("TRANSLATOR")).thenReturn(translatorRoleEntity)
 
         // When
         val result = authorMapper.fromDomain(author)
@@ -46,9 +36,6 @@ class AuthorPersistenceMapperTest {
     fun `fromDomain should map author with minimal data correctly`() {
         // Given
         val author = AuthorObjectMother.create(fullName = "Simple Author")
-
-        whenever(roleJpaEntityRepository.findByName("AUTHOR"))
-            .thenReturn(RoleEntityObjectMother.createAuthorRole())
 
         // When
         val result = authorMapper.fromDomain(author)
@@ -105,9 +92,6 @@ class AuthorPersistenceMapperTest {
                 pseudonym = "Test Pseudonym",
                 email = "test@example.com",
             )
-
-        whenever(roleJpaEntityRepository.findByName("AUTHOR"))
-            .thenReturn(RoleEntityObjectMother.createAuthorRole())
 
         // When
         val entity = authorMapper.fromDomain(originalAuthor)
