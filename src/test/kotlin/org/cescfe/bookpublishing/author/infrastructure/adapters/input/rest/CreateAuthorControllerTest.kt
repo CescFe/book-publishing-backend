@@ -28,30 +28,10 @@ class CreateAuthorControllerTest {
         val requestDTO =
             CreateAuthorRequestDTO(
                 fullName = "",
-                roles = listOf(CreateAuthorRequestDTO.Roles.AUTHOR),
             )
 
         whenever(createAuthorUseCase.execute(any())).thenThrow(
             AuthorDomainException.fullNameCannotBeBlank(),
-        )
-
-        // When & Then
-        assertThrows<AuthorDomainException> {
-            createAuthorController.createAuthor(requestDTO)
-        }
-    }
-
-    @Test
-    fun `should throw AuthorDomainException when roles is empty`() {
-        // Given
-        val requestDTO =
-            CreateAuthorRequestDTO(
-                fullName = "Test Author",
-                roles = emptyList(),
-            )
-
-        whenever(createAuthorUseCase.execute(any())).thenThrow(
-            AuthorDomainException.emptyRoles(),
         )
 
         // When & Then

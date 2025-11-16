@@ -114,7 +114,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"roles\": [\n        \"AUTHOR\",\n        \"ILLUSTRATOR\"\n    ],\n    \"pseudonym\": \"Tolkien\",\n    \"biography\": \"English writer and philologist\",\n    \"email\": \"tolkien@example.com\",\n    \"website\": \"https://www.tolkiensociety.org\"\n}",
+              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"pseudonym\": \"Tolkien\",\n    \"biography\": \"English writer and philologist\",\n    \"email\": \"tolkien@example.com\",\n    \"website\": \"https://www.tolkiensociety.org\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -290,7 +290,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"roles\": [\n        \"AUTHOR\"\n    ],\n    \"pseudonym\": \"update Tolkien\",\n    \"biography\": \"update English writer and philologist\",\n    \"email\": \"updatedtolkien@example.com\",\n    \"website\": \"https://www.updatetolkiensociety.org\"\n}",
+              "raw": "{\n    \"full_name\": \"J.R.R. Tolkien\",\n    \"pseudonym\": \"update Tolkien\",\n    \"biography\": \"update English writer and philologist\",\n    \"email\": \"updatedtolkien@example.com\",\n    \"website\": \"https://www.updatetolkiensociety.org\"\n}",
               "options": {
                 "raw": {
                   "language": "json"

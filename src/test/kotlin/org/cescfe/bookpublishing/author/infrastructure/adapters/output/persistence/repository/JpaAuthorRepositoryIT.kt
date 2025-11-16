@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.repository.config.JpaAuthorRepositoryTestConfig
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
@@ -71,7 +70,6 @@ class JpaAuthorRepositoryIT {
         assertNotNull(savedAuthor)
         assertEquals(author.id.value, savedAuthor.id.value)
         assertEquals(author.fullName.value, savedAuthor.fullName.value)
-        assertEquals(author.roles, savedAuthor.roles)
         assertEquals(author.pseudonym!!.value, savedAuthor.pseudonym!!.value)
         assertEquals(author.biography!!.value, savedAuthor.biography!!.value)
         assertEquals(author.email!!.value, savedAuthor.email!!.value)
@@ -80,7 +78,6 @@ class JpaAuthorRepositoryIT {
         assertNotNull(foundAuthor)
         assertEquals(author.id.value, foundAuthor.id.value)
         assertEquals(author.fullName.value, foundAuthor.fullName.value)
-        assertEquals(author.roles, foundAuthor.roles)
     }
 
     @Test
@@ -93,7 +90,6 @@ class JpaAuthorRepositoryIT {
         val author2 =
             AuthorObjectMother.create(
                 fullName = "Author Two",
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
             )
 
         // When

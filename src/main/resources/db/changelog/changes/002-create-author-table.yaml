@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-person-table
+      id: create-author-table
       author: francesc
       changes:
         - createTable:
-            tableName: person
+            tableName: author
             schemaName: publishing
             columns:
               - column:
@@ -55,12 +55,12 @@ databaseChangeLog:
                     nullable: false
                   defaultValue: "system"
         - addUniqueConstraint:
-            tableName: person
+            tableName: author
             schemaName: publishing
             columnNames: email
             constraintName: uk_person_email
         - createIndex:
-            tableName: person
+            tableName: author
             schemaName: publishing
             indexName: idx_person_email
             columns:

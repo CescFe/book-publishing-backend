@@ -4,7 +4,6 @@ import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCa
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.Biography
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -54,7 +53,6 @@ class UpdateAuthorControllerIT {
             Author(
                 id = AuthorId(UUID.fromString(TEST_AUTHOR_ID)),
                 fullName = FullName("Updated J.R.R. Tolkien"),
-                roles = setOf(AuthorRole.AUTHOR, AuthorRole.ILLUSTRATOR),
                 pseudonym = Pseudonym("Updated Tolkien"),
                 biography = Biography("Updated English writer and philologist"),
                 email = Email("updated.tolkien@example.com"),
@@ -69,7 +67,6 @@ class UpdateAuthorControllerIT {
             """
             {
                 "full_name": "Updated J.R.R. Tolkien",
-                "roles": ["AUTHOR", "ILLUSTRATOR"],
                 "pseudonym": "Updated Tolkien",
                 "biography": "Updated English writer and philologist",
                 "email": "updated.tolkien@example.com",
@@ -87,9 +84,6 @@ class UpdateAuthorControllerIT {
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(TEST_AUTHOR_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.full_name").value("Updated J.R.R. Tolkien"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles[0]").value("AUTHOR"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.roles[1]").value("ILLUSTRATOR"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.pseudonym").value("Updated Tolkien"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.biography").value("Updated English writer and philologist"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("updated.tolkien@example.com"))
@@ -106,7 +100,6 @@ class UpdateAuthorControllerIT {
             """
             {
                 "full_name": "Updated J.R.R. Tolkien",
-                "roles": ["AUTHOR", "ILLUSTRATOR"],
                 "pseudonym": "Updated Tolkien",
                 "biography": "Updated English writer and philologist",
                 "email": "updated.tolkien@example.com",

@@ -3,7 +3,6 @@ package org.cescfe.bookpublishing.author.application.port.input.mapper
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.model.Biography
 import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
@@ -17,7 +16,6 @@ class CreateAuthorUseCaseMapper {
         Author(
             id = AuthorId.generate(),
             fullName = FullName(input.fullName),
-            roles = input.roles.map { AuthorRole.fromString(it) }.toSet(),
             pseudonym = input.pseudonym?.let { Pseudonym(it) },
             biography = input.biography?.let { Biography(it) },
             email = input.email?.let { Email(it) },
@@ -27,7 +25,6 @@ class CreateAuthorUseCaseMapper {
     fun toInputValues(author: Author): CreateAuthorUseCase.InputValues =
         CreateAuthorUseCase.InputValues(
             fullName = author.fullName.value,
-            roles = author.roles.map { it.value }.toSet(),
             pseudonym = author.pseudonym?.value,
             biography = author.biography?.value,
             email = author.email?.value,

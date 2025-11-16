@@ -11,7 +11,7 @@ class AuthorRestMapperTest {
     @Test
     fun `should map author to DTO successfully`() {
         // Given
-        val author = AuthorObjectMother.createWithMultipleRoles()
+        val author = AuthorObjectMother.createWithAllFields()
 
         // When
         val result = mapper.toDto(author)
@@ -20,7 +20,6 @@ class AuthorRestMapperTest {
         assertNotNull(result)
         assertEquals(author.id.value, result.id)
         assertEquals(author.fullName.value, result.fullName)
-        assertEquals(author.roles.size, result.roles.size)
         assertEquals(author.pseudonym!!.value, result.pseudonym)
         assertEquals(author.biography!!.value, result.biography)
         assertEquals(author.email!!.value, result.email)
@@ -38,6 +37,5 @@ class AuthorRestMapperTest {
         // Then
         assertNotNull(result)
         assertEquals(author.fullName.value, result.fullName)
-        assertEquals(author.roles.size, result.roles.size)
     }
 }

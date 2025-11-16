@@ -43,7 +43,6 @@ class CreateAuthorImplTest {
         // Then
         assertNotNull(result)
         assertEquals(expectedAuthor.fullName.value, result.fullName.value)
-        assertEquals(expectedAuthor.roles, result.roles)
         assertEquals(expectedAuthor.pseudonym!!.value, result.pseudonym!!.value)
         assertEquals(expectedAuthor.biography!!.value, result.biography!!.value)
         assertEquals(expectedAuthor.email!!.value, result.email!!.value)
@@ -89,7 +88,6 @@ class CreateAuthorImplTest {
         // Then
         assertNotNull(result)
         assertEquals(expectedAuthor.fullName.value, result.fullName.value)
-        assertEquals(expectedAuthor.roles, result.roles)
         assertEquals(null, result.pseudonym)
         assertEquals(null, result.biography)
         assertEquals(null, result.email)
@@ -107,7 +105,6 @@ class CreateAuthorImplTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "Test Author",
-                roles = setOf("AUTHOR"),
                 email = existingEmail,
             )
 

@@ -46,13 +46,6 @@ class AuthorDomainException(
         fun websiteInvalidProtocol(): AuthorDomainException =
             AuthorDomainException("Website must start with http:// or https://", "WEBSITE_INVALID_PROTOCOL")
 
-        // Author roles exceptions
-        fun emptyRoles(): AuthorDomainException =
-            AuthorDomainException("Author must have at least one role", "EMPTY_ROLES")
-
-        fun missingAuthorRole(): AuthorDomainException =
-            AuthorDomainException("Author must have AUTHOR role", "MISSING_AUTHOR_ROLE")
-
         // Author not found exception
         fun authorNotFound(id: String): AuthorDomainException =
             AuthorDomainException("Author with id $id not found", "AUTHOR_NOT_FOUND")

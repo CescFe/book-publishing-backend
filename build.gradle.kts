@@ -11,7 +11,7 @@ plugins {
 group = "org.cescfe"
 version = "0.1.0"
 
-val bookPublishingApiSpec = "0.2.2"
+val bookPublishingApiSpec = "0.3.0"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"

@@ -3,9 +3,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.output.persiste
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.util.Optional
 import java.util.UUID
@@ -15,9 +13,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT DISTINCT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
         ORDER BY p.fullName ASC
     """,
     )
@@ -26,9 +21,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT DISTINCT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
         ORDER BY p.fullName ASC
     """,
     )
@@ -37,9 +29,6 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT COUNT(DISTINCT p) FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE r.name = 'AUTHOR'
     """,
     )
     fun countAllAuthors(): Long
@@ -47,9 +36,7 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     @Query(
         """
         SELECT p FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE p.id = :id AND r.name = 'AUTHOR'
+        WHERE p.id = :id
     """,
     )
     fun findAuthorById(id: UUID): Optional<AuthorEntity>
@@ -58,9 +45,7 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
         """
         SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END
         FROM AuthorEntity p
-        JOIN p.personRoles pr
-        JOIN pr.role r
-        WHERE p.id = :id AND r.name = 'AUTHOR'
+        WHERE p.id = :id
     """,
     )
     fun existsAuthorById(id: UUID): Boolean
@@ -81,16 +66,4 @@ interface AuthorJpaEntityRepository : JpaRepository<AuthorEntity, UUID> {
     """,
     )
     fun existsByEmail(email: String): Boolean
-
-    @Modifying
-    @Query(
-        """
-        DELETE FROM PersonRoleEntity pr
-        WHERE pr.person.id = :personId
-        AND pr.role.name = 'AUTHOR'
-    """,
-    )
-    fun removeAuthorRole(
-        @Param("personId") personId: UUID,
-    ): Int
 }

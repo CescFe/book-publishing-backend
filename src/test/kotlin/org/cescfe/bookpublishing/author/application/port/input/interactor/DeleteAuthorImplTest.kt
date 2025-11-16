@@ -3,7 +3,6 @@ package org.cescfe.bookpublishing.author.application.port.input.interactor
 import org.cescfe.bookpublishing.author.application.port.input.mapper.DeleteAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorRole
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.DeleteAuthorInputValuesObjectMother
@@ -27,7 +26,6 @@ class DeleteAuthorImplTest {
         val authorWithSingleRole =
             AuthorObjectMother.create(
                 fullName = "J.R.R. Tolkien",
-                roles = setOf(AuthorRole.AUTHOR),
             )
 
         whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
@@ -40,25 +38,6 @@ class DeleteAuthorImplTest {
         verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
         verify(authorRepository).deleteById(authorId)
-    }
-
-    @Test
-    fun `should perform soft delete when author has multiple roles`() {
-        // Given
-        val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
-        val authorId = AuthorId.fromString(input.authorId)
-        val authorWithMultipleRoles = AuthorObjectMother.createWithMultipleRoles()
-
-        whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
-        whenever(authorRepository.findById(authorId)).thenReturn(authorWithMultipleRoles)
-
-        // When
-        deleteAuthorUseCase.execute(input)
-
-        // Then
-        verify(mapper).toDomain(input.authorId)
-        verify(authorRepository).findById(authorId)
-        verify(authorRepository).removeAuthorRole(authorId)
     }
 
     @Test

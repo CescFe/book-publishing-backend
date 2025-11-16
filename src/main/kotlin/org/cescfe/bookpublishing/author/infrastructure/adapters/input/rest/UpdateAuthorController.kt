@@ -32,7 +32,6 @@ class UpdateAuthorController(
         UpdateAuthorUseCase.InputValues(
             authorId = authorId.toString(),
             fullName = dto.fullName,
-            roles = dto.roles.map { it.value }.toSet(),
             pseudonym = dto.pseudonym,
             biography = dto.biography,
             email = dto.email,

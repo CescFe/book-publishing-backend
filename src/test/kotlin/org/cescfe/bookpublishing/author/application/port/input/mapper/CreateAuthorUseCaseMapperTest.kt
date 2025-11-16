@@ -23,7 +23,6 @@ class CreateAuthorUseCaseMapperTest {
         // Then
         assertNotNull(result)
         assertEquals(input.fullName, result.fullName.value)
-        assertEquals(input.roles, result.roles.map { it.name }.toSet())
         assertEquals(input.pseudonym, result.pseudonym!!.value)
         assertEquals(input.biography, result.biography!!.value)
         assertEquals(input.email, result.email!!.value)
@@ -41,7 +40,6 @@ class CreateAuthorUseCaseMapperTest {
         // Then
         assertNotNull(result)
         assertEquals(input.fullName, result.fullName.value)
-        assertEquals(input.roles, result.roles.map { it.name }.toSet())
         assertNull(result.pseudonym)
         assertNull(result.biography)
         assertNull(result.email)
@@ -58,45 +56,10 @@ class CreateAuthorUseCaseMapperTest {
 
         // Then
         assertEquals(author.fullName.value, result.fullName)
-        assertEquals(author.roles.map { it.name }.toSet(), result.roles)
         assertEquals(author.pseudonym!!.value, result.pseudonym)
         assertEquals(author.biography!!.value, result.biography)
         assertEquals(author.email!!.value, result.email)
         assertEquals(author.website!!.value, result.website)
-    }
-
-    @Test
-    fun `should throw AuthorDomainException when roles is empty`() {
-        // Given
-        val input =
-            CreateAuthorInputValuesObjectMother.create(
-                fullName = "Test Author",
-                roles = emptySet(),
-            )
-
-        // When & Then
-        val exception =
-            assertThrows<AuthorDomainException> {
-                mapper.toDomain(input)
-            }
-        assertEquals("Author must have at least one role", exception.message)
-    }
-
-    @Test
-    fun `should throw AuthorDomainException when roles does not contain AUTHOR`() {
-        // Given
-        val input =
-            CreateAuthorInputValuesObjectMother.create(
-                fullName = "Test Author",
-                roles = setOf("ILLUSTRATOR"),
-            )
-
-        // When & Then
-        val exception =
-            assertThrows<AuthorDomainException> {
-                mapper.toDomain(input)
-            }
-        assertEquals("Author must have AUTHOR role", exception.message)
     }
 
     @Test
@@ -105,7 +68,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "",
-                roles = setOf("AUTHOR"),
             )
 
         // When & Then
@@ -123,7 +85,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = longName,
-                roles = setOf("AUTHOR"),
             )
 
         // When & Then
@@ -140,7 +101,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "Test Author",
-                roles = setOf("AUTHOR"),
                 pseudonym = "",
             )
 
@@ -159,7 +119,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "Test Author",
-                roles = setOf("AUTHOR"),
                 biography = longBiography,
             )
 
@@ -177,7 +136,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "Test Author",
-                roles = setOf("AUTHOR"),
                 email = "invalid-email",
             )
 
@@ -195,7 +153,6 @@ class CreateAuthorUseCaseMapperTest {
         val input =
             CreateAuthorInputValuesObjectMother.create(
                 fullName = "Test Author",
-                roles = setOf("AUTHOR"),
                 website = "ftp://invalid.com",
             )
 

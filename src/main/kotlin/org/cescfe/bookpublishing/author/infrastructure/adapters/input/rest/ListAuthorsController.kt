@@ -52,10 +52,6 @@ class ListAuthorsController(
         GetAuthors200ResponseAllOfDataInnerDTO(
             id = authorSummary.id.value,
             fullName = authorSummary.fullName.value,
-            roles =
-                authorSummary.roles.map {
-                    GetAuthors200ResponseAllOfDataInnerDTO.Roles.forValue(it.value)
-                },
             pseudonym = authorSummary.pseudonym?.value,
             email = authorSummary.email?.value,
         )

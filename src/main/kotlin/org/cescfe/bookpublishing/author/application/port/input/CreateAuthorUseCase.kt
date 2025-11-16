@@ -7,7 +7,6 @@ interface CreateAuthorUseCase {
 
     data class InputValues(
         val fullName: String,
-        val roles: Set<String>,
         val pseudonym: String? = null,
         val biography: String? = null,
         val email: String? = null,
