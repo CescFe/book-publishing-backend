@@ -1,0 +1,81 @@
+package org.cescfe.bookpublishing.collection.domain.model
+
+import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
+import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertEquals
+
+class SecondaryGenresTest {
+    @Test
+    fun `should create secondary genres with valid data`() {
+        // When
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+
+        // Then
+        assertEquals(2, secondaryGenres.value.size)
+        assertEquals(Genre.ADVENTURE, secondaryGenres.value[0])
+        assertEquals(Genre.HISTORICAL_FICTION, secondaryGenres.value[1])
+    }
+
+    @Test
+    fun `should create secondary genres with maximum allowed items`() {
+        // When
+        val secondaryGenres =
+            SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION, Genre.MYSTERY))
+
+        // Then
+        assertEquals(3, secondaryGenres.value.size)
+    }
+
+    @Test
+    fun `should throw CollectionDomainException when secondary genres exceed maximum`() {
+        // Given
+        val tooManyGenres =
+            listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION, Genre.MYSTERY, Genre.ROMANCE)
+
+        // When & Then
+        val exception =
+            assertThrows<CollectionDomainException> {
+                SecondaryGenres(tooManyGenres)
+            }
+        assertEquals("Secondary genres cannot exceed 3 items", exception.message)
+    }
+
+    @Test
+    fun `should throw CollectionDomainException when secondary genres contain duplicates`() {
+        // Given
+        val duplicatedGenres = listOf(Genre.ADVENTURE, Genre.FANTASY, Genre.ADVENTURE)
+
+        // When & Then
+        val exception =
+            assertThrows<CollectionDomainException> {
+                SecondaryGenres(duplicatedGenres)
+            }
+        assertEquals("Secondary genres cannot contain duplicates", exception.message)
+    }
+
+    @Test
+    fun `should throw CollectionDomainException when secondary genres contain primary genre`() {
+        // Given
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val primaryGenre = Genre.ADVENTURE
+
+        // When & Then
+        val exception =
+            assertThrows<CollectionDomainException> {
+                secondaryGenres.validateNotContainingPrimary(primaryGenre)
+            }
+        assertEquals("Secondary genres cannot contain the primary genre", exception.message)
+    }
+
+    @Test
+    fun `should not throw when secondary genres do not contain primary genre`() {
+        // Given
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val primaryGenre = Genre.FANTASY
+
+        // When & Then - should not throw
+        secondaryGenres.validateNotContainingPrimary(primaryGenre)
+    }
+}
