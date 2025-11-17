@@ -23,7 +23,10 @@ class CollectionDomainException(
             CollectionDomainException("Secondary languages cannot contain duplicates", "SECONDARY_LANGUAGES_DUPLICATED")
 
         fun secondaryLanguageSameAsPrimary(): CollectionDomainException =
-            CollectionDomainException("Secondary languages cannot contain the primary language", "SECONDARY_LANGUAGES_SAME_AS_PRIMARY")
+            CollectionDomainException(
+                "Secondary languages cannot contain the primary language",
+                "SECONDARY_LANGUAGES_SAME_AS_PRIMARY",
+            )
 
         // SecondaryGenres exceptions
         fun secondaryGenresTooMany(): CollectionDomainException =
@@ -33,7 +36,10 @@ class CollectionDomainException(
             CollectionDomainException("Secondary genres cannot contain duplicates", "SECONDARY_GENRES_DUPLICATED")
 
         fun secondaryGenreSameAsPrimary(): CollectionDomainException =
-            CollectionDomainException("Secondary genres cannot contain the primary genre", "SECONDARY_GENRES_SAME_AS_PRIMARY")
+            CollectionDomainException(
+                "Secondary genres cannot contain the primary genre",
+                "SECONDARY_GENRES_SAME_AS_PRIMARY",
+            )
 
         // Collection not found exception
         fun collectionNotFound(id: String): CollectionDomainException =
