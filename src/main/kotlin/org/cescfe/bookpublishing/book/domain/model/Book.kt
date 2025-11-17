@@ -1,0 +1,257 @@
+package org.cescfe.bookpublishing.book.domain.model
+
+import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
+import org.cescfe.bookpublishing.book.domain.model.enum.Status
+import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
+import org.cescfe.bookpublishing.shared.domain.model.enum.Language
+import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
+import java.time.LocalDate
+import java.util.UUID
+import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
+
+data class Book(
+    val id: BookId,
+    val title: BookTitle,
+    val collectionId: CollectionIdRef,
+    val authorIds: AuthorIds,
+    val illustratorIds: IllustratorIds? = null,
+    val readingLevel: ReadingLevel? = null,
+    val primaryLanguage: Language? = null,
+    val secondaryLanguages: BookSecondaryLanguages? = null,
+    val primaryGenre: Genre? = null,
+    val secondaryGenres: BookSecondaryGenres? = null,
+    val basePrice: BasePrice,
+    val vatRate: VatRate? = null,
+    val isbn: ISBN? = null,
+    val publicationDate: PublicationDate? = null,
+    val pageCount: PageCount? = null,
+    val coverImagePath: CoverImagePath? = null,
+    val description: Description? = null,
+    val status: Status? = null,
+) {
+    fun calculateFinalPrice(): Double {
+        val vat = vatRate?.value ?: 0.04
+        val finalPrice = basePrice.value * (1.0 + vat)
+        return (finalPrice * 100).roundToInt() / 100.0
+    }
+}
+
+@JvmInline
+value class BookId(
+    val value: UUID,
+) {
+    companion object {
+        fun generate(): BookId = BookId(UUID.randomUUID())
+
+        fun fromString(value: String): BookId = BookId(UUID.fromString(value))
+    }
+}
+
+@JvmInline
+value class BookTitle(
+    val value: String,
+) {
+    init {
+        require(value.isNotBlank()) { throw BookDomainException.titleCannotBeBlank() }
+        require(value.length in 1..200) { throw BookDomainException.titleTooLong() }
+    }
+}
+
+@JvmInline
+value class AuthorIdRef(
+    val value: UUID,
+) {
+    companion object {
+        fun fromString(value: String): AuthorIdRef = AuthorIdRef(UUID.fromString(value))
+    }
+}
+
+@JvmInline
+value class IllustratorIdRef(
+    val value: UUID,
+) {
+    companion object {
+        fun fromString(value: String): IllustratorIdRef = IllustratorIdRef(UUID.fromString(value))
+    }
+}
+
+@JvmInline
+value class AuthorIds(
+    val value: List<AuthorIdRef>,
+) {
+    init {
+        require(value.isNotEmpty()) { throw BookDomainException.authorIdsCannotBeEmpty() }
+        require(value.size == value.distinct().size) {
+            throw BookDomainException.authorIdsContainDuplicates()
+        }
+    }
+}
+
+@JvmInline
+value class IllustratorIds(
+    val value: List<IllustratorIdRef>,
+) {
+    init {
+        require(value.size == value.distinct().size) {
+            throw BookDomainException.illustratorIdsContainDuplicates()
+        }
+    }
+}
+
+@JvmInline
+value class CollectionIdRef(
+    val value: UUID,
+) {
+    companion object {
+        fun fromString(value: String): CollectionIdRef = CollectionIdRef(UUID.fromString(value))
+    }
+}
+
+@JvmInline
+value class BasePrice(
+    val value: Double,
+) {
+    init {
+        require(value >= 0.0) {
+            throw BookDomainException.basePriceCannotBeNegative()
+        }
+        val rounded = (value * 100).roundToInt() / 100.0
+        require((value - rounded).absoluteValue < 0.001) {
+            throw BookDomainException.basePriceInvalidPrecision()
+        }
+    }
+
+    companion object {
+        fun fromDouble(value: Double): BasePrice {
+            val rounded = (value * 100).roundToInt() / 100.0
+            return BasePrice(rounded)
+        }
+    }
+}
+
+@JvmInline
+value class VatRate(
+    val value: Double,
+) {
+    init {
+        require(value in 0.0..1.0) {
+            throw BookDomainException.vatRateOutOfRange()
+        }
+        val rounded = (value * 100).roundToInt() / 100.0
+        require((value - rounded).absoluteValue < 0.001) {
+            throw BookDomainException.vatRateInvalidPrecision()
+        }
+    }
+
+    companion object {
+        fun default(): VatRate = VatRate(0.04)
+
+        fun fromDouble(value: Double): VatRate {
+            val rounded = (value * 100).roundToInt() / 100.0
+            return VatRate(rounded)
+        }
+    }
+}
+
+@JvmInline
+value class ISBN(
+    val value: String,
+) {
+    init {
+        require(value.matches(ISBN_REGEX)) {
+            throw BookDomainException.isbnInvalidFormat()
+        }
+    }
+
+    companion object {
+        private val ISBN_REGEX = Regex("^(978|979)\\d{10}$")
+    }
+}
+
+@JvmInline
+value class PublicationDate(
+    val value: LocalDate,
+) {
+    companion object {
+        fun fromString(value: String): PublicationDate =
+            try {
+                PublicationDate(LocalDate.parse(value))
+            } catch (_: Exception) {
+                throw BookDomainException.publicationDateInvalidFormat()
+            }
+    }
+}
+
+@JvmInline
+value class PageCount(
+    val value: Int,
+) {
+    init {
+        require(value >= 1) {
+            throw BookDomainException.pageCountMustBePositive()
+        }
+    }
+}
+
+@JvmInline
+value class CoverImagePath(
+    val value: String,
+) {
+    init {
+        require(value.length <= 255) {
+            throw BookDomainException.coverImagePathTooLong()
+        }
+    }
+}
+
+@JvmInline
+value class Description(
+    val value: String,
+) {
+    init {
+        require(value.length <= 2000) {
+            throw BookDomainException.descriptionTooLong()
+        }
+    }
+}
+
+@JvmInline
+value class BookSecondaryLanguages(
+    val value: List<Language>,
+) {
+    init {
+        require(value.size <= 3) {
+            throw BookDomainException.secondaryLanguagesTooMany()
+        }
+        require(value.size == value.distinct().size) {
+            throw BookDomainException.secondaryLanguageDuplicated()
+        }
+    }
+
+    fun validateNotContainingPrimary(primaryLanguage: Language) {
+        require(!value.contains(primaryLanguage)) {
+            throw BookDomainException.secondaryLanguageSameAsPrimary()
+        }
+    }
+}
+
+@JvmInline
+value class BookSecondaryGenres(
+    val value: List<Genre>,
+) {
+    init {
+        require(value.size <= 3) {
+            throw BookDomainException.secondaryGenresTooMany()
+        }
+        require(value.size == value.distinct().size) {
+            throw BookDomainException.secondaryGenreDuplicated()
+        }
+    }
+
+    fun validateNotContainingPrimary(primaryGenre: Genre) {
+        require(!value.contains(primaryGenre)) {
+            throw BookDomainException.secondaryGenreSameAsPrimary()
+        }
+    }
+}
