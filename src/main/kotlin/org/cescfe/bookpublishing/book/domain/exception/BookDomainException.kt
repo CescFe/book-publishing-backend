@@ -42,7 +42,10 @@ class BookDomainException(
 
         // ISBN exceptions
         fun isbnInvalidFormat(): BookDomainException =
-            BookDomainException("ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)", "ISBN_INVALID_FORMAT")
+            BookDomainException(
+                "ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)",
+                "ISBN_INVALID_FORMAT",
+            )
 
         // PublicationDate exceptions
         fun publicationDateInvalidFormat(): BookDomainException =

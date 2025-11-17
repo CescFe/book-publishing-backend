@@ -31,7 +31,10 @@ class ISBNTest {
             assertThrows<BookDomainException> {
                 ISBN("9771234567890")
             }
-        assertEquals("ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)", exception.message)
+        assertEquals(
+            "ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)",
+            exception.message,
+        )
     }
 
     @Test
@@ -41,7 +44,10 @@ class ISBNTest {
             assertThrows<BookDomainException> {
                 ISBN("978054792822")
             }
-        assertEquals("ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)", exception.message)
+        assertEquals(
+            "ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)",
+            exception.message,
+        )
     }
 
     @Test
@@ -51,6 +57,9 @@ class ISBNTest {
             assertThrows<BookDomainException> {
                 ISBN("978054792822a")
             }
-        assertEquals("ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)", exception.message)
+        assertEquals(
+            "ISBN must be a valid ISBN-13 format (starting with 978 or 979 followed by 10 digits)",
+            exception.message,
+        )
     }
 }

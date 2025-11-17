@@ -4,5 +4,5 @@ enum class Status {
     DRAFT,
     PUBLISHED,
     OUT_OF_PRINT,
-    DISCONTINUED
+    DISCONTINUED,
 }

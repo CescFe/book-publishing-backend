@@ -1,9 +1,9 @@
 package org.cescfe.bookpublishing.book.domain.model
 
+import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
-import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.junit.jupiter.api.Test
 import java.util.UUID
 import kotlin.test.assertEquals

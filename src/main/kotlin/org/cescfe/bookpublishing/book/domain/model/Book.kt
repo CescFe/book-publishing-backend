@@ -174,13 +174,12 @@ value class PublicationDate(
     val value: LocalDate,
 ) {
     companion object {
-        fun fromString(value: String): PublicationDate {
-            return try {
+        fun fromString(value: String): PublicationDate =
+            try {
                 PublicationDate(LocalDate.parse(value))
             } catch (_: Exception) {
                 throw BookDomainException.publicationDateInvalidFormat()
             }
-        }
     }
 }
 
