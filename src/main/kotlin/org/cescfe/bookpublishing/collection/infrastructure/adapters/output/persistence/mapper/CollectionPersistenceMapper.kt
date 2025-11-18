@@ -14,8 +14,8 @@ import java.util.List
 
 @Component
 class CollectionPersistenceMapper {
-    fun fromDomain(collection: Collection): CollectionEntity {
-        return CollectionEntity(
+    fun fromDomain(collection: Collection): CollectionEntity =
+        CollectionEntity(
             id = collection.id.value,
             name = collection.name.value,
             readingLevel = collection.readingLevel,
@@ -24,7 +24,6 @@ class CollectionPersistenceMapper {
             primaryGenre = collection.primaryGenre,
             secondaryGenres = collection.secondaryGenres?.value?.map { it.name } as List<String>?,
         )
-    }
 
     fun toDomain(entity: CollectionEntity): Collection =
         Collection(
@@ -32,7 +31,13 @@ class CollectionPersistenceMapper {
             name = CollectionName(entity.name),
             readingLevel = entity.readingLevel,
             primaryLanguage = entity.primaryLanguage,
-            secondaryLanguages = entity.secondaryLanguages?.map { Language.valueOf(it) }?.let { SecondaryLanguages(it) },
+            secondaryLanguages =
+                entity.secondaryLanguages
+                    ?.map {
+                        Language.valueOf(
+                            it,
+                        )
+                    }?.let { SecondaryLanguages(it) },
             primaryGenre = entity.primaryGenre,
             secondaryGenres = entity.secondaryGenres?.map { Genre.valueOf(it) }?.let { SecondaryGenres(it) },
         )
