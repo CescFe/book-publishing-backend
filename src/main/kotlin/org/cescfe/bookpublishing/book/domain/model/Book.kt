@@ -14,8 +14,7 @@ data class Book(
     val id: BookId,
     val title: BookTitle,
     val collectionId: CollectionIdRef,
-    val authorIds: AuthorIds,
-    val illustratorIds: IllustratorIds? = null,
+    val authorId: AuthorIdRef,
     val readingLevel: ReadingLevel? = null,
     val primaryLanguage: Language? = null,
     val secondaryLanguages: BookSecondaryLanguages? = null,
@@ -64,38 +63,6 @@ value class AuthorIdRef(
 ) {
     companion object {
         fun fromString(value: String): AuthorIdRef = AuthorIdRef(UUID.fromString(value))
-    }
-}
-
-@JvmInline
-value class IllustratorIdRef(
-    val value: UUID,
-) {
-    companion object {
-        fun fromString(value: String): IllustratorIdRef = IllustratorIdRef(UUID.fromString(value))
-    }
-}
-
-@JvmInline
-value class AuthorIds(
-    val value: List<AuthorIdRef>,
-) {
-    init {
-        require(value.isNotEmpty()) { throw BookDomainException.authorIdsCannotBeEmpty() }
-        require(value.size == value.distinct().size) {
-            throw BookDomainException.authorIdsContainDuplicates()
-        }
-    }
-}
-
-@JvmInline
-value class IllustratorIds(
-    val value: List<IllustratorIdRef>,
-) {
-    init {
-        require(value.size == value.distinct().size) {
-            throw BookDomainException.illustratorIdsContainDuplicates()
-        }
     }
 }
 
