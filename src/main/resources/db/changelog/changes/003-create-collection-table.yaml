@@ -1,0 +1,70 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-collection-table
+      author: francesc
+      changes:
+        - createTable:
+            tableName: collection
+            schemaName: publishing
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(80)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reading_level
+                  type: VARCHAR(20)
+              - column:
+                  name: primary_language
+                  type: VARCHAR(20)
+              - column:
+                  name: secondary_languages
+                  type: VARCHAR(20) ARRAY
+              - column:
+                  name: primary_genre
+                  type: VARCHAR(50)
+              - column:
+                  name: secondary_genres
+                  type: VARCHAR(50) ARRAY
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  defaultValue: "system"
+        - createIndex:
+            tableName: collection
+            schemaName: publishing
+            indexName: idx_collection_name
+            columns:
+              - column:
+                  name: name
+        - sql:
+            sql: CREATE INDEX idx_collection_secondary_languages ON publishing.collection USING GIN (secondary_languages)
+        - sql:
+            sql: CREATE INDEX idx_collection_secondary_genres ON publishing.collection USING GIN (secondary_genres)

@@ -5,3 +5,9 @@ databaseChangeLog:
   - include:
       file: changes/002-create-author-table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changes/003-create-collection-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changes/004-create-book-table.yaml
+      relativeToChangelogFile: true
