@@ -14,17 +14,14 @@ import org.springframework.stereotype.Component
 @Component
 class AuthorPersistenceMapper {
     fun fromDomain(author: Author): AuthorEntity {
-        val entity =
-            AuthorEntity(
-                id = author.id.value,
-                fullName = author.fullName.value,
-                pseudonym = author.pseudonym?.value,
-                biography = author.biography?.value,
-                email = author.email?.value,
-                website = author.website?.value,
-            )
-
-        return entity
+        return AuthorEntity(
+            id = author.id.value,
+            fullName = author.fullName.value,
+            pseudonym = author.pseudonym?.value,
+            biography = author.biography?.value,
+            email = author.email?.value,
+            website = author.website?.value,
+        )
     }
 
     fun toDomain(entity: AuthorEntity): Author =
