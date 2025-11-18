@@ -14,9 +14,8 @@ class BookTest {
         // Given
         val id = BookId.generate()
         val title = BookTitle("The Invisible Life of Addie LaRue")
-        val authorIds = AuthorIds(listOf(AuthorIdRef(UUID.randomUUID())))
+        val authorId = AuthorIdRef(UUID.randomUUID())
         val collectionId = CollectionIdRef(UUID.randomUUID())
-        val illustratorIds = IllustratorIds(listOf(IllustratorIdRef(UUID.randomUUID())))
         val readingLevel = ReadingLevel.ADULT
         val primaryLanguage = Language.ENGLISH
         val secondaryLanguages = BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
@@ -36,9 +35,8 @@ class BookTest {
             Book(
                 id = id,
                 title = title,
-                authorIds = authorIds,
+                authorId = authorId,
                 collectionId = collectionId,
-                illustratorIds = illustratorIds,
                 readingLevel = readingLevel,
                 primaryLanguage = primaryLanguage,
                 secondaryLanguages = secondaryLanguages,
@@ -57,9 +55,8 @@ class BookTest {
         // Then
         assertEquals(id, book.id)
         assertEquals(title, book.title)
-        assertEquals(authorIds, book.authorIds)
+        assertEquals(authorId, book.authorId)
         assertEquals(collectionId, book.collectionId)
-        assertEquals(illustratorIds, book.illustratorIds)
         assertEquals(readingLevel, book.readingLevel)
         assertEquals(primaryLanguage, book.primaryLanguage)
         assertEquals(secondaryLanguages, book.secondaryLanguages)
@@ -80,7 +77,7 @@ class BookTest {
         // Given
         val id = BookId.generate()
         val title = BookTitle("The Invisible Life of Addie LaRue")
-        val authorIds = AuthorIds(listOf(AuthorIdRef(UUID.randomUUID())))
+        val authorId = AuthorIdRef(UUID.randomUUID())
         val collectionId = CollectionIdRef(UUID.randomUUID())
         val basePrice = BasePrice.fromDouble(19.95)
 
@@ -89,7 +86,7 @@ class BookTest {
             Book(
                 id = id,
                 title = title,
-                authorIds = authorIds,
+                authorId = authorId,
                 collectionId = collectionId,
                 basePrice = basePrice,
             )
@@ -97,9 +94,8 @@ class BookTest {
         // Then
         assertEquals(id, book.id)
         assertEquals(title, book.title)
-        assertEquals(authorIds, book.authorIds)
+        assertEquals(authorId, book.authorId)
         assertEquals(collectionId, book.collectionId)
-        assertEquals(null, book.illustratorIds)
         assertEquals(null, book.readingLevel)
         assertEquals(null, book.primaryLanguage)
         assertEquals(null, book.secondaryLanguages)
@@ -122,7 +118,7 @@ class BookTest {
             Book(
                 id = BookId.generate(),
                 title = BookTitle("Test Book"),
-                authorIds = AuthorIds(listOf(AuthorIdRef(UUID.randomUUID()))),
+                authorId = AuthorIdRef(UUID.randomUUID()),
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(100.0),
                 vatRate = null,
@@ -142,7 +138,7 @@ class BookTest {
             Book(
                 id = BookId.generate(),
                 title = BookTitle("Test Book"),
-                authorIds = AuthorIds(listOf(AuthorIdRef(UUID.randomUUID()))),
+                authorId = AuthorIdRef(UUID.randomUUID()),
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(100.0),
                 vatRate = VatRate.fromDouble(0.21),
@@ -162,7 +158,7 @@ class BookTest {
             Book(
                 id = BookId.generate(),
                 title = BookTitle("Test Book"),
-                authorIds = AuthorIds(listOf(AuthorIdRef(UUID.randomUUID()))),
+                authorId = AuthorIdRef(UUID.randomUUID()),
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(19.99),
                 vatRate = VatRate.fromDouble(0.04),

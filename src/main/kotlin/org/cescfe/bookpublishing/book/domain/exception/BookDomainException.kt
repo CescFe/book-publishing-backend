@@ -15,17 +15,6 @@ class BookDomainException(
         fun titleTooLong(): BookDomainException =
             BookDomainException("Book title must be between 1 and 200 characters", "TITLE_TOO_LONG")
 
-        // AuthorIds exceptions
-        fun authorIdsCannotBeEmpty(): BookDomainException =
-            BookDomainException("Book must have at least one author", "AUTHOR_IDS_CANNOT_BE_EMPTY")
-
-        fun authorIdsContainDuplicates(): BookDomainException =
-            BookDomainException("Author IDs cannot contain duplicates", "AUTHOR_IDS_CONTAIN_DUPLICATES")
-
-        // IllustratorIds exceptions
-        fun illustratorIdsContainDuplicates(): BookDomainException =
-            BookDomainException("Illustrator IDs cannot contain duplicates", "ILLUSTRATOR_IDS_CONTAIN_DUPLICATES")
-
         // BasePrice exceptions
         fun basePriceCannotBeNegative(): BookDomainException =
             BookDomainException("Base price cannot be negative", "BASE_PRICE_CANNOT_BE_NEGATIVE")
