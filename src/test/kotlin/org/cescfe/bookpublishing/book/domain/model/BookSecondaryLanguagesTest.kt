@@ -10,7 +10,7 @@ class BookSecondaryLanguagesTest {
     @Test
     fun `should create secondary languages with valid data`() {
         // When
-        val secondaryLanguages = BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
+        val secondaryLanguages = SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
 
         // Then
         assertEquals(2, secondaryLanguages.value.size)
@@ -22,7 +22,7 @@ class BookSecondaryLanguagesTest {
     fun `should create secondary languages with maximum allowed items`() {
         // When
         val secondaryLanguages =
-            BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH, Language.ENGLISH))
+            SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH, Language.ENGLISH))
 
         // Then
         assertEquals(3, secondaryLanguages.value.size)
@@ -37,7 +37,7 @@ class BookSecondaryLanguagesTest {
         // When & Then
         val exception =
             assertThrows<BookDomainException> {
-                BookSecondaryLanguages(tooManyLanguages)
+                SecondaryLanguages(tooManyLanguages)
             }
         assertEquals("Secondary languages cannot exceed 3 items", exception.message)
     }
@@ -50,7 +50,7 @@ class BookSecondaryLanguagesTest {
         // When & Then
         val exception =
             assertThrows<BookDomainException> {
-                BookSecondaryLanguages(duplicatedLanguages)
+                SecondaryLanguages(duplicatedLanguages)
             }
         assertEquals("Secondary languages cannot contain duplicates", exception.message)
     }
@@ -58,7 +58,7 @@ class BookSecondaryLanguagesTest {
     @Test
     fun `should throw BookDomainException when secondary languages contain primary language`() {
         // Given
-        val secondaryLanguages = BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
+        val secondaryLanguages = SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
         val primaryLanguage = Language.CATALAN
 
         // When & Then
@@ -72,7 +72,7 @@ class BookSecondaryLanguagesTest {
     @Test
     fun `should not throw when secondary languages do not contain primary language`() {
         // Given
-        val secondaryLanguages = BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
+        val secondaryLanguages = SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
         val primaryLanguage = Language.ENGLISH
 
         // When & Then - should not throw

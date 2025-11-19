@@ -60,9 +60,11 @@ dependencies {
     implementation("io.swagger.core.v3:swagger-core:2.2.37")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.13")
 
+    // Persistence
+    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+
     // Database drivers
     runtimeOnly("org.postgresql:postgresql:$postgresql")
-    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
     // Database migration
     implementation("org.liquibase:liquibase-core:$liquibase")
