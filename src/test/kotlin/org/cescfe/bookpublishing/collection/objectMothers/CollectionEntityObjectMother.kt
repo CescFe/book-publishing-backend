@@ -39,7 +39,7 @@ object CollectionEntityObjectMother {
             secondaryGenres = listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION),
         )
 
-    fun createSimple(): CollectionEntity =
+    fun createMinimal(): CollectionEntity =
         create(
             name = "Simple Collection",
         )
