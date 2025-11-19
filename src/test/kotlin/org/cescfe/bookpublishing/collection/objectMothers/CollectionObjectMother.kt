@@ -30,7 +30,7 @@ object CollectionObjectMother {
             secondaryGenres = secondaryGenres?.let { SecondaryGenres(it) },
         )
 
-    fun createFantasyClassics(): Collection =
+    fun createWithAllFields(): Collection =
         create(
             name = "Fantasy Classics",
             readingLevel = ReadingLevel.ADULT,

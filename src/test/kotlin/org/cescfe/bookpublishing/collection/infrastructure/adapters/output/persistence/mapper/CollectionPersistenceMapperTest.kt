@@ -16,9 +16,9 @@ class CollectionPersistenceMapperTest {
     private val collectionMapper = CollectionPersistenceMapper()
 
     @Test
-    fun `fromDomain should map collection domain to entity correctly`() {
+    fun `should map collection domain to entity correctly`() {
         // Given
-        val collection = CollectionObjectMother.createFantasyClassics()
+        val collection = CollectionObjectMother.createWithAllFields()
 
         // When
         val result = collectionMapper.fromDomain(collection)
@@ -40,7 +40,7 @@ class CollectionPersistenceMapperTest {
     }
 
     @Test
-    fun `fromDomain should map collection with minimal data correctly`() {
+    fun `should map collection with minimal data correctly`() {
         // Given
         val collection = CollectionObjectMother.createMinimal()
 
@@ -58,9 +58,9 @@ class CollectionPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity to collection domain correctly`() {
+    fun `should map entity to collection domain correctly`() {
         // Given
-        val entity = CollectionEntityObjectMother.createFantasyClassics()
+        val entity = CollectionEntityObjectMother.createWithAllFields()
 
         // When
         val result = collectionMapper.toDomain(entity)
@@ -82,7 +82,7 @@ class CollectionPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity with minimal data correctly`() {
+    fun `should map entity with minimal data correctly`() {
         // Given
         val entity = CollectionEntityObjectMother.createSimple()
 
@@ -100,7 +100,7 @@ class CollectionPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity with single secondary language correctly`() {
+    fun `should map entity with single secondary language correctly`() {
         // Given
         val entity =
             CollectionEntityObjectMother.create(

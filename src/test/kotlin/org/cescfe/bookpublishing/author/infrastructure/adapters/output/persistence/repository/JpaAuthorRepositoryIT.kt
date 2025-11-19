@@ -92,9 +92,10 @@ class JpaAuthorRepositoryIT {
                 fullName = "Author Two",
             )
 
-        // When
         jpaAuthorRepository.save(author1)
         jpaAuthorRepository.save(author2)
+
+        // When
         val authors = jpaAuthorRepository.findAllSummary()
 
         // Then

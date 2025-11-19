@@ -16,7 +16,7 @@ class AuthorPersistenceMapperTest {
     private val authorMapper = AuthorPersistenceMapper()
 
     @Test
-    fun `fromDomain should map author domain to entity correctly`() {
+    fun `should map author domain to entity correctly`() {
         // Given
         val author = AuthorObjectMother.createTolkien()
 
@@ -33,7 +33,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `fromDomain should map author with minimal data correctly`() {
+    fun `should map author domain with minimal data correctly`() {
         // Given
         val author = AuthorObjectMother.create(fullName = "Simple Author")
 
@@ -50,7 +50,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity to author domain correctly`() {
+    fun `should map entity to author domain correctly`() {
         // Given
         val entity = AuthorEntityObjectMother.createTolkien()
 
@@ -67,7 +67,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity with minimal data correctly`() {
+    fun `should map entity with minimal data correctly`() {
         // Given
         val entity = AuthorEntityObjectMother.createSimple()
 

@@ -29,7 +29,7 @@ object CollectionEntityObjectMother {
         return entity
     }
 
-    fun createFantasyClassics(): CollectionEntity =
+    fun createWithAllFields(): CollectionEntity =
         create(
             name = "Fantasy Classics",
             readingLevel = ReadingLevel.ADULT,
