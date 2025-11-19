@@ -26,13 +26,13 @@ databaseChangeLog:
                   type: VARCHAR(20)
               - column:
                   name: secondary_languages
-                  type: VARCHAR(20) ARRAY
+                  type: jsonb
               - column:
                   name: primary_genre
                   type: VARCHAR(50)
               - column:
                   name: secondary_genres
-                  type: VARCHAR(50) ARRAY
+                  type: jsonb
               - column:
                   name: created_at
                   type: TIMESTAMP

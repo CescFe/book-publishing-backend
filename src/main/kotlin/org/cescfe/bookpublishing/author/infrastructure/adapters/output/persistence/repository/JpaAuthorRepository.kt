@@ -16,13 +16,13 @@ class JpaAuthorRepository(
 ) : AuthorRepositoryView {
     override fun findById(id: AuthorId): Author? =
         authorJpaEntityRepository
-            .findAuthorById(id.value)
+            .findById(id.value)
             .map { authorMapper.toDomain(it) }
             .orElse(null)
 
     override fun findAllSummary(): List<AuthorSummary> =
         authorJpaEntityRepository
-            .findAllAuthors()
+            .findAllByOrderByFullNameAsc()
             .map { authorMapper.toDomainSummary(it) }
 
     override fun findAllSummary(
@@ -31,11 +31,11 @@ class JpaAuthorRepository(
     ): List<AuthorSummary> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return authorJpaEntityRepository
-            .findAllAuthors(pageable)
+            .findAllByOrderByFullNameAsc(pageable)
             .map { authorMapper.toDomainSummary(it) }
     }
 
-    override fun countAll(): Long = authorJpaEntityRepository.countAllAuthors()
+    override fun countAll(): Long = authorJpaEntityRepository.count()
 
     override fun save(author: Author): Author {
         val entity = authorMapper.fromDomain(author)
@@ -46,13 +46,12 @@ class JpaAuthorRepository(
         authorJpaEntityRepository.deleteById(id.value)
     }
 
-    override fun existsById(id: AuthorId): Boolean = authorJpaEntityRepository.existsAuthorById(id.value)
+    override fun existsById(id: AuthorId): Boolean = authorJpaEntityRepository.existsById(id.value)
 
     override fun findByEmail(email: String): Author? =
         authorJpaEntityRepository
             .findByEmail(email)
-            .map { authorMapper.toDomain(it) }
-            .orElse(null)
+            ?.let { authorMapper.toDomain(it) }
 
     override fun existsByEmail(email: String): Boolean = authorJpaEntityRepository.existsByEmail(email)
 }

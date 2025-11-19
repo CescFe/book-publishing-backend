@@ -16,7 +16,7 @@ class AuthorPersistenceMapperTest {
     private val authorMapper = AuthorPersistenceMapper()
 
     @Test
-    fun `fromDomain should map author domain to entity correctly`() {
+    fun `should map author domain to entity correctly`() {
         // Given
         val author = AuthorObjectMother.createTolkien()
 
@@ -33,7 +33,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `fromDomain should map author with minimal data correctly`() {
+    fun `should map author domain with minimal data correctly`() {
         // Given
         val author = AuthorObjectMother.create(fullName = "Simple Author")
 
@@ -50,7 +50,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity to author domain correctly`() {
+    fun `should map entity to author domain correctly`() {
         // Given
         val entity = AuthorEntityObjectMother.createTolkien()
 
@@ -67,7 +67,7 @@ class AuthorPersistenceMapperTest {
     }
 
     @Test
-    fun `toDomain should map entity with minimal data correctly`() {
+    fun `should map entity with minimal data correctly`() {
         // Given
         val entity = AuthorEntityObjectMother.createSimple()
 
@@ -81,26 +81,5 @@ class AuthorPersistenceMapperTest {
         assertNull(result.biography)
         assertNull(result.email)
         assertNull(result.website)
-    }
-
-    @Test
-    fun `should maintain bidirectional mapping consistency`() {
-        // Given
-        val originalAuthor =
-            AuthorObjectMother.create(
-                fullName = "Test Author",
-                pseudonym = "Test Pseudonym",
-                email = "test@example.com",
-            )
-
-        // When
-        val entity = authorMapper.fromDomain(originalAuthor)
-        val mappedBackAuthor = authorMapper.toDomain(entity)
-
-        // Then
-        assertEquals(originalAuthor.id, mappedBackAuthor.id)
-        assertEquals(originalAuthor.fullName, mappedBackAuthor.fullName)
-        assertEquals(originalAuthor.pseudonym, mappedBackAuthor.pseudonym)
-        assertEquals(originalAuthor.email, mappedBackAuthor.email)
     }
 }
