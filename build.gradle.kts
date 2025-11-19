@@ -62,6 +62,7 @@ dependencies {
 
     // Database drivers
     runtimeOnly("org.postgresql:postgresql:$postgresql")
+    implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
 
     // Database migration
     implementation("org.liquibase:liquibase-core:$liquibase")

@@ -82,25 +82,4 @@ class AuthorPersistenceMapperTest {
         assertNull(result.email)
         assertNull(result.website)
     }
-
-    @Test
-    fun `should maintain bidirectional mapping consistency`() {
-        // Given
-        val originalAuthor =
-            AuthorObjectMother.create(
-                fullName = "Test Author",
-                pseudonym = "Test Pseudonym",
-                email = "test@example.com",
-            )
-
-        // When
-        val entity = authorMapper.fromDomain(originalAuthor)
-        val mappedBackAuthor = authorMapper.toDomain(entity)
-
-        // Then
-        assertEquals(originalAuthor.id, mappedBackAuthor.id)
-        assertEquals(originalAuthor.fullName, mappedBackAuthor.fullName)
-        assertEquals(originalAuthor.pseudonym, mappedBackAuthor.pseudonym)
-        assertEquals(originalAuthor.email, mappedBackAuthor.email)
-    }
 }

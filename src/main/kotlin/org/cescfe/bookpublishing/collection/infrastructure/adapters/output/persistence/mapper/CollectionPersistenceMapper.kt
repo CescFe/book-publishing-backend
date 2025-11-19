@@ -7,10 +7,7 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.entity.CollectionEntity
-import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
-import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.springframework.stereotype.Component
-import java.util.List
 
 @Component
 class CollectionPersistenceMapper {
@@ -20,9 +17,9 @@ class CollectionPersistenceMapper {
             name = collection.name.value,
             readingLevel = collection.readingLevel,
             primaryLanguage = collection.primaryLanguage,
-            secondaryLanguages = collection.secondaryLanguages?.value?.map { it.name } as List<String>?,
+            secondaryLanguages = collection.secondaryLanguages?.value,
             primaryGenre = collection.primaryGenre,
-            secondaryGenres = collection.secondaryGenres?.value?.map { it.name } as List<String>?,
+            secondaryGenres = collection.secondaryGenres?.value,
         )
 
     fun toDomain(entity: CollectionEntity): Collection =
@@ -31,15 +28,9 @@ class CollectionPersistenceMapper {
             name = CollectionName(entity.name),
             readingLevel = entity.readingLevel,
             primaryLanguage = entity.primaryLanguage,
-            secondaryLanguages =
-                entity.secondaryLanguages
-                    ?.map {
-                        Language.valueOf(
-                            it,
-                        )
-                    }?.let { SecondaryLanguages(it) },
+            secondaryLanguages = entity.secondaryLanguages?.let { SecondaryLanguages(it) },
             primaryGenre = entity.primaryGenre,
-            secondaryGenres = entity.secondaryGenres?.map { Genre.valueOf(it) }?.let { SecondaryGenres(it) },
+            secondaryGenres = entity.secondaryGenres?.let { SecondaryGenres(it) },
         )
 
     fun toDomainSummary(entity: CollectionEntity): CollectionSummary =
