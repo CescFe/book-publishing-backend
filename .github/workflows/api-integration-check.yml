@@ -14,7 +14,6 @@ env:
 jobs:
   api-integration-check:
     runs-on: ubuntu-latest
-    environment: development
     if: github.event.pull_request.draft == false
 
     steps:

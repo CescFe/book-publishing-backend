@@ -8,7 +8,6 @@ import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.repository.CollectionJpaEntityRepository
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionEntityObjectMother
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -18,6 +17,7 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
+import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -29,6 +29,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @DataJpaTest
+@Transactional
 @Testcontainers
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -63,14 +64,6 @@ class JpaBookRepositoryIT {
                 .withDatabaseName("testdb")
                 .withUsername("test")
                 .withPassword("test")
-    }
-
-    @AfterEach
-    fun cleanUp() {
-        bookJpaEntityRepository.deleteAll()
-        collectionJpaEntityRepository.deleteAll()
-        authorJpaEntityRepository.deleteAll()
-        testEntityManager.flush()
     }
 
     @Test
