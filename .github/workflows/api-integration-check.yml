@@ -64,7 +64,10 @@ jobs:
           echo "Starting backend using compiled JAR..."
           java -jar build/libs/*.jar --spring.profiles.active=local &
         env:
-          SPRING_PROFILES_ACTIVE: local
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
 
       - name: Wait for backend to be ready
         run: |
