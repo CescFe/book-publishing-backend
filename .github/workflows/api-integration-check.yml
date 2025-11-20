@@ -39,8 +39,8 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build application
-        run: ./gradlew build
+      - name: Build application JAR
+        run: ./gradlew clean bootJar
 
       - name: Start Docker services (Postgres + Liquibase)
         run: |
@@ -59,8 +59,10 @@ jobs:
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
-      - name: Start backend
-        run: ./gradlew bootRun &
+      - name: Start backend (jar)
+        run: |
+          echo "Starting backend using compiled JAR..."
+          java -jar build/libs/*.jar --spring.profiles.active=local &
         env:
           SPRING_PROFILES_ACTIVE: local
 
@@ -86,7 +88,7 @@ jobs:
 
       - name: Stop backend
         if: always()
-        run: pkill -f 'bootRun' || true
+        run: pkill -f 'java -jar' || true
 
       - name: Stop Docker services
         if: always()
