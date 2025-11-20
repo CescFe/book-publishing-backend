@@ -59,6 +59,18 @@ jobs:
           POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
+      - name: Wait for Liquibase migrations to complete
+        run: |
+          echo "Waiting for Liquibase..."
+          until docker logs liquibase 2>&1 | grep -q "Liquibase command 'update' was executed successfully"; do
+            echo "Still running migrations..."
+            sleep 5
+          done
+          echo "Liquibase finished!"
+
+      - name: Check liquibase logs
+        run: docker logs liquibase
+
       - name: Start backend (jar)
         run: |
           echo "Starting backend using compiled JAR..."
