@@ -1,59 +1,26 @@
 # Book Publishing Backend
 
-Backend service for the Book Publishing platform built with Spring Boot 3.5.6, Kotlin, and Gradle.
+[![GitHub release](https://img.shields.io/github/v/release/CescFe/book-publishing-backend?color=blue)](https://github.com/CescFe/book-publishing-backend/releases/latest)
+[![GitHub license](https://img.shields.io/github/license/CescFe/book-publishing-backend?color=blue)](https://github.com/CescFe/book-publishing-backend/blob/main/LICENSE)
 
-## Getting Started
+Backend service for the Book Publishing platform. Implements the [book-publishing-api-spec](https://github.com/CescFe/book-publishing-api-spec) RESTful API to manage books, authors, and collections.
 
-### Prerequisites
+## 📌 About the Project
 
-- Java 21 or higher
-- Gradle 9.1 (included via wrapper)
-- Docker and Docker Compose
+### 🔎 Tech Stack
 
-### Running the Application
+- Kotlin 2.1
+- Spring Boot 3.5
+- Spring Web / Validation
+- Spring Data JPA
+- PostgreSQL
+- Testcontainers
+- Liquibase
+- Gradle
+- GitHub Actions
+- Docker
 
-#### Local env
->docker-compose up -d
->./gradlew bootRun --args='--spring.profiles.active=local'
-
-#### Clean (saving data)
->docker-compose down
-
-#### Clean ALL (data included)
->docker-compose down -v
-
-#### Production env (TBD)
->./gradlew bootRun --args='--spring.profiles.active=prod'
-
-The application will start on `http://localhost:8080`
-
-### Available Endpoints
-
-- `GET /api/v1/health` - Health check endpoint
-
-### Database
-
-- **Local Development**: PostgreSQL (via Docker)
-- **Production**: PostgreSQL (via Docker Compose)
-
-### Environment Profiles
-
-- `local` - Development with local PostgreSQL
-- `docker` - Production with containerized PostgreSQL
-
-## Project Structure
-```
-src/main/kotlin/org/cescfe/bookpublishing/
-├── shared/
-│ └── infrastructure/
-│ └── adapters/
-│ └── input/
-│ └── rest/
-│ └── HealthController.kt
-└── BookPublishingApplication.kt
-```
-
-## Architecture
+### 🏗️ Architecture
 
 This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vertical Slice Architecture**:
 
@@ -62,16 +29,92 @@ This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vert
 - **Infrastructure**: External adapters (controllers, repositories, external APIs)
 - **Shared**: Cross-cutting concerns and common infrastructure
 
-## Dependencies
+### 🧱 Structure
+```
+src/main/kotlin/org/cescfe/bookpublishing/
+├── context/
+│ └── application/
+│   └── port/input/
+│     └── interactor/
+│       └── UseCaseImpl.kt
+│     └── mapper/
+│       └── UseCaseMapper.kt
+│     └── UseCaseInterface.kt
+│ └── domain/
+│   └── model/
+│     └── ValueObject.kt
+│   └── port/
+│     └── VORepositoryView.kt
+│ └── infrastructure/
+│   └── adapters/
+│     └── input/rest/
+│       └── mapper/
+│       └── Controller.kt
+│     └── output/persistence/
+│       └── entity/
+│         └── Entity.kt
+│       └── mapper/
+│         └── PersistenceMapper.kt
+│       └── repository/
+│         └── JpaEntityRepositorInterface.kt
+│         └── JpaRepository.kt
+└── BookPublishingApplication.kt
+```
 
-- Spring Boot 3.5.6
-- Spring Data JPA
-- Spring Web
-- Spring Validation
-- Kotlin 2.1.21
-- Jackson Kotlin Module
-- PostgreSQL
-- book-publishing-api-spec (custom library)
+### 🧪 Testing Policy
+
+The project follows a testing strategy aligned with Hexagonal Architecture:
+- *Unit Tests*: Validate mappers, domain logic and application services in isolation, without Spring or infrastructure.
+- *Integration Tests*: Use Testcontainers + PostgreSQL to validate persistence adapters, entity mappings, auditing fields, JSONB handling, and repository behaviour.
+- *Dataset-based Tests*: Certain integration tests load SQL datasets (/datasets/*.sql) to verify JPA mapping and audit fields against realistic database records.
+- *What is intentionally not tested*: JPA built-ins (count, existsById, deleteById) unless wrapped with custom logic
+The goal is to ensure correctness without duplicating framework tests or introducing unnecessary maintenance burden.
+
+## 🚀 Getting Started
+
+### ✏️ Prerequisites
+
+- Java 21 or higher
+- Docker and Docker Compose
+
+### 🚀 Running the Application
+
+#### Local env
+1. Start PostgreSQL
+    >docker-compose up -d
+2. Run the application
+    >./gradlew bootRun --args='--spring.profiles.active=local'
+
+#### Clean (saving data)
+>docker-compose down
+
+#### Clean ALL (data included)
+>docker-compose down -v
+
+The application will start on `http://localhost:8080`
+
+### Available Endpoints
+- `GET /api/v1/health` - Health check endpoint
+
+#### Authentication
+- `POST /api/v1/auth/login` - Authenticate user and get access token
+
+#### Authors
+- `GET /api/v1/authors` - Get all authors (paginated)
+- `POST /api/v1/authors` - Create a new author
+- `GET /api/v1/authors/{id}` - Get author by ID
+- `PUT /api/v1/authors/{id}` - Update author
+- `DELETE /api/v1/authors/{id}` - Delete author
+
+### Database
+
+- **Local Development**: PostgreSQL (via Docker)
+
+### Environment Profiles
+
+- `local` → Development with local PostgreSQL
+- `test` → Testcontainers (auto-enabled)
+- `development` → GitHub CI/CD workflow
 
 ### Code Quality
 
@@ -105,7 +148,7 @@ This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vert
 ./gradlew test jacocoTestReport
 ```
 
-## Building
+## 🕹️ Building
 
 ```bash
 # Build JAR
@@ -122,13 +165,6 @@ docker build -t book-publishing-backend .
 
 - **Swagger UI**: `http://localhost:8080/swagger-ui.html` (when available)
 - **OpenAPI Spec**: `http://localhost:8080/v3/api-docs`
-
-## Contributing
-
-1. Follow the code style guidelines (ktlint + spotless)
-2. Write tests for new features
-3. Update documentation as needed
-4. Ensure all tests pass before submitting PR
 
 ## License
 
