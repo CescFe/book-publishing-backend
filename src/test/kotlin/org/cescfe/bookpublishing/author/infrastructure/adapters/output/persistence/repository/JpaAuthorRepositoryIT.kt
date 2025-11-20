@@ -13,11 +13,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -68,16 +70,9 @@ class JpaAuthorRepositoryIT {
 
         // Then
         assertNotNull(savedAuthor)
-        assertEquals(author.id.value, savedAuthor.id.value)
-        assertEquals(author.fullName.value, savedAuthor.fullName.value)
-        assertEquals(author.pseudonym!!.value, savedAuthor.pseudonym!!.value)
-        assertEquals(author.biography!!.value, savedAuthor.biography!!.value)
-        assertEquals(author.email!!.value, savedAuthor.email!!.value)
-        assertEquals(author.website!!.value, savedAuthor.website!!.value)
-
         assertNotNull(foundAuthor)
-        assertEquals(author.id.value, foundAuthor.id.value)
-        assertEquals(author.fullName.value, foundAuthor.fullName.value)
+        assertEquals(author, foundAuthor)
+        assertEquals(savedAuthor, foundAuthor)
     }
 
     @Test
@@ -105,6 +100,57 @@ class JpaAuthorRepositoryIT {
     }
 
     @Test
+    fun `should return paginated authors`() {
+        // Given
+        jpaAuthorRepository.save(AuthorObjectMother.create(fullName = "A"))
+        jpaAuthorRepository.save(AuthorObjectMother.create(fullName = "B"))
+        jpaAuthorRepository.save(AuthorObjectMother.create(fullName = "C"))
+
+        // When
+        val firstPage = jpaAuthorRepository.findAllSummary(page = 1, limit = 2)
+        val secondPage = jpaAuthorRepository.findAllSummary(page = 2, limit = 2)
+
+        // Then
+        assertEquals(2, firstPage.size)
+        assertEquals(1, secondPage.size)
+
+        assertEquals("A", firstPage[0].fullName.value)
+        assertEquals("B", firstPage[1].fullName.value)
+        assertEquals("C", secondPage[0].fullName.value)
+    }
+
+    @Test
+    fun `should find author by email`() {
+        // Given
+        val author = AuthorObjectMother.create(email = "test@example.com")
+        jpaAuthorRepository.save(author)
+
+        // When
+        val found = jpaAuthorRepository.findByEmail("test@example.com")
+
+        // Then
+        assertNotNull(found)
+        assertEquals(author, found)
+    }
+
+    @Test
+    fun `should return null when email does not exist`() {
+        // When / Then
+        assertNull(jpaAuthorRepository.findByEmail("missing@example.com"))
+    }
+
+    @Test
+    fun `should check if author exists by email`() {
+        // Given
+        val author = AuthorObjectMother.create(email = "email@domain.com")
+        jpaAuthorRepository.save(author)
+
+        // When / Then
+        assertTrue(jpaAuthorRepository.existsByEmail("email@domain.com"))
+        assertFalse(jpaAuthorRepository.existsByEmail("other@domain.com"))
+    }
+
+    @Test
     fun `should return null when author not found`() {
         // Given
         val nonExistentId = AuthorId.generate()
@@ -114,5 +160,37 @@ class JpaAuthorRepositoryIT {
 
         // Then
         assertNull(foundAuthor)
+    }
+
+    @Test
+    fun `should delete author by id`() {
+        // Given
+        val author = AuthorObjectMother.createTolkien()
+        jpaAuthorRepository.save(author)
+
+        assertTrue(jpaAuthorRepository.existsById(author.id))
+
+        // When
+        jpaAuthorRepository.deleteById(author.id)
+
+        // Then
+        assertFalse(jpaAuthorRepository.existsById(author.id))
+        assertNull(jpaAuthorRepository.findById(author.id))
+    }
+
+    @Test
+    @Sql("/datasets/authors.sql")
+    fun `should load author inserted via SQL script`() {
+        val id = AuthorId.fromString("00000000-0000-0000-0000-000000000001")
+
+        val found = jpaAuthorRepository.findById(id)
+
+        assertNotNull(found)
+        assertEquals("00000000-0000-0000-0000-000000000001", found.id.value.toString())
+        assertEquals("SQL Inserted Author", found.fullName.value)
+        assertEquals("SQL Pseudonym", found.pseudonym!!.value)
+        assertEquals("SQL Biography", found.biography!!.value)
+        assertEquals("author@example.com", found.email!!.value)
+        assertEquals("https://www.example.com", found.website!!.value)
     }
 }

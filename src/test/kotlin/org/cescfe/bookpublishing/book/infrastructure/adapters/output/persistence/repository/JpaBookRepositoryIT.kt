@@ -17,10 +17,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -34,7 +36,7 @@ import kotlin.test.assertTrue
     TestJpaAuditingConfig::class,
     JpaBookRepositoryTestConfig::class,
 )
-class JpaBookCollectionRepositoryIT {
+class JpaBookRepositoryIT {
     @Autowired
     private lateinit var bookJpaEntityRepository: BookJpaEntityRepository
 
@@ -51,6 +53,8 @@ class JpaBookCollectionRepositoryIT {
     private lateinit var jpaBookRepository: JpaBookRepository
 
     companion object {
+        private const val BOOK_ID = "00000000-0000-0000-0000-000000000030"
+
         @Container
         @ServiceConnection
         @JvmStatic
@@ -143,5 +147,61 @@ class JpaBookCollectionRepositoryIT {
 
         // Then
         assertNull(foundBook)
+    }
+
+    @Test
+    @Sql("/datasets/books.sql")
+    fun `should load book from SQL script`() {
+        // When
+        val found =
+            jpaBookRepository.findById(
+                BookId.fromString(BOOK_ID),
+            )
+
+        // Then
+        assertNotNull(found)
+        assertEquals(UUID.fromString(BOOK_ID), found.id.value)
+        assertEquals("SQL Inserted Book", found.title.value)
+        assertEquals(
+            UUID.fromString("00000000-0000-0000-0000-000000000010"),
+            found.authorId.value,
+        )
+        assertEquals(
+            UUID.fromString("00000000-0000-0000-0000-000000000020"),
+            found.collectionId.value,
+        )
+        assertEquals(19.99, found.basePrice.value)
+        assertEquals(0.04, found.vatRate!!.value)
+        assertEquals(20.79, found.calculateFinalPrice())
+        assertEquals("9784567890123", found.isbn!!.value)
+        assertEquals("2024-01-01", found.publicationDate!!.value.toString())
+        assertEquals(350, found.pageCount!!.value)
+        assertEquals("/covers/sql-book.jpg", found.coverImagePath!!.value)
+        assertEquals("SQL Book Description", found.description!!.value)
+        assertEquals("ADULT", found.readingLevel!!.name)
+        assertEquals("ENGLISH", found.primaryLanguage!!.name)
+        assertEquals("[SPANISH, CATALAN]", found.secondaryLanguages!!.value.toString())
+        assertEquals("FANTASY", found.primaryGenre!!.name)
+        assertEquals("[ADVENTURE]", found.secondaryGenres!!.value.toString())
+        assertEquals("PUBLISHED", found.status!!.name)
+    }
+
+    @Test
+    @Sql("/datasets/books.sql")
+    fun `should validate audit fields from sql dataset`() {
+        // When
+        val entity =
+            bookJpaEntityRepository
+                .findById(
+                    UUID.fromString(BOOK_ID),
+                ).orElse(null)
+
+        // Then
+        assertNotNull(entity)
+        assertNotNull(entity.createdAt)
+        assertNotNull(entity.updatedAt)
+        assertEquals("test-user", entity.createdBy)
+        assertEquals("test-user", entity.updatedBy)
+        assertTrue(entity.createdAt!! <= entity.updatedAt!!)
     }
 }
