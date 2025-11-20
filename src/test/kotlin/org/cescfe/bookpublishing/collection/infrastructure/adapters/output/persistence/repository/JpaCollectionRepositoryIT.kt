@@ -13,11 +13,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.jdbc.Sql
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
@@ -68,22 +70,9 @@ class JpaCollectionRepositoryIT {
 
         // Then
         assertNotNull(savedCollection)
-        assertEquals(collection.id.value, savedCollection.id.value)
-        assertEquals(collection.name.value, savedCollection.name.value)
-        assertEquals(collection.readingLevel, savedCollection.readingLevel)
-        assertEquals(collection.primaryLanguage, savedCollection.primaryLanguage)
-        assertEquals(collection.primaryGenre, savedCollection.primaryGenre)
-        assertEquals(collection.secondaryLanguages!!.value, savedCollection.secondaryLanguages!!.value)
-        assertEquals(collection.secondaryGenres!!.value, savedCollection.secondaryGenres!!.value)
-
         assertNotNull(foundCollection)
-        assertEquals(collection.id.value, foundCollection.id.value)
-        assertEquals(collection.name.value, foundCollection.name.value)
-        assertEquals(collection.readingLevel, foundCollection.readingLevel)
-        assertEquals(collection.primaryLanguage, foundCollection.primaryLanguage)
-        assertEquals(collection.primaryGenre, foundCollection.primaryGenre)
-        assertEquals(collection.secondaryLanguages.value, foundCollection.secondaryLanguages!!.value)
-        assertEquals(collection.secondaryGenres.value, foundCollection.secondaryGenres!!.value)
+        assertEquals(collection, foundCollection)
+        assertEquals(savedCollection, foundCollection)
     }
 
     @Test
@@ -120,5 +109,79 @@ class JpaCollectionRepositoryIT {
 
         // Then
         assertNull(foundCollection)
+    }
+
+    @Test
+    fun `should return paginated collections`() {
+        // Given
+        jpaCollectionRepository.save(CollectionObjectMother.create(name = "A"))
+        jpaCollectionRepository.save(CollectionObjectMother.create(name = "B"))
+        jpaCollectionRepository.save(CollectionObjectMother.create(name = "C"))
+
+        // When
+        val firstPage = jpaCollectionRepository.findAllSummary(page = 1, limit = 2)
+        val secondPage = jpaCollectionRepository.findAllSummary(page = 2, limit = 2)
+
+        // Then
+        assertEquals(2, firstPage.size)
+        assertEquals(1, secondPage.size)
+
+        assertEquals("A", firstPage[0].name.value)
+        assertEquals("B", firstPage[1].name.value)
+        assertEquals("C", secondPage[0].name.value)
+    }
+
+    @Test
+    fun `should delete collection by id`() {
+        // Given
+        val collection = CollectionObjectMother.createWithAllFields()
+        jpaCollectionRepository.save(collection)
+
+        // Precondition
+        assertTrue(jpaCollectionRepository.existsById(collection.id))
+
+        // When
+        jpaCollectionRepository.deleteById(collection.id)
+
+        // Then
+        assertFalse(jpaCollectionRepository.existsById(collection.id))
+        assertNull(jpaCollectionRepository.findById(collection.id))
+    }
+
+    @Test
+    fun `should return true when collection exists`() {
+        // Given
+        val collection = CollectionObjectMother.create()
+        jpaCollectionRepository.save(collection)
+
+        // Then
+        assertTrue(jpaCollectionRepository.existsById(collection.id))
+    }
+
+    @Test
+    fun `should return false when collection does not exist`() {
+        val nonExistentId = CollectionId.generate()
+
+        assertFalse(jpaCollectionRepository.existsById(nonExistentId))
+    }
+
+    @Test
+    @Sql("/datasets/collections.sql")
+    fun `should load collection inserted via SQL script`() {
+        // Given
+        val id = CollectionId.fromString("00000000-0000-0000-0000-000000000001")
+
+        // When
+        val found = jpaCollectionRepository.findById(id)
+
+        // Then
+        assertNotNull(found)
+        assertEquals("00000000-0000-0000-0000-000000000001", found.id.value.toString())
+        assertEquals("SQL Inserted Collection", found.name.value)
+        assertEquals("ADULT", found.readingLevel!!.name)
+        assertEquals("ENGLISH", found.primaryLanguage!!.name)
+        assertEquals(listOf("CATALAN", "SPANISH"), found.secondaryLanguages!!.value.map { it.name })
+        assertEquals("FANTASY", found.primaryGenre!!.name)
+        assertEquals(listOf("ADVENTURE", "HISTORICAL_FICTION"), found.secondaryGenres!!.value.map { it.name })
     }
 }
