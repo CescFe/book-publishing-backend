@@ -14,7 +14,7 @@ interface BookRepositoryView {
         limit: Int,
     ): List<BookSummary>
 
-    fun countAll(): Int
+    fun countAll(): Long
 
     fun save(book: Book): Book
 

@@ -18,9 +18,9 @@ class BookTest {
         val collectionId = CollectionIdRef(UUID.randomUUID())
         val readingLevel = ReadingLevel.ADULT
         val primaryLanguage = Language.ENGLISH
-        val secondaryLanguages = BookSecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
+        val secondaryLanguages = SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
         val primaryGenre = Genre.FANTASY
-        val secondaryGenres = BookSecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
         val basePrice = BasePrice.fromDouble(19.95)
         val vatRate = VatRate.fromDouble(0.04)
         val isbn = ISBN("9780547928227")

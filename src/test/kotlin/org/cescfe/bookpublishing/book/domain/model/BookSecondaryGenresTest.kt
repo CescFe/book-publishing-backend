@@ -10,7 +10,7 @@ class BookSecondaryGenresTest {
     @Test
     fun `should create secondary genres with valid data`() {
         // When
-        val secondaryGenres = BookSecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
 
         // Then
         assertEquals(2, secondaryGenres.value.size)
@@ -22,7 +22,7 @@ class BookSecondaryGenresTest {
     fun `should create secondary genres with maximum allowed items`() {
         // When
         val secondaryGenres =
-            BookSecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION, Genre.MYSTERY))
+            SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION, Genre.MYSTERY))
 
         // Then
         assertEquals(3, secondaryGenres.value.size)
@@ -37,7 +37,7 @@ class BookSecondaryGenresTest {
         // When & Then
         val exception =
             assertThrows<BookDomainException> {
-                BookSecondaryGenres(tooManyGenres)
+                SecondaryGenres(tooManyGenres)
             }
         assertEquals("Secondary genres cannot exceed 3 items", exception.message)
     }
@@ -50,7 +50,7 @@ class BookSecondaryGenresTest {
         // When & Then
         val exception =
             assertThrows<BookDomainException> {
-                BookSecondaryGenres(duplicatedGenres)
+                SecondaryGenres(duplicatedGenres)
             }
         assertEquals("Secondary genres cannot contain duplicates", exception.message)
     }
@@ -58,7 +58,7 @@ class BookSecondaryGenresTest {
     @Test
     fun `should throw BookDomainException when secondary genres contain primary genre`() {
         // Given
-        val secondaryGenres = BookSecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
         val primaryGenre = Genre.ADVENTURE
 
         // When & Then
@@ -72,7 +72,7 @@ class BookSecondaryGenresTest {
     @Test
     fun `should not throw when secondary genres do not contain primary genre`() {
         // Given
-        val secondaryGenres = BookSecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
+        val secondaryGenres = SecondaryGenres(listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION))
         val primaryGenre = Genre.FANTASY
 
         // When & Then - should not throw

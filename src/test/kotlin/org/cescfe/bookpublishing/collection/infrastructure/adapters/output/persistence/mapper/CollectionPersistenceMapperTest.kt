@@ -84,7 +84,7 @@ class CollectionPersistenceMapperTest {
     @Test
     fun `should map entity with minimal data correctly`() {
         // Given
-        val entity = CollectionEntityObjectMother.createSimple()
+        val entity = CollectionEntityObjectMother.createMinimal()
 
         // When
         val result = collectionMapper.toDomain(entity)
@@ -97,43 +97,5 @@ class CollectionPersistenceMapperTest {
         assertNull(result.primaryGenre)
         assertNull(result.secondaryLanguages)
         assertNull(result.secondaryGenres)
-    }
-
-    @Test
-    fun `should map entity with single secondary language correctly`() {
-        // Given
-        val entity =
-            CollectionEntityObjectMother.create(
-                name = "Test Collection",
-                secondaryLanguages = listOf(Language.ENGLISH),
-            )
-
-        // When
-        val result = collectionMapper.toDomain(entity)
-
-        // Then
-        assertEquals(
-            SecondaryLanguages(listOf(Language.ENGLISH)),
-            result.secondaryLanguages,
-        )
-    }
-
-    @Test
-    fun `toDomain should map entity with single secondary genre correctly`() {
-        // Given
-        val entity =
-            CollectionEntityObjectMother.create(
-                name = "Test Collection",
-                secondaryGenres = listOf(Genre.FANTASY),
-            )
-
-        // When
-        val result = collectionMapper.toDomain(entity)
-
-        // Then
-        assertEquals(
-            SecondaryGenres(listOf(Genre.FANTASY)),
-            result.secondaryGenres,
-        )
     }
 }

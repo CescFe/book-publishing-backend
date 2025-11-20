@@ -13,13 +13,13 @@ import kotlin.math.roundToInt
 data class Book(
     val id: BookId,
     val title: BookTitle,
-    val collectionId: CollectionIdRef,
     val authorId: AuthorIdRef,
+    val collectionId: CollectionIdRef,
     val readingLevel: ReadingLevel? = null,
     val primaryLanguage: Language? = null,
-    val secondaryLanguages: BookSecondaryLanguages? = null,
+    val secondaryLanguages: SecondaryLanguages? = null,
     val primaryGenre: Genre? = null,
-    val secondaryGenres: BookSecondaryGenres? = null,
+    val secondaryGenres: SecondaryGenres? = null,
     val basePrice: BasePrice,
     val vatRate: VatRate? = null,
     val isbn: ISBN? = null,
@@ -184,7 +184,7 @@ value class Description(
 }
 
 @JvmInline
-value class BookSecondaryLanguages(
+value class SecondaryLanguages(
     val value: List<Language>,
 ) {
     init {
@@ -204,7 +204,7 @@ value class BookSecondaryLanguages(
 }
 
 @JvmInline
-value class BookSecondaryGenres(
+value class SecondaryGenres(
     val value: List<Genre>,
 ) {
     init {
