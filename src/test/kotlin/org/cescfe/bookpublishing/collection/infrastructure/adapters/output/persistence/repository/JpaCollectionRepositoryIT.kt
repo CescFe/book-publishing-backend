@@ -4,16 +4,15 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionId
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.repository.config.JpaCollectionRepositoryTestConfig
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionObjectMother
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.output.persistence.config.TestJpaAuditingConfig
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
+import org.springframework.transaction.annotation.Transactional
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -25,6 +24,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 @DataJpaTest
+@Transactional
 @Testcontainers
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -33,12 +33,6 @@ import kotlin.test.assertTrue
     JpaCollectionRepositoryTestConfig::class,
 )
 class JpaCollectionRepositoryIT {
-    @Autowired
-    private lateinit var collectionJpaEntityRepository: CollectionJpaEntityRepository
-
-    @Autowired
-    private lateinit var testEntityManager: TestEntityManager
-
     @Autowired
     private lateinit var jpaCollectionRepository: JpaCollectionRepository
 
@@ -51,12 +45,6 @@ class JpaCollectionRepositoryIT {
                 .withDatabaseName("testdb")
                 .withUsername("test")
                 .withPassword("test")
-    }
-
-    @AfterEach
-    fun cleanUp() {
-        collectionJpaEntityRepository.deleteAll()
-        testEntityManager.flush()
     }
 
     @Test

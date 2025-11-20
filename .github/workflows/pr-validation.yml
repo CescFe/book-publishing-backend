@@ -9,37 +9,26 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_USERNAME: ${{ github.actor }}
-      TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
+      - run: chmod +x gradlew
 
       - name: Run Spotless check
         run: ./gradlew spotlessCheck
 
       - name: Build application
         run: ./gradlew build
-
-      - name: Run tests
-        run: ./gradlew test

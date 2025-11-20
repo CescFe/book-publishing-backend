@@ -7,27 +7,29 @@ on:
     branches: [ main ]
     types: [ opened, synchronize, reopened, ready_for_review ]
 
-env:
-  GITHUB_USERNAME: ${{ github.actor }}
-  TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
-
 jobs:
   api-integration-check:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    env:
+      POSTGRES_DB: root
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_PORT: 5432
+      POSTGRES_IMAGE_VERSION: postgres:16.3
+      LIQUIBASE_IMAGE_VERSION: liquibase/liquibase:4.19.0
+      SPRING_PROFILES_ACTIVE: local
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -40,66 +42,35 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build application JAR
-        run: ./gradlew clean bootJar
+        run: ./gradlew bootJar
 
       - name: Start Docker services (Postgres + Liquibase)
         run: |
           docker compose up -d
-          echo "Waiting for database to become healthy..."
           until [ "$(docker inspect -f '{{.State.Health.Status}}' postgres)" == "healthy" ]; do
             echo "Waiting for Postgres..."
             sleep 5
           done
           echo "Database ready!"
-        env:
-          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
-          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
-      - name: Wait for Liquibase migrations to complete
+      - name: Start backend
         run: |
-          echo "Waiting for Liquibase..."
-          until docker logs liquibase 2>&1 | grep -q "Liquibase command 'update' was executed successfully"; do
-            echo "Still running migrations..."
-            sleep 5
-          done
-          echo "Liquibase finished!"
+          nohup java -jar build/libs/*.jar > backend.log 2>&1 &
 
-      - name: Check liquibase logs
-        run: docker logs liquibase
-
-      - name: Start backend (jar)
+      - name: Wait backend
         run: |
-          echo "Starting backend using compiled JAR..."
-          java -jar build/libs/*.jar --spring.profiles.active=local &
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
-
-      - name: Wait for backend to be ready
-        run: |
-          echo "Waiting for backend..."
           npx wait-on http://localhost:8080/api/v1/health
-          echo "Backend is up!"
 
-      - name: Set up Node.js for Newman
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ vars.NODE_VERSION || '20' }}
+          node-version: 20
 
-      - name: Install Newman
-        run: npm install -g newman wait-on
+      - run: npm install -g newman wait-on
 
-      - name: Run Postman Collection with Newman
+      - name: Run Postman tests
         run: |
           newman run postman/book-publishing-api-collection.json \
             -e postman/environments/local.postman_environment.json \
-            --reporters cli
 
       - name: Stop backend
         if: always()
@@ -108,10 +79,3 @@ jobs:
       - name: Stop Docker services
         if: always()
         run: docker compose down -v
-        env:
-          POSTGRES_IMAGE_VERSION: ${{ vars.POSTGRES_IMAGE_VERSION }}
-          LIQUIBASE_IMAGE_VERSION: ${{ vars.LIQUIBASE_IMAGE_VERSION }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
