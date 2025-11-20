@@ -61,9 +61,14 @@ object BookObjectMother {
             status = status,
         )
 
-    fun createWithAllFields(): Book =
+    fun createWithAllFields(
+        authorId: UUID = UUID.randomUUID(),
+        collectionId: UUID = UUID.randomUUID(),
+    ): Book =
         create(
             title = "The Lord of the Rings",
+            authorId = authorId,
+            collectionId = collectionId,
             readingLevel = ReadingLevel.ADULT,
             primaryLanguage = Language.ENGLISH,
             secondaryLanguages = listOf(Language.CATALAN, Language.SPANISH),
