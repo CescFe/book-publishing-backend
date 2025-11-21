@@ -7,6 +7,7 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.entity.CollectionEntity
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,6 +32,13 @@ class CollectionPersistenceMapper {
             secondaryLanguages = entity.secondaryLanguages?.let { SecondaryLanguages(it) },
             primaryGenre = entity.primaryGenre,
             secondaryGenres = entity.secondaryGenres?.let { SecondaryGenres(it) },
+            audit =
+                Metadata(
+                    createdAt = entity.createdAt,
+                    createdBy = entity.createdBy,
+                    updatedAt = entity.updatedAt,
+                    updatedBy = entity.updatedBy,
+                ),
         )
 
     fun toDomainSummary(entity: CollectionEntity): CollectionSummary =

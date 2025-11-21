@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.collection.domain.model
 
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -14,7 +15,30 @@ data class Collection(
     val secondaryLanguages: SecondaryLanguages? = null,
     val primaryGenre: Genre? = null,
     val secondaryGenres: SecondaryGenres? = null,
-)
+    val audit: Metadata? = null,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Collection) return false
+
+        return id == other.id &&
+            name == other.name &&
+            readingLevel == other.readingLevel &&
+            primaryLanguage == other.primaryLanguage &&
+            secondaryLanguages == other.secondaryLanguages &&
+            primaryGenre == other.primaryGenre &&
+            secondaryGenres == other.secondaryGenres
+    }
+
+    override fun hashCode(): Int =
+        id.hashCode() +
+            name.hashCode() +
+            (readingLevel?.hashCode() ?: 0) +
+            (primaryLanguage?.hashCode() ?: 0) +
+            (secondaryLanguages?.hashCode() ?: 0) +
+            (primaryGenre?.hashCode() ?: 0) +
+            (secondaryGenres?.hashCode() ?: 0)
+}
 
 @JvmInline
 value class CollectionId(
