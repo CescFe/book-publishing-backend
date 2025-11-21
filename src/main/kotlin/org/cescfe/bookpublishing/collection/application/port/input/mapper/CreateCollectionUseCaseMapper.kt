@@ -6,6 +6,7 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionId
 import org.cescfe.bookpublishing.collection.domain.model.CollectionName
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryLanguages
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CollectionDTO
 import org.springframework.stereotype.Component
 
 @Component
@@ -16,18 +17,59 @@ class CreateCollectionUseCaseMapper {
             name = CollectionName(input.name),
             readingLevel = input.readingLevel,
             primaryLanguage = input.primaryLanguage,
-            secondaryLanguages = input.secondaryLanguages?.let { SecondaryLanguages(it) },
+            secondaryLanguages = input.secondaryLanguages?.let(::SecondaryLanguages),
             primaryGenre = input.primaryGenre,
             secondaryGenres = input.secondaryGenres?.let { SecondaryGenres(it) },
         )
 
-    fun toInputValues(collection: Collection): CreateCollectionUseCase.InputValues =
+    fun toDto(domain: Collection): CollectionDTO =
+        CollectionDTO(
+            id = domain.id.value,
+            name = domain.name.value,
+            readingLevel = domain.readingLevel?.let { CollectionDTO.ReadingLevel.valueOf(it.name) },
+            primaryLanguage = domain.primaryLanguage?.let { CollectionDTO.PrimaryLanguage.valueOf(it.name) },
+            secondaryLanguages =
+                domain.secondaryLanguages?.value?.map {
+                    CollectionDTO.SecondaryLanguages.valueOf(
+                        it.name,
+                    )
+                },
+            primaryGenre = domain.primaryGenre?.let { CollectionDTO.PrimaryGenre.valueOf(it.name) },
+            secondaryGenres = domain.secondaryGenres?.value?.map { CollectionDTO.SecondaryGenres.valueOf(it.name) },
+            createdAt = null,
+            createdBy = null,
+            updatedAt = null,
+            updatedBy = null,
+        )
+
+    fun toInputValues(dto: CollectionDTO): CreateCollectionUseCase.InputValues =
         CreateCollectionUseCase.InputValues(
-            name = collection.name.value,
-            readingLevel = collection.readingLevel,
-            primaryLanguage = collection.primaryLanguage,
-            secondaryLanguages = collection.secondaryLanguages?.value,
-            primaryGenre = collection.primaryGenre,
-            secondaryGenres = collection.secondaryGenres?.value,
+            name = dto.name,
+            readingLevel =
+                dto.readingLevel?.let {
+                    org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
+                        .valueOf(it.name)
+                },
+            primaryLanguage =
+                dto.primaryLanguage?.let {
+                    org.cescfe.bookpublishing.shared.domain.model.enum.Language
+                        .valueOf(it.name)
+                },
+            secondaryLanguages =
+                dto.secondaryLanguages?.map {
+                    org.cescfe.bookpublishing.shared.domain.model.enum.Language
+                        .valueOf(it.name)
+                },
+            primaryGenre =
+                dto.primaryGenre?.let {
+                    org.cescfe.bookpublishing.shared.domain.model.enum.Genre.valueOf(
+                        it.name,
+                    )
+                },
+            secondaryGenres =
+                dto.secondaryGenres?.map {
+                    org.cescfe.bookpublishing.shared.domain.model.enum.Genre
+                        .valueOf(it.name)
+                },
         )
 }
