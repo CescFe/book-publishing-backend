@@ -34,7 +34,6 @@ class BookPersistenceMapperTest {
         )
         assertEquals(book.basePrice.value, result.basePrice)
         assertEquals(book.vatRate!!.value, result.vatRate)
-        assertEquals(book.calculateFinalPrice(), result.finalPrice)
         assertEquals(book.isbn!!.value, result.isbn)
         assertEquals(book.publicationDate!!.value, result.publicationDate)
         assertEquals(book.pageCount!!.value, result.pageCount)
@@ -57,7 +56,6 @@ class BookPersistenceMapperTest {
         assertEquals(book.authorId.value, result.authorId)
         assertEquals(book.collectionId.value, result.collectionId)
         assertEquals(book.basePrice.value, result.basePrice)
-        assertEquals(book.calculateFinalPrice(), result.finalPrice)
         assertEquals(book.status, result.status)
     }
 

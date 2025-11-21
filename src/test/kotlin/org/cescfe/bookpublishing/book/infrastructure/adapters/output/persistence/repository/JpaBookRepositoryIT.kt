@@ -165,7 +165,7 @@ class JpaBookRepositoryIT {
         )
         assertEquals(19.99, found.basePrice.value)
         assertEquals(0.04, found.vatRate!!.value)
-        assertEquals(20.79, found.calculateFinalPrice())
+        assertEquals(20.79, found.finalPrice)
         assertEquals("9784567890123", found.isbn!!.value)
         assertEquals("2024-01-01", found.publicationDate!!.value.toString())
         assertEquals(350, found.pageCount!!.value)

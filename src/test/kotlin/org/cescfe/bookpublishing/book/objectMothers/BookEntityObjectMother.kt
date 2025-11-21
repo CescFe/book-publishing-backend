@@ -16,7 +16,6 @@ object BookEntityObjectMother {
         collectionId: UUID = UUID.randomUUID(),
         basePrice: Double = 19.99,
         vatRate: Double? = null,
-        finalPrice: Double = 20.79,
         isbn: String? = null,
         publicationDate: LocalDate? = null,
         pageCount: Int? = null,
@@ -37,7 +36,6 @@ object BookEntityObjectMother {
                 collectionId = collectionId,
                 basePrice = basePrice,
                 vatRate = vatRate,
-                finalPrice = finalPrice,
                 isbn = isbn,
                 publicationDate = publicationDate,
                 pageCount = pageCount,
@@ -58,7 +56,6 @@ object BookEntityObjectMother {
             title = "The Lord of the Rings",
             basePrice = 29.99,
             vatRate = 0.04,
-            finalPrice = 31.19,
             isbn = "9780007141326",
             publicationDate = LocalDate.of(1954, 7, 29),
             pageCount = 1178,
@@ -76,6 +73,5 @@ object BookEntityObjectMother {
         create(
             title = "Simple Book",
             basePrice = 9.99,
-            finalPrice = 10.39,
         )
 }

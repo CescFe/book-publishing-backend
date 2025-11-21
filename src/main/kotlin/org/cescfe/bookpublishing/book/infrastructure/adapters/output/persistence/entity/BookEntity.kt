@@ -32,8 +32,6 @@ data class BookEntity(
     val basePrice: Double,
     @Column(name = "vat_rate")
     val vatRate: Double?,
-    @Column(name = "final_price", nullable = false)
-    val finalPrice: Double,
     @Column(name = "isbn")
     val isbn: String?,
     @Column(name = "publication_date")

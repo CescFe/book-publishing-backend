@@ -29,9 +29,12 @@ data class Book(
     val description: Description? = null,
     val status: Status? = null,
 ) {
-    fun calculateFinalPrice(): Double {
+    val finalPrice: Double
+        get() = calculateFinalPrice()
+
+    private fun calculateFinalPrice(): Double {
         val vat = vatRate?.value ?: 0.04
-        val finalPrice = basePrice.value * (1.0 + vat)
+        val finalPrice = basePrice.value * (1 + vat)
         return (finalPrice * 100).roundToInt() / 100.0
     }
 }

@@ -1,4 +1,4 @@
-name: API Integration Check
+name: Integration Validation
 
 on:
   push:
@@ -42,7 +42,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build application JAR
-        run: ./gradlew bootJar
+        run: ./gradlew clean bootJar
 
       - name: Start Docker services (Postgres + Liquibase)
         run: |

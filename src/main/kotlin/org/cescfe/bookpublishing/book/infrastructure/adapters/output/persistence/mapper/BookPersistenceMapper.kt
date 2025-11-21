@@ -33,7 +33,6 @@ class BookPersistenceMapper {
             secondaryGenres = book.secondaryGenres?.value,
             basePrice = book.basePrice.value,
             vatRate = book.vatRate?.value,
-            finalPrice = book.calculateFinalPrice(),
             isbn = book.isbn?.value,
             publicationDate = book.publicationDate?.value,
             pageCount = book.pageCount?.value,
