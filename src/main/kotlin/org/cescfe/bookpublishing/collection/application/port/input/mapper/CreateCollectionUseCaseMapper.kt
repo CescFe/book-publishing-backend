@@ -7,10 +7,8 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionName
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CollectionDTO
-import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
-import org.cescfe.bookpublishing.shared.domain.model.enum.Language
-import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.springframework.stereotype.Component
+import java.time.ZoneOffset
 
 @Component
 class CreateCollectionUseCaseMapper {
@@ -44,19 +42,9 @@ class CreateCollectionUseCaseMapper {
                         it.name,
                     )
                 },
-            createdAt = null,
-            createdBy = null,
-            updatedAt = null,
-            updatedBy = null,
-        )
-
-    fun toInputValues(dto: CollectionDTO): CreateCollectionUseCase.InputValues =
-        CreateCollectionUseCase.InputValues(
-            name = dto.name,
-            readingLevel = dto.readingLevel?.let { ReadingLevel.valueOf(it.name) },
-            primaryLanguage = dto.primaryLanguage?.let { Language.valueOf(it.name) },
-            secondaryLanguages = dto.secondaryLanguages?.map { Language.valueOf(it.name) },
-            primaryGenre = dto.primaryGenre?.let { Genre.valueOf(it.name) },
-            secondaryGenres = dto.secondaryGenres?.map { Genre.valueOf(it.name) },
+            createdAt = domain.audit?.createdAt?.atOffset(ZoneOffset.UTC),
+            createdBy = domain.audit?.createdBy,
+            updatedAt = domain.audit?.updatedAt?.atOffset(ZoneOffset.UTC),
+            updatedBy = domain.audit?.updatedBy,
         )
 }
