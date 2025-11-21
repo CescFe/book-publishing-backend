@@ -30,15 +30,14 @@ data class Collection(
             secondaryGenres == other.secondaryGenres
     }
 
-    override fun hashCode(): Int {
-        return id.hashCode() +
+    override fun hashCode(): Int =
+        id.hashCode() +
             name.hashCode() +
             (readingLevel?.hashCode() ?: 0) +
             (primaryLanguage?.hashCode() ?: 0) +
             (secondaryLanguages?.hashCode() ?: 0) +
             (primaryGenre?.hashCode() ?: 0) +
             (secondaryGenres?.hashCode() ?: 0)
-    }
 }
 
 @JvmInline
