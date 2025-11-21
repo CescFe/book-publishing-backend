@@ -11,6 +11,7 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.springframework.stereotype.Component
+import java.time.ZoneOffset
 
 @Component
 class CollectionRestMapper {
@@ -21,38 +22,51 @@ class CollectionRestMapper {
             readingLevel = dto.readingLevel?.value?.let { ReadingLevel.valueOf(it) },
             primaryLanguage = dto.primaryLanguage?.let { Language.valueOf(it.name) },
             secondaryLanguages =
-                SecondaryLanguages(
-                    dto.secondaryLanguages?.map {
-                        Language.valueOf(it.value)
-                    } ?: emptyList(),
-                ),
+                dto.secondaryLanguages?.let {
+                    SecondaryLanguages(
+                        it.map { langEnum ->
+                            Language.valueOf(langEnum.value)
+                        },
+                    )
+                },
             primaryGenre = dto.primaryGenre?.let { Genre.valueOf(it.name) },
             secondaryGenres =
-                SecondaryGenres(
-                    dto.secondaryGenres?.map {
-                        Genre.valueOf(it.value)
-                    } ?: emptyList(),
-                ),
+                dto.secondaryGenres?.let {
+                    SecondaryGenres(
+                        it.map { genreEnum ->
+                            Genre.valueOf(genreEnum.value)
+                        },
+                    )
+                },
         )
 
-    fun toResponse(dto: CollectionDTO): CreateCollectionRequestDTO =
+    fun toDto(domain: Collection): CreateCollectionRequestDTO =
         CreateCollectionRequestDTO(
-            id = dto.id,
-            name = dto.name,
-            readingLevel = dto.readingLevel?.let { CreateCollectionRequestDTO.ReadingLevel.valueOf(it.name) },
-            primaryLanguage = dto.primaryLanguage?.let { CreateCollectionRequestDTO.PrimaryLanguage.valueOf(it.name) },
+            id = domain.id.value,
+            name = domain.name.value,
+            readingLevel =
+                domain.readingLevel?.let {
+                    CreateCollectionRequestDTO.ReadingLevel.valueOf(it.name)
+                },
+            primaryLanguage =
+                domain.primaryLanguage?.let {
+                    CreateCollectionRequestDTO.PrimaryLanguage.valueOf(it.name)
+                },
             secondaryLanguages =
-                dto.secondaryLanguages?.map {
-                    CreateCollectionRequestDTO.SecondaryLanguages.valueOf(it.name)
-                } ?: emptyList(),
-            primaryGenre = dto.primaryGenre?.let { CreateCollectionRequestDTO.PrimaryGenre.valueOf(it.name) },
+                domain.secondaryLanguages?.value?.map { lang ->
+                    CreateCollectionRequestDTO.SecondaryLanguages.valueOf(lang.name)
+                },
+            primaryGenre =
+                domain.primaryGenre?.let {
+                    CreateCollectionRequestDTO.PrimaryGenre.valueOf(it.name)
+                },
             secondaryGenres =
-                dto.secondaryGenres?.map {
-                    CreateCollectionRequestDTO.SecondaryGenres.valueOf(it.name)
-                } ?: emptyList(),
-            createdAt = dto.createdAt,
-            createdBy = dto.createdBy,
-            updatedAt = dto.updatedAt,
-            updatedBy = dto.updatedBy,
+                domain.secondaryGenres?.value?.map { genre ->
+                    CreateCollectionRequestDTO.SecondaryGenres.valueOf(genre.name)
+                },
+            createdAt = domain.audit?.createdAt?.atOffset(ZoneOffset.UTC),
+            createdBy = domain.audit?.createdBy,
+            updatedAt = domain.audit?.updatedAt?.atOffset(ZoneOffset.UTC),
+            updatedBy = domain.audit?.updatedBy,
         )
 }

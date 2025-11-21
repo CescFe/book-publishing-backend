@@ -25,8 +25,8 @@ class CreateCollectionController(
     ): ResponseEntity<CreateCollectionRequestDTO> {
         val inputValues = mapDtoToInputValues(createCollectionRequestDTO)
         val createdCollection = createCollectionUseCase.execute(inputValues)
-        val responseDto = mapper.toResponse(createdCollection)
-        val uri = buildResourceUri(createdCollection.id!!)
+        val responseDto = mapper.toDto(createdCollection)
+        val uri = buildResourceUri(createdCollection.id.value)
         return ResponseEntity.created(uri).body(responseDto)
     }
 
