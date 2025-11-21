@@ -37,11 +37,6 @@ databaseChangeLog:
                   name: vat_rate
                   type: NUMERIC(3, 2)
               - column:
-                  name: final_price
-                  type: NUMERIC(10, 2)
-                  constraints:
-                    nullable: false
-              - column:
                   name: isbn
                   type: VARCHAR(13)
               - column:

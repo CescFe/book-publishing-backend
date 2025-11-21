@@ -125,7 +125,7 @@ class BookTest {
             )
 
         // When
-        val finalPrice = book.calculateFinalPrice()
+        val finalPrice = book.finalPrice
 
         // Then
         assertEquals(104.0, finalPrice)
@@ -145,7 +145,7 @@ class BookTest {
             )
 
         // When
-        val finalPrice = book.calculateFinalPrice()
+        val finalPrice = book.finalPrice
 
         // Then
         assertEquals(121.0, finalPrice)
@@ -165,7 +165,7 @@ class BookTest {
             )
 
         // When
-        val finalPrice = book.calculateFinalPrice()
+        val finalPrice = book.finalPrice
 
         // Then
         assertEquals(20.79, finalPrice)
