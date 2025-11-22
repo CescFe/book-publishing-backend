@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component
 
 @Component
 class CreateCollectionUseCaseMapper {
-    fun toDomain(input: CreateCollectionUseCase.InputValues): Collection =
+    fun toDomain(command: CreateCollectionUseCase.CreateCollectionCommand): Collection =
         Collection(
             id = CollectionId.generate(),
-            name = CollectionName(input.name),
-            readingLevel = input.readingLevel,
-            primaryLanguage = input.primaryLanguage,
-            secondaryLanguages = input.secondaryLanguages?.let(::SecondaryLanguages),
-            primaryGenre = input.primaryGenre,
-            secondaryGenres = input.secondaryGenres?.let { SecondaryGenres(it) },
+            name = CollectionName(command.name),
+            readingLevel = command.readingLevel,
+            primaryLanguage = command.primaryLanguage,
+            secondaryLanguages = command.secondaryLanguages?.let(::SecondaryLanguages),
+            primaryGenre = command.primaryGenre,
+            secondaryGenres = command.secondaryGenres?.let { SecondaryGenres(it) },
         )
 }

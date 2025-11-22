@@ -23,8 +23,8 @@ class CreateCollectionController(
     override fun createCollection(
         createCollectionRequestDTO: CreateCollectionRequestDTO,
     ): ResponseEntity<CreateCollectionRequestDTO> {
-        val inputValues = mapDtoToInputValues(createCollectionRequestDTO)
-        val createdCollection = createCollectionUseCase.execute(inputValues)
+        val command = mapDtoToCommand(createCollectionRequestDTO)
+        val createdCollection = createCollectionUseCase.execute(command)
         val responseDto = mapper.toDto(createdCollection)
         val uri = buildResourceUri(createdCollection.id.value)
         return ResponseEntity.created(uri).body(responseDto)
@@ -37,8 +37,8 @@ class CreateCollectionController(
             .buildAndExpand(collectionId)
             .toUri()
 
-    private fun mapDtoToInputValues(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.InputValues =
-        CreateCollectionUseCase.InputValues(
+    private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.CreateCollectionCommand =
+        CreateCollectionUseCase.CreateCollectionCommand(
             name = dto.name,
             readingLevel = ReadingLevel.valueOf(dto.readingLevel.toString()),
             primaryLanguage = Language.valueOf(dto.primaryLanguage.toString()),

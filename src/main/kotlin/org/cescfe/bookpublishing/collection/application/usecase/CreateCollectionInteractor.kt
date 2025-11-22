@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.collection.application.port.input.interactor
+package org.cescfe.bookpublishing.collection.application.usecase
 
 import org.cescfe.bookpublishing.collection.application.port.input.CreateCollectionUseCase
 import org.cescfe.bookpublishing.collection.application.port.input.mapper.CreateCollectionUseCaseMapper
@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CreateCollectionImpl(
+class CreateCollectionInteractor(
     private val collectionRepository: CollectionRepositoryView,
     private val mapper: CreateCollectionUseCaseMapper,
 ) : CreateCollectionUseCase {
-    override fun execute(input: CreateCollectionUseCase.InputValues): Collection {
-        val collection = mapper.toDomain(input)
+    override fun execute(command: CreateCollectionUseCase.CreateCollectionCommand): Collection {
+        val collection = mapper.toDomain(command)
         return collectionRepository.save(collection)
     }
 }
