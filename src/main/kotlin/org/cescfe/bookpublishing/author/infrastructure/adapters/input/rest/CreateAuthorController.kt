@@ -18,7 +18,9 @@ class CreateAuthorController(
     private val createAuthorUseCase: CreateAuthorUseCase,
     private val mapper: AuthorRestMapper,
 ) : CreateAuthorApi {
-    override fun createAuthor(createAuthorRequestDTO: CreateAuthorRequestDTO): ResponseEntity<CreateAuthor201ResponseDTO> {
+    override fun createAuthor(
+        createAuthorRequestDTO: CreateAuthorRequestDTO,
+    ): ResponseEntity<CreateAuthor201ResponseDTO> {
         val inputValues = mapDtoToInputValues(createAuthorRequestDTO)
         val createdAuthor = createAuthorUseCase.execute(inputValues)
         val responseDto = mapper.toDto(createdAuthor)
