@@ -101,18 +101,20 @@ class CollectionPersistenceMapperTest {
         assertNull(result.secondaryLanguages)
         assertNull(result.secondaryGenres)
     }
+
     @Test
     fun `should map projection to collection summary correctly`() {
         // Given
         val id = randomUUID()
         val name = "Test Collection"
-        val projection = object : CollectionSummaryProjection {
-            override val id = id
-            override val name = name
-            override val readingLevel = ReadingLevel.CHILDREN
-            override val primaryLanguage = Language.ENGLISH
-            override val primaryGenre = Genre.FANTASY
-        }
+        val projection =
+            object : CollectionSummaryProjection {
+                override val id = id
+                override val name = name
+                override val readingLevel = ReadingLevel.CHILDREN
+                override val primaryLanguage = Language.ENGLISH
+                override val primaryGenre = Genre.FANTASY
+            }
 
         // When
         val result = collectionMapper.toDomainSummary(projection)
