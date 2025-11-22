@@ -18,6 +18,6 @@ class CreateCollectionUseCaseMapper {
             primaryLanguage = command.primaryLanguage,
             secondaryLanguages = command.secondaryLanguages?.let(::SecondaryLanguages),
             primaryGenre = command.primaryGenre,
-            secondaryGenres = command.secondaryGenres?.let { SecondaryGenres(it) },
+            secondaryGenres = command.secondaryGenres?.let(::SecondaryGenres),
         )
 }

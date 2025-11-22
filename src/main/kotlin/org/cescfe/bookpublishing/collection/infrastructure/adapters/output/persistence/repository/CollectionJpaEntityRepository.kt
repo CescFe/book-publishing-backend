@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.repository
 
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.entity.CollectionEntity
+import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.projection.CollectionSummaryProjection
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -10,7 +11,7 @@ import java.util.UUID
 interface CollectionJpaEntityRepository : JpaRepository<CollectionEntity, UUID> {
     fun findByName(name: String): CollectionEntity?
 
-    fun findAllByOrderByNameAsc(): List<CollectionEntity>
+    fun findAllProjectedByOrderByNameAsc(): List<CollectionSummaryProjection>
 
-    fun findAllByOrderByNameAsc(pageable: Pageable): List<CollectionEntity>
+    fun findAllProjectedByOrderByNameAsc(pageable: Pageable): List<CollectionSummaryProjection>
 }
