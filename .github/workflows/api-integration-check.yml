@@ -8,11 +8,13 @@ on:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
 jobs:
-  api-integration-check:
+  validate-api-integration:
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
 
     env:
+      GITHUB_USERNAME: ${{ github.actor }}
+      TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
       POSTGRES_DB: root
       POSTGRES_USER: root
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}

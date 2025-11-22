@@ -7,8 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  validate:
+  validate-pull-request:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_USERNAME: ${{ github.actor }}
+      TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
 
     steps:
       - uses: actions/checkout@v4
