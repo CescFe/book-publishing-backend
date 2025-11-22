@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.collection.application.port.input.CreateCollectionUseCase
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper.CollectionRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateCollectionApi
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollection201ResponseDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollectionRequestDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
@@ -22,7 +23,7 @@ class CreateCollectionController(
 ) : CreateCollectionApi {
     override fun createCollection(
         createCollectionRequestDTO: CreateCollectionRequestDTO,
-    ): ResponseEntity<CreateCollectionRequestDTO> {
+    ): ResponseEntity<CreateCollection201ResponseDTO> {
         val command = mapDtoToCommand(createCollectionRequestDTO)
         val createdCollection = createCollectionUseCase.execute(command)
         val responseDto = mapper.toDto(createdCollection)

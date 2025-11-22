@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  validate:
+  validate-pull-request:
     runs-on: ubuntu-latest
 
     steps:
