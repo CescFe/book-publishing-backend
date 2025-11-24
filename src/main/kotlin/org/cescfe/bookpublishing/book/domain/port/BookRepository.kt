@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.domain.model.BookId
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
 
-interface BookRepositoryView {
+interface BookRepository {
     fun findById(id: BookId): Book?
 
     fun findAllSummary(): List<BookSummary>

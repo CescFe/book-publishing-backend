@@ -1,12 +1,12 @@
 package org.cescfe.bookpublishing.author.domain.service
 
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.springframework.stereotype.Component
 
 @Component
 class AuthorDomainServiceImpl(
-    private val authorRepository: AuthorRepositoryView,
+    private val authorRepository: AuthorRepository,
 ) : AuthorDomainService {
     override fun ensureEmailUniqueness(email: String?) {
         if (email != null && authorRepository.existsByEmail(email)) {

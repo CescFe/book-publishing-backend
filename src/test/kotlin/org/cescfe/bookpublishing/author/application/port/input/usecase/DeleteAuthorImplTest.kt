@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.DeleteAuthorInputValuesObjectMother
 import org.junit.jupiter.api.assertThrows
@@ -13,7 +13,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DeleteAuthorImplTest {
-    private val authorRepository = mock<AuthorRepositoryView>()
+    private val authorRepository = mock<AuthorRepository>()
     private val deleteAuthorUseCase = DeleteAuthorInteractor(authorRepository)
 
     @Test

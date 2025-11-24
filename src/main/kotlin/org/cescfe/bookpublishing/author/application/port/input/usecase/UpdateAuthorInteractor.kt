@@ -5,7 +5,7 @@ import org.cescfe.bookpublishing.author.application.port.input.mapper.UpdateAuth
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional
 class UpdateAuthorInteractor(
-    private val authorRepository: AuthorRepositoryView,
+    private val authorRepository: AuthorRepository,
     private val mapper: UpdateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,
 ) : UpdateAuthorUseCase {

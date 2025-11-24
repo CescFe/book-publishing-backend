@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 
-interface AuthorRepositoryView {
+interface AuthorRepository {
     fun findById(id: AuthorId): Author?
 
     fun findAllSummary(): List<AuthorSummary>

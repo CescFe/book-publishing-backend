@@ -4,14 +4,14 @@ import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCas
 import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthorsUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
 class ListAuthorsInteractor(
-    private val authorRepository: AuthorRepositoryView,
+    private val authorRepository: AuthorRepository,
     private val mapper: ListAuthorsUseCaseMapper,
 ) : ListAuthorsUseCase {
     override fun execute(query: ListAuthorsUseCase.Query): PaginatedResult<AuthorSummary> {
