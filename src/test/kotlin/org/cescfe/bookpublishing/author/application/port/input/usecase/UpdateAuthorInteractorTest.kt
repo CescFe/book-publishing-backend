@@ -14,7 +14,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class UpdateAuthorImplTest {
+class UpdateAuthorInteractorTest {
     private val authorRepository = mock<AuthorRepository>()
     private val mapper = mock<UpdateAuthorUseCaseMapper>()
     private val authorDomainService = mock<AuthorDomainService>()
