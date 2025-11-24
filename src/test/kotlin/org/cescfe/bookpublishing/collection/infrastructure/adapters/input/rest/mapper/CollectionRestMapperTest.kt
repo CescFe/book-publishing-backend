@@ -1,6 +1,5 @@
-package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
+package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper
 
-import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper.CollectionRestMapper
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionObjectMother
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
