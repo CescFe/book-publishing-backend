@@ -45,9 +45,16 @@ value class CollectionId(
     val value: UUID,
 ) {
     companion object {
+        private val UUID_REGEX = Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+
         fun generate(): CollectionId = CollectionId(UUID.randomUUID())
 
-        fun fromString(value: String): CollectionId = CollectionId(UUID.fromString(value))
+        fun fromString(value: String): CollectionId {
+            require(value.matches(UUID_REGEX)) {
+                throw CollectionDomainException.collectionIdInvalidFormat(value)
+            }
+            return CollectionId(UUID.fromString(value))
+        }
     }
 }
 

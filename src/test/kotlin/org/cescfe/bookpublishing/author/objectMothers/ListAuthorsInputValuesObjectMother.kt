@@ -6,20 +6,9 @@ object ListAuthorsInputValuesObjectMother {
     fun create(
         page: Int = 1,
         limit: Int = 20,
-    ): ListAuthorsUseCase.InputValues =
-        ListAuthorsUseCase.InputValues(
+    ): ListAuthorsUseCase.Query =
+        ListAuthorsUseCase.Query(
             page = page,
             limit = limit,
         )
-
-    fun createWithPagination(
-        page: Int,
-        limit: Int,
-    ): ListAuthorsUseCase.InputValues = create(page = page, limit = limit)
-
-    fun createFirstPage(): ListAuthorsUseCase.InputValues = create(page = 1, limit = 10)
-
-    fun createSecondPage(): ListAuthorsUseCase.InputValues = create(page = 2, limit = 10)
-
-    fun createWithLargeLimit(): ListAuthorsUseCase.InputValues = create(page = 1, limit = 100)
 }

@@ -8,6 +8,13 @@ class CollectionDomainException(
     cause: Throwable? = null,
 ) : DomainException(message, cause) {
     companion object {
+        // CollectionId exceptions
+        fun collectionIdInvalidFormat(id: String): CollectionDomainException =
+            CollectionDomainException(
+                "Collection id '$id' has invalid format. Expected a valid UUID",
+                "COLLECTION_ID_INVALID_FORMAT",
+            )
+
         // CollectionName exceptions
         fun nameCannotBeBlank(): CollectionDomainException =
             CollectionDomainException("Collection name cannot be blank", "NAME_CANNOT_BE_BLANK")

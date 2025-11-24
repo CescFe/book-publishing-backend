@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.CreateAuthorUseCaseMapper
@@ -10,14 +10,14 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CreateAuthorImpl(
+class CreateAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
     private val mapper: CreateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,
 ) : CreateAuthorUseCase {
-    override fun execute(input: CreateAuthorUseCase.InputValues): Author {
-        authorDomainService.ensureEmailUniqueness(input.email)
-        val author = mapper.toDomain(input)
+    override fun execute(command: CreateAuthorUseCase.Command): Author {
+        authorDomainService.ensureEmailUniqueness(command.email)
+        val author = mapper.toDomain(command)
         return authorRepository.save(author)
     }
 }

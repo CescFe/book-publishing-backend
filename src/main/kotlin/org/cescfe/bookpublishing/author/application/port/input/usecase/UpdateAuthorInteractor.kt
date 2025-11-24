@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.UpdateAuthorUseCaseMapper
@@ -12,19 +12,19 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class UpdateAuthorImpl(
+class UpdateAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
     private val mapper: UpdateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,
 ) : UpdateAuthorUseCase {
-    override fun execute(input: UpdateAuthorUseCase.InputValues): Author {
-        val authorId = AuthorId.fromString(input.authorId)
+    override fun execute(command: UpdateAuthorUseCase.Command): Author {
+        val authorId = AuthorId.fromString(command.authorId)
         val existingAuthor =
             authorRepository.findById(authorId)
-                ?: throw AuthorDomainException.authorNotFound(input.authorId)
+                ?: throw AuthorDomainException.authorNotFound(command.authorId)
 
-        authorDomainService.ensureEmailUniquenessForUpdate(input.email, input.authorId)
-        val updatedAuthor = mapper.toDomain(input, existingAuthor)
+        authorDomainService.ensureEmailUniquenessForUpdate(command.email, command.authorId)
+        val updatedAuthor = mapper.toDomain(command, existingAuthor)
 
         return authorRepository.save(updatedAuthor)
     }

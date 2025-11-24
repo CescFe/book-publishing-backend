@@ -44,9 +44,16 @@ value class BookId(
     val value: UUID,
 ) {
     companion object {
+        private val UUID_REGEX = Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+
         fun generate(): BookId = BookId(UUID.randomUUID())
 
-        fun fromString(value: String): BookId = BookId(UUID.fromString(value))
+        fun fromString(value: String): BookId {
+            require(value.matches(UUID_REGEX)) {
+                throw BookDomainException.bookIdInvalidFormat(value)
+            }
+            return BookId(UUID.fromString(value))
+        }
     }
 }
 

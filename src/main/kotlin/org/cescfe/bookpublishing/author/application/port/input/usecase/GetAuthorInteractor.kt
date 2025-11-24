@@ -1,22 +1,21 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
-import org.cescfe.bookpublishing.author.application.port.input.mapper.GetAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.Author
+import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class GetAuthorImpl(
+class GetAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
-    private val mapper: GetAuthorUseCaseMapper,
 ) : GetAuthorUseCase {
-    override fun execute(input: GetAuthorUseCase.InputValues): Author {
-        val authorId = mapper.toDomain(input.authorId)
+    override fun execute(query: GetAuthorUseCase.Query): Author {
+        val authorId = AuthorId.fromString(query.authorId)
         return authorRepository.findById(authorId)
-            ?: throw AuthorDomainException.authorNotFound(input.authorId)
+            ?: throw AuthorDomainException.authorNotFound(query.authorId)
     }
 }

@@ -25,10 +25,10 @@ class ListAuthorsUseCaseMapperTest {
 
         // Then
         assertEquals(authors, result.data)
-        assertEquals(2, result.meta.total)
-        assertEquals(1, result.meta.page)
-        assertEquals(2, result.meta.limit)
-        assertEquals(1, result.meta.totalPages)
+        assertEquals(2, result.metadata.total)
+        assertEquals(1, result.metadata.page)
+        assertEquals(2, result.metadata.limit)
+        assertEquals(1, result.metadata.totalPages)
     }
 
     @Test
@@ -43,10 +43,10 @@ class ListAuthorsUseCaseMapperTest {
         val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
 
         // Then
-        assertEquals(5, result.meta.total)
-        assertEquals(2, result.meta.page)
-        assertEquals(2, result.meta.limit)
-        assertEquals(3, result.meta.totalPages) // ceil(5/2) = 3
+        assertEquals(5, result.metadata.total)
+        assertEquals(2, result.metadata.page)
+        assertEquals(2, result.metadata.limit)
+        assertEquals(3, result.metadata.totalPages) // ceil(5/2) = 3
     }
 
     @Test
@@ -62,10 +62,10 @@ class ListAuthorsUseCaseMapperTest {
 
         // Then
         assertEquals(emptyList(), result.data)
-        assertEquals(0, result.meta.total)
-        assertEquals(1, result.meta.page)
-        assertEquals(10, result.meta.limit)
-        assertEquals(0, result.meta.totalPages)
+        assertEquals(0, result.metadata.total)
+        assertEquals(1, result.metadata.page)
+        assertEquals(10, result.metadata.limit)
+        assertEquals(0, result.metadata.totalPages)
     }
 
     @Test
@@ -80,6 +80,6 @@ class ListAuthorsUseCaseMapperTest {
         val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
 
         // Then
-        assertEquals(2147483647, result.meta.total)
+        assertEquals(2147483647, result.metadata.total)
     }
 }

@@ -17,7 +17,7 @@ class ListAuthorsUseCaseMapper {
 
         return PaginatedResult(
             data = authors,
-            meta =
+            metadata =
                 PaginationMeta(
                     total = totalCount,
                     page = page,

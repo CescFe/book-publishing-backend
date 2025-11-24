@@ -17,9 +17,16 @@ value class AuthorId(
     val value: UUID,
 ) {
     companion object {
+        private val UUID_REGEX = Regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+
         fun generate(): AuthorId = AuthorId(UUID.randomUUID())
 
-        fun fromString(value: String): AuthorId = AuthorId(UUID.fromString(value))
+        fun fromString(value: String): AuthorId {
+            require(value.matches(UUID_REGEX)) {
+                throw AuthorDomainException.authorIdInvalidFormat(value)
+            }
+            return AuthorId(UUID.fromString(value))
+        }
     }
 }
 

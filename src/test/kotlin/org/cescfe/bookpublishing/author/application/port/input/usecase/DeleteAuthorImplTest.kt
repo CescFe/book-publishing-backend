@@ -1,6 +1,5 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
-import org.cescfe.bookpublishing.author.application.port.input.mapper.DeleteAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
@@ -15,8 +14,7 @@ import kotlin.test.assertEquals
 
 class DeleteAuthorImplTest {
     private val authorRepository = mock<AuthorRepositoryView>()
-    private val mapper = mock<DeleteAuthorUseCaseMapper>()
-    private val deleteAuthorUseCase = DeleteAuthorImpl(authorRepository, mapper)
+    private val deleteAuthorUseCase = DeleteAuthorInteractor(authorRepository)
 
     @Test
     fun `should perform hard delete when author has only AUTHOR role`() {
@@ -28,14 +26,12 @@ class DeleteAuthorImplTest {
                 fullName = "J.R.R. Tolkien",
             )
 
-        whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(authorWithSingleRole)
 
         // When
         deleteAuthorUseCase.execute(input)
 
         // Then
-        verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
         verify(authorRepository).deleteById(authorId)
     }
@@ -46,7 +42,6 @@ class DeleteAuthorImplTest {
         val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
 
-        whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
         // When & Then
@@ -55,7 +50,6 @@ class DeleteAuthorImplTest {
                 deleteAuthorUseCase.execute(input)
             }
         assertEquals("Author with id ${input.authorId} not found", exception.message)
-        verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
     }
 }

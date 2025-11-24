@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.UpdateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
@@ -18,7 +18,7 @@ class UpdateAuthorImplTest {
     private val authorRepository = mock<AuthorRepositoryView>()
     private val mapper = mock<UpdateAuthorUseCaseMapper>()
     private val authorDomainService = mock<AuthorDomainService>()
-    private val updateAuthorUseCase = UpdateAuthorImpl(authorRepository, mapper, authorDomainService)
+    private val updateAuthorUseCase = UpdateAuthorInteractor(authorRepository, mapper, authorDomainService)
 
     companion object {
         private const val EXISTING_EMAIL = "existing@example.com"

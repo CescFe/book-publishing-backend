@@ -3,9 +3,9 @@ package org.cescfe.bookpublishing.author.application.port.input
 import org.cescfe.bookpublishing.author.domain.model.Author
 
 interface CreateAuthorUseCase {
-    fun execute(input: InputValues): Author
+    fun execute(command: Command): Author
 
-    data class InputValues(
+    data class Command(
         val fullName: String,
         val pseudonym: String? = null,
         val biography: String? = null,

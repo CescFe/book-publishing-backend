@@ -30,8 +30,8 @@ class ListAuthorsController(
     private fun mapParametersToInputValues(
         page: Int,
         limit: Int,
-    ): ListAuthorsUseCase.InputValues =
-        ListAuthorsUseCase.InputValues(
+    ): ListAuthorsUseCase.Query =
+        ListAuthorsUseCase.Query(
             page = page,
             limit = limit,
         )
@@ -41,10 +41,10 @@ class ListAuthorsController(
             data = result.data.map { toDto(it) },
             meta =
                 GetAuthors200ResponseAllOfMetaDTO(
-                    total = result.meta.total.toInt(),
-                    page = result.meta.page,
-                    limit = result.meta.limit,
-                    totalPages = result.meta.totalPages,
+                    total = result.metadata.total.toInt(),
+                    page = result.metadata.page,
+                    limit = result.metadata.limit,
+                    totalPages = result.metadata.totalPages,
                 ),
         )
 

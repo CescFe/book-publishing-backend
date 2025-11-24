@@ -18,6 +18,6 @@ class DeleteAuthorController(
         return ResponseEntity.noContent().build()
     }
 
-    private fun mapPathToInputValues(authorId: UUID): DeleteAuthorUseCase.InputValues =
-        DeleteAuthorUseCase.InputValues(authorId = authorId.toString())
+    private fun mapPathToInputValues(authorId: UUID): DeleteAuthorUseCase.Command =
+        DeleteAuthorUseCase.Command(authorId = authorId.toString())
 }

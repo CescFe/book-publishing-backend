@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.domain.model
 
 data class PaginatedResult<T>(
     val data: List<T>,
-    val meta: PaginationMeta,
+    val metadata: PaginationMeta,
 )
 
 data class PaginationMeta(

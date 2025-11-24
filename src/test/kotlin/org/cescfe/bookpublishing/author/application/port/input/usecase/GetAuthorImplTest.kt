@@ -1,6 +1,5 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
-import org.cescfe.bookpublishing.author.application.port.input.mapper.GetAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
@@ -15,8 +14,7 @@ import kotlin.test.assertEquals
 
 class GetAuthorImplTest {
     private val authorRepository = mock<AuthorRepositoryView>()
-    private val mapper = mock<GetAuthorUseCaseMapper>()
-    private val getAuthorUseCase = GetAuthorImpl(authorRepository, mapper)
+    private val getAuthorUseCase = GetAuthorInteractor(authorRepository)
 
     @Test
     fun `should return author when found`() {
@@ -25,7 +23,6 @@ class GetAuthorImplTest {
         val authorId = AuthorId.fromString(input.authorId)
         val expectedAuthor = AuthorObjectMother.createTolkien()
 
-        whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(expectedAuthor)
 
         // When
@@ -33,7 +30,6 @@ class GetAuthorImplTest {
 
         // Then
         assertEquals(expectedAuthor, result)
-        verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
     }
 
@@ -43,7 +39,6 @@ class GetAuthorImplTest {
         val input = GetAuthorInputValuesObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
 
-        whenever(mapper.toDomain(input.authorId)).thenReturn(authorId)
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
         // When & Then
@@ -52,7 +47,6 @@ class GetAuthorImplTest {
                 getAuthorUseCase.execute(input)
             }
         assertEquals("Author with id ${input.authorId} not found", exception.message)
-        verify(mapper).toDomain(input.authorId)
         verify(authorRepository).findById(authorId)
     }
 
@@ -64,13 +58,12 @@ class GetAuthorImplTest {
                 authorId = "invalid-uuid",
             )
 
-        whenever(mapper.toDomain(input.authorId))
-            .thenThrow(IllegalArgumentException("Invalid UUID string: ${input.authorId}"))
-
         // When & Then
-        assertThrows<IllegalArgumentException> {
-            getAuthorUseCase.execute(input)
-        }
-        verify(mapper).toDomain(input.authorId)
+        val exception =
+            assertThrows<AuthorDomainException> {
+                getAuthorUseCase.execute(input)
+            }
+        assertEquals("Author id 'invalid-uuid' has invalid format. Expected a valid UUID", exception.message)
+        assertEquals("AUTHOR_ID_INVALID_FORMAT", exception.subType)
     }
 }
