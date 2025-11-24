@@ -6,9 +6,9 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 
 interface CreateCollectionUseCase {
-    fun execute(command: CreateCollectionCommand): Collection
+    fun execute(command: Command): Collection
 
-    data class CreateCollectionCommand(
+    data class Command(
         val name: String,
         val readingLevel: ReadingLevel? = null,
         val primaryLanguage: Language? = null,

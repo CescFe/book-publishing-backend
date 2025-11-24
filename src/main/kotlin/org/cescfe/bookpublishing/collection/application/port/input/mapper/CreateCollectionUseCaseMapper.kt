@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 class CreateCollectionUseCaseMapper {
-    fun toDomain(command: CreateCollectionUseCase.CreateCollectionCommand): Collection =
+    fun toDomain(command: CreateCollectionUseCase.Command): Collection =
         Collection(
             id = CollectionId.generate(),
             name = CollectionName(command.name),

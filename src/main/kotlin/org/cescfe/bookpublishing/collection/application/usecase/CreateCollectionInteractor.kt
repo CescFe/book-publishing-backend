@@ -13,7 +13,7 @@ class CreateCollectionInteractor(
     private val collectionRepository: CollectionRepository,
     private val mapper: CreateCollectionUseCaseMapper,
 ) : CreateCollectionUseCase {
-    override fun execute(command: CreateCollectionUseCase.CreateCollectionCommand): Collection {
+    override fun execute(command: CreateCollectionUseCase.Command): Collection {
         val collection = mapper.toDomain(command)
         return collectionRepository.save(collection)
     }
