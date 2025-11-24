@@ -2,6 +2,7 @@ package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception
 
 import jakarta.validation.ConstraintViolationException
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
+import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.ApiException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.NotFoundException
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception.model.ApiError
@@ -18,6 +19,29 @@ import org.springframework.web.servlet.NoHandlerFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    @ExceptionHandler(BookDomainException::class)
+    fun handleBookDomainException(
+        ex: BookDomainException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> {
+        val status =
+            when (ex.subType) {
+                "BOOK_NOT_FOUND" -> HttpStatus.NOT_FOUND
+                else -> HttpStatus.BAD_REQUEST
+            }
+
+        return buildErrorResponse(
+            status = status,
+            message = ex.message ?: "Invalid book data",
+            code = ex.subType,
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+    }
+
     @ExceptionHandler(AuthorDomainException::class)
     fun handleAuthorDomainException(
         ex: AuthorDomainException,
