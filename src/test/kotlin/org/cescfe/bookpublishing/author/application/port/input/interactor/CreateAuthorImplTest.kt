@@ -25,6 +25,7 @@ class CreateAuthorImplTest {
         private const val TOLKIEN_EMAIL = "tolkien@example.com"
         private const val EXISTING_EMAIL = "existing@example.com"
         private const val EXPECTED_ERROR_MESSAGE = "Author with email '$EXISTING_EMAIL' already exists"
+        private const val EXPECTED_ERROR_SUBTYPE = "EMAIL_ALREADY_EXISTS"
     }
 
     @Test
@@ -82,6 +83,7 @@ class CreateAuthorImplTest {
             }
 
         assertEquals(EXPECTED_ERROR_MESSAGE, exception.message)
+        assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
         verify(authorDomainService).ensureEmailUniqueness(EXISTING_EMAIL)
         verify(mapper, never()).toDomain(any())
         verify(authorRepository, never()).save(any())

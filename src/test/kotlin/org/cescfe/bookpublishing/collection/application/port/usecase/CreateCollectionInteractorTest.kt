@@ -20,6 +20,11 @@ class CreateCollectionInteractorTest {
     private val mapper = mock<CreateCollectionUseCaseMapper>()
     private val createCollectionUseCase = CreateCollectionInteractor(collectionRepository, mapper)
 
+    companion object {
+        private const val EXPECTED_ERROR_MESSAGE = "Collection name cannot be blank"
+        private const val EXPECTED_ERROR_SUBTYPE = "NAME_CANNOT_BE_BLANK"
+    }
+
     @Test
     fun `should create collection successfully`() {
         // Given
@@ -72,8 +77,8 @@ class CreateCollectionInteractorTest {
                 createCollectionUseCase.execute(input)
             }
 
-        assertEquals("Collection name cannot be blank", exception.message)
-        assertEquals("NAME_CANNOT_BE_BLANK", exception.subType)
+        assertEquals(EXPECTED_ERROR_MESSAGE, exception.message)
+        assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
         verify(mapper).toDomain(input)
         verify(collectionRepository, never()).save(any())
     }
