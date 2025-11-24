@@ -11,8 +11,8 @@ object UpdateAuthorInputValuesObjectMother {
         biography: String? = null,
         email: String? = null,
         website: String? = null,
-    ): UpdateAuthorUseCase.InputValues =
-        UpdateAuthorUseCase.InputValues(
+    ): UpdateAuthorUseCase.Command =
+        UpdateAuthorUseCase.Command(
             authorId = authorId,
             fullName = fullName,
             pseudonym = pseudonym,
@@ -21,7 +21,7 @@ object UpdateAuthorInputValuesObjectMother {
             website = website,
         )
 
-    fun createWithTolkienId(): UpdateAuthorUseCase.InputValues =
+    fun createWithTolkienId(): UpdateAuthorUseCase.Command =
         create(
             authorId = "477537ff-7e8b-4930-bd41-d7f3589120b1",
         )

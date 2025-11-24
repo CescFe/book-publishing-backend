@@ -22,6 +22,6 @@ class GetAuthorController(
         return ResponseEntity.ok(responseDto)
     }
 
-    private fun mapPathToInputValues(authorId: UUID): GetAuthorUseCase.InputValues =
-        GetAuthorUseCase.InputValues(authorId = authorId.toString())
+    private fun mapPathToInputValues(authorId: UUID): GetAuthorUseCase.Query =
+        GetAuthorUseCase.Query(authorId = authorId.toString())
 }

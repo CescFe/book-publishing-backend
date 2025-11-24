@@ -29,8 +29,8 @@ class UpdateAuthorController(
     private fun mapPathAndDtoToInputValues(
         authorId: UUID,
         dto: CreateAuthorRequestDTO,
-    ): UpdateAuthorUseCase.InputValues =
-        UpdateAuthorUseCase.InputValues(
+    ): UpdateAuthorUseCase.Command =
+        UpdateAuthorUseCase.Command(
             authorId = authorId.toString(),
             fullName = dto.fullName,
             pseudonym = dto.pseudonym,

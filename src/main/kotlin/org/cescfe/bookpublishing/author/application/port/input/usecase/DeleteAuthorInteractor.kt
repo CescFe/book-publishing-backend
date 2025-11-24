@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional
 class DeleteAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
 ) : DeleteAuthorUseCase {
-    override fun execute(input: DeleteAuthorUseCase.InputValues) {
-        val authorId = AuthorId.fromString(input.authorId)
+    override fun execute(command: DeleteAuthorUseCase.Command) {
+        val authorId = AuthorId.fromString(command.authorId)
 
         authorRepository.findById(authorId)
-            ?: throw AuthorDomainException.authorNotFound(input.authorId)
+            ?: throw AuthorDomainException.authorNotFound(command.authorId)
 
         authorRepository.deleteById(authorId)
     }

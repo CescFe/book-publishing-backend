@@ -14,10 +14,10 @@ class ListAuthorsInteractor(
     private val authorRepository: AuthorRepositoryView,
     private val mapper: ListAuthorsUseCaseMapper,
 ) : ListAuthorsUseCase {
-    override fun execute(input: ListAuthorsUseCase.InputValues): PaginatedResult<AuthorSummary> {
-        val authors = authorRepository.findAllSummary(input.page, input.limit)
+    override fun execute(query: ListAuthorsUseCase.Query): PaginatedResult<AuthorSummary> {
+        val authors = authorRepository.findAllSummary(query.page, query.limit)
         val totalCount = authorRepository.countAll()
 
-        return mapper.toPaginatedResult(authors, totalCount, input.page, input.limit)
+        return mapper.toPaginatedResult(authors, totalCount, query.page, query.limit)
     }
 }

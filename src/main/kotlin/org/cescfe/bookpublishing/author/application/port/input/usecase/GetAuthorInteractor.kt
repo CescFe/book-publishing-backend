@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional
 class GetAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
 ) : GetAuthorUseCase {
-    override fun execute(input: GetAuthorUseCase.InputValues): Author {
-        val authorId = AuthorId.fromString(input.authorId)
+    override fun execute(query: GetAuthorUseCase.Query): Author {
+        val authorId = AuthorId.fromString(query.authorId)
         return authorRepository.findById(authorId)
-            ?: throw AuthorDomainException.authorNotFound(input.authorId)
+            ?: throw AuthorDomainException.authorNotFound(query.authorId)
     }
 }

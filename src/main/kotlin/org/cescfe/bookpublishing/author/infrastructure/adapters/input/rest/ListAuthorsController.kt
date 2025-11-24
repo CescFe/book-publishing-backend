@@ -30,8 +30,8 @@ class ListAuthorsController(
     private fun mapParametersToInputValues(
         page: Int,
         limit: Int,
-    ): ListAuthorsUseCase.InputValues =
-        ListAuthorsUseCase.InputValues(
+    ): ListAuthorsUseCase.Query =
+        ListAuthorsUseCase.Query(
             page = page,
             limit = limit,
         )

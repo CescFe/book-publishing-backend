@@ -15,9 +15,9 @@ class CreateAuthorInteractor(
     private val mapper: CreateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,
 ) : CreateAuthorUseCase {
-    override fun execute(input: CreateAuthorUseCase.InputValues): Author {
-        authorDomainService.ensureEmailUniqueness(input.email)
-        val author = mapper.toDomain(input)
+    override fun execute(command: CreateAuthorUseCase.Command): Author {
+        authorDomainService.ensureEmailUniqueness(command.email)
+        val author = mapper.toDomain(command)
         return authorRepository.save(author)
     }
 }

@@ -35,8 +35,8 @@ class CreateAuthorController(
             .buildAndExpand(authorId)
             .toUri()
 
-    private fun mapDtoToInputValues(dto: CreateAuthorRequestDTO): CreateAuthorUseCase.InputValues =
-        CreateAuthorUseCase.InputValues(
+    private fun mapDtoToInputValues(dto: CreateAuthorRequestDTO): CreateAuthorUseCase.Command =
+        CreateAuthorUseCase.Command(
             fullName = dto.fullName,
             pseudonym = dto.pseudonym,
             biography = dto.biography,

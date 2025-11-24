@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 class UpdateAuthorUseCaseMapper {
     fun toDomain(
-        input: UpdateAuthorUseCase.InputValues,
+        input: UpdateAuthorUseCase.Command,
         existingAuthor: Author,
     ): Author =
         Author(

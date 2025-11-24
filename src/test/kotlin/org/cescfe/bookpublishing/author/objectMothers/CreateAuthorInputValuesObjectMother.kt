@@ -9,8 +9,8 @@ object CreateAuthorInputValuesObjectMother {
         biography: String? = null,
         email: String? = null,
         website: String? = null,
-    ): CreateAuthorUseCase.InputValues =
-        CreateAuthorUseCase.InputValues(
+    ): CreateAuthorUseCase.Command =
+        CreateAuthorUseCase.Command(
             fullName = fullName,
             pseudonym = pseudonym,
             biography = biography,
@@ -18,7 +18,7 @@ object CreateAuthorInputValuesObjectMother {
             website = website,
         )
 
-    fun createTolkien(): CreateAuthorUseCase.InputValues =
+    fun createTolkien(): CreateAuthorUseCase.Command =
         create(
             fullName = "J.R.R. Tolkien",
             pseudonym = "Tolkien",
@@ -27,12 +27,12 @@ object CreateAuthorInputValuesObjectMother {
             website = "https://www.tolkiensociety.org",
         )
 
-    fun createMinimal(): CreateAuthorUseCase.InputValues =
+    fun createMinimal(): CreateAuthorUseCase.Command =
         create(
             fullName = "Minimal Author",
         )
 
-    fun createWithEmail(email: String): CreateAuthorUseCase.InputValues =
+    fun createWithEmail(email: String): CreateAuthorUseCase.Command =
         create(
             fullName = "Test Author",
             email = email,
