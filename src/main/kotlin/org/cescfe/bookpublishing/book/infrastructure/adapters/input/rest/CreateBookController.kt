@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.book.application.port.input.CreateBookUseCase
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper.BookRestMapper
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateBooksApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBooks201ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBooksRequestDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateBookApi
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBook201ResponseDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBookRequestDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -21,9 +21,9 @@ import java.util.UUID
 class CreateBookController(
     private val createBookUseCase: CreateBookUseCase,
     private val mapper: BookRestMapper,
-) : CreateBooksApi {
-    override fun createBooks(createBooksRequestDTO: CreateBooksRequestDTO): ResponseEntity<CreateBooks201ResponseDTO> {
-        val command = mapDtoToCommand(createBooksRequestDTO)
+) : CreateBookApi {
+    override fun createBook(createBookRequestDTO: CreateBookRequestDTO): ResponseEntity<CreateBook201ResponseDTO> {
+        val command = mapDtoToCommand(createBookRequestDTO)
         val createdBook = createBookUseCase.execute(command)
         val responseDto = mapper.toDto(createdBook)
         val uri = buildResourceUri(createdBook.id.value)
@@ -37,7 +37,7 @@ class CreateBookController(
             .buildAndExpand(bookId)
             .toUri()
 
-    fun mapDtoToCommand(dto: CreateBooksRequestDTO): CreateBookUseCase.Command =
+    fun mapDtoToCommand(dto: CreateBookRequestDTO): CreateBookUseCase.Command =
         CreateBookUseCase.Command(
             title = dto.title,
             authorId = dto.authorId,

@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper
 
 import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
 import org.junit.jupiter.api.Test
-import java.net.URI
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -33,7 +32,7 @@ class BookRestMapperTest {
         assertEquals(book.isbn!!.value, dto.isbn)
         assertEquals(book.publicationDate!!.value, dto.publicationDate)
         assertEquals(book.pageCount!!.value, dto.pageCount)
-        assertEquals(URI.create(book.coverImagePath!!.value), dto.coverImageUrl)
+        assertEquals(book.coverImagePath!!.value, dto.coverImagePath)
         assertEquals(book.description!!.value, dto.description)
     }
 
@@ -61,7 +60,7 @@ class BookRestMapperTest {
         assertNull(dto.isbn)
         assertNull(dto.publicationDate)
         assertNull(dto.pageCount)
-        assertNull(dto.coverImageUrl)
+        assertNull(dto.coverImagePath)
         assertNull(dto.description)
     }
 }
