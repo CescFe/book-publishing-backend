@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistenc
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.domain.model.BookId
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
-import org.cescfe.bookpublishing.book.domain.port.BookRepositoryView
+import org.cescfe.bookpublishing.book.domain.port.BookRepository
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.mapper.BookPersistenceMapper
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 class JpaBookRepository(
     private val bookJpaEntityRepository: BookJpaEntityRepository,
     private val bookMapper: BookPersistenceMapper,
-) : BookRepositoryView {
+) : BookRepository {
     override fun findById(id: BookId): Book? =
         bookJpaEntityRepository
             .findById(id.value)
