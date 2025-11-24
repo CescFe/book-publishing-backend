@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.collection.infrastructure.adapters.output.pers
 import org.cescfe.bookpublishing.collection.domain.model.Collection
 import org.cescfe.bookpublishing.collection.domain.model.CollectionId
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
-import org.cescfe.bookpublishing.collection.domain.port.CollectionRepositoryView
+import org.cescfe.bookpublishing.collection.domain.port.CollectionRepository
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.output.persistence.mapper.CollectionPersistenceMapper
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository
 class JpaCollectionRepository(
     private val collectionJpaEntityRepository: CollectionJpaEntityRepository,
     private val collectionMapper: CollectionPersistenceMapper,
-) : CollectionRepositoryView {
+) : CollectionRepository {
     override fun findById(id: CollectionId): Collection? =
         collectionJpaEntityRepository
             .findById(id.value)
@@ -22,7 +22,7 @@ class JpaCollectionRepository(
 
     override fun findAllSummary(): List<CollectionSummary> =
         collectionJpaEntityRepository
-            .findAllByOrderByNameAsc()
+            .findAllProjectedByOrderByNameAsc()
             .map { collectionMapper.toDomainSummary(it) }
 
     override fun findAllSummary(
@@ -31,7 +31,7 @@ class JpaCollectionRepository(
     ): List<CollectionSummary> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return collectionJpaEntityRepository
-            .findAllByOrderByNameAsc(pageable)
+            .findAllProjectedByOrderByNameAsc(pageable)
             .map { collectionMapper.toDomainSummary(it) }
     }
 
@@ -51,5 +51,5 @@ class JpaCollectionRepository(
     override fun findByName(name: String): Collection? =
         collectionJpaEntityRepository
             .findByName(name)
-            ?.let { collectionMapper.toDomain(it) }
+            ?.let { entity -> collectionMapper.toDomain(entity) }
 }

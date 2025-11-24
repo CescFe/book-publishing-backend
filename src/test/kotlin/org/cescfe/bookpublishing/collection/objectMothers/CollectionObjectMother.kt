@@ -11,6 +11,8 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import java.util.UUID
 
 object CollectionObjectMother {
+    private const val COLLECTION_ID_CONTROLLER_IT = "223e4567-e89b-12d3-a456-426614174000"
+
     fun create(
         id: UUID = UUID.randomUUID(),
         name: String = "Test Collection",
@@ -43,5 +45,19 @@ object CollectionObjectMother {
     fun createMinimal(): Collection =
         create(
             name = "Minimal Collection",
+        )
+
+    // ==============
+    // Controller IT
+    // ==============
+    fun createForControllerIT(): Collection =
+        create(
+            id = UUID.fromString(COLLECTION_ID_CONTROLLER_IT),
+            name = "Fantasy Classics",
+            readingLevel = ReadingLevel.ADULT,
+            primaryLanguage = Language.ENGLISH,
+            secondaryLanguages = listOf(Language.CATALAN, Language.SPANISH),
+            primaryGenre = Genre.FANTASY,
+            secondaryGenres = listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION),
         )
 }

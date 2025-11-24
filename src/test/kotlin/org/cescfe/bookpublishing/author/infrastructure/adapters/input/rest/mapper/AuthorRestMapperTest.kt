@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapp
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class AuthorRestMapperTest {
     private val mapper = AuthorRestMapper()
@@ -17,7 +17,6 @@ class AuthorRestMapperTest {
         val result = mapper.toDto(author)
 
         // Then
-        assertNotNull(result)
         assertEquals(author.id.value, result.id)
         assertEquals(author.fullName.value, result.fullName)
         assertEquals(author.pseudonym!!.value, result.pseudonym)
@@ -35,7 +34,10 @@ class AuthorRestMapperTest {
         val result = mapper.toDto(author)
 
         // Then
-        assertNotNull(result)
         assertEquals(author.fullName.value, result.fullName)
+        assertNull(result.pseudonym)
+        assertNull(result.biography)
+        assertNull(result.email)
+        assertNull(result.website)
     }
 }

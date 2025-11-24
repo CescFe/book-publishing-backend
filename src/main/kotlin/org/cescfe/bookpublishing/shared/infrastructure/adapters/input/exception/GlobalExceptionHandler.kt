@@ -24,7 +24,7 @@ class GlobalExceptionHandler {
         request: WebRequest,
     ): ResponseEntity<ApiError> {
         val status =
-            when (ex.exceptionSubType) {
+            when (ex.subType) {
                 "AUTHOR_NOT_FOUND" -> HttpStatus.NOT_FOUND
                 else -> HttpStatus.BAD_REQUEST
             }
@@ -32,7 +32,7 @@ class GlobalExceptionHandler {
         return buildErrorResponse(
             status = status,
             message = ex.message ?: "Invalid author data",
-            code = ex.exceptionSubType,
+            code = ex.subType,
             details =
                 mapOf(
                     "path" to getPath(request),

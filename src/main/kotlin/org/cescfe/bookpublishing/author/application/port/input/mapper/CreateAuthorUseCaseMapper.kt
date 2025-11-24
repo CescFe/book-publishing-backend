@@ -16,18 +16,9 @@ class CreateAuthorUseCaseMapper {
         Author(
             id = AuthorId.generate(),
             fullName = FullName(input.fullName),
-            pseudonym = input.pseudonym?.let { Pseudonym(it) },
-            biography = input.biography?.let { Biography(it) },
-            email = input.email?.let { Email(it) },
-            website = input.website?.let { Website(it) },
-        )
-
-    fun toInputValues(author: Author): CreateAuthorUseCase.InputValues =
-        CreateAuthorUseCase.InputValues(
-            fullName = author.fullName.value,
-            pseudonym = author.pseudonym?.value,
-            biography = author.biography?.value,
-            email = author.email?.value,
-            website = author.website?.value,
+            pseudonym = input.pseudonym?.let(::Pseudonym),
+            biography = input.biography?.let(::Biography),
+            email = input.email?.let(::Email),
+            website = input.website?.let(::Website),
         )
 }

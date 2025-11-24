@@ -38,8 +38,8 @@ class CreateCollectionController(
             .buildAndExpand(collectionId)
             .toUri()
 
-    private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.CreateCollectionCommand =
-        CreateCollectionUseCase.CreateCollectionCommand(
+    private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.Command =
+        CreateCollectionUseCase.Command(
             name = dto.name,
             readingLevel = ReadingLevel.valueOf(dto.readingLevel.toString()),
             primaryLanguage = Language.valueOf(dto.primaryLanguage.toString()),

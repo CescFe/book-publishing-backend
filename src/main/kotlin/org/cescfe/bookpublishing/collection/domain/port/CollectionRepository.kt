@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.collection.domain.model.Collection
 import org.cescfe.bookpublishing.collection.domain.model.CollectionId
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 
-interface CollectionRepositoryView {
+interface CollectionRepository {
     fun findById(id: CollectionId): Collection?
 
     fun findAllSummary(): List<CollectionSummary>
