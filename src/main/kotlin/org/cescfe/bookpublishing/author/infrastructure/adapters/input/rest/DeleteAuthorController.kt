@@ -13,11 +13,8 @@ class DeleteAuthorController(
     private val deleteAuthorUseCase: DeleteAuthorUseCase,
 ) : DeleteAuthorByIdApi {
     override fun deleteAuthor(id: UUID): ResponseEntity<Unit> {
-        val inputValues = mapPathToInputValues(id)
-        deleteAuthorUseCase.execute(inputValues)
+        val command = DeleteAuthorUseCase.Command(authorId = id.toString())
+        deleteAuthorUseCase.execute(command)
         return ResponseEntity.noContent().build()
     }
-
-    private fun mapPathToInputValues(authorId: UUID): DeleteAuthorUseCase.Command =
-        DeleteAuthorUseCase.Command(authorId = authorId.toString())
 }
