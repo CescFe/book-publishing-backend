@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.shared.domain.exception.DomainException
 
 class AuthorDomainException(
     message: String,
-    val exceptionSubType: String,
+    val subType: String,
     cause: Throwable? = null,
 ) : DomainException(message, cause) {
     companion object {
