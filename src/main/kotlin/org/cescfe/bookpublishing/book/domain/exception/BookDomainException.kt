@@ -4,10 +4,17 @@ import org.cescfe.bookpublishing.shared.domain.exception.DomainException
 
 class BookDomainException(
     message: String,
-    val exceptionSubType: String,
+    val subType: String,
     cause: Throwable? = null,
 ) : DomainException(message, cause) {
     companion object {
+        // BookId exceptions
+        fun bookIdInvalidFormat(id: String): BookDomainException =
+            BookDomainException(
+                "Book id '$id' has invalid format. Expected a valid UUID",
+                "BOOK_ID_INVALID_FORMAT",
+            )
+
         // BookTitle exceptions
         fun titleCannotBeBlank(): BookDomainException =
             BookDomainException("Book title cannot be blank", "TITLE_CANNOT_BE_BLANK")

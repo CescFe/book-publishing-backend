@@ -8,6 +8,13 @@ class AuthorDomainException(
     cause: Throwable? = null,
 ) : DomainException(message, cause) {
     companion object {
+        // AuthorId exceptions
+        fun authorIdInvalidFormat(id: String): AuthorDomainException =
+            AuthorDomainException(
+                "Author id '$id' has invalid format. Expected a valid UUID",
+                "AUTHOR_ID_INVALID_FORMAT",
+            )
+
         // FullName exceptions
         fun fullNameCannotBeBlank(): AuthorDomainException =
             AuthorDomainException("Full name cannot be blank", "FULL_NAME_CANNOT_BE_BLANK")
@@ -45,10 +52,6 @@ class AuthorDomainException(
 
         fun websiteInvalidProtocol(): AuthorDomainException =
             AuthorDomainException("Website must start with http:// or https://", "WEBSITE_INVALID_PROTOCOL")
-
-        // AuthorId exceptions
-        fun authorIdInvalidFormat(id: String): AuthorDomainException =
-            AuthorDomainException("Author id '$id' has invalid format. Expected a valid UUID", "AUTHOR_ID_INVALID_FORMAT")
 
         // Author not found exception
         fun authorNotFound(id: String): AuthorDomainException =
