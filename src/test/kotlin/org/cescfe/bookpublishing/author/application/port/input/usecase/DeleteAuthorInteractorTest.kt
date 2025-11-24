@@ -1,35 +1,33 @@
 package org.cescfe.bookpublishing.author.application.port.input.usecase
 
+import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
-import org.cescfe.bookpublishing.author.objectMothers.DeleteAuthorInputValuesObjectMother
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class DeleteAuthorImplTest {
-    private val authorRepository = mock<AuthorRepository>()
+class DeleteAuthorInteractorTest {
+    private val authorRepository: AuthorRepository = mock()
     private val deleteAuthorUseCase = DeleteAuthorInteractor(authorRepository)
 
     @Test
-    fun `should perform hard delete when author has only AUTHOR role`() {
+    fun `should delete author successfully`() {
         // Given
-        val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
-        val authorId = AuthorId.fromString(input.authorId)
-        val authorWithSingleRole =
-            AuthorObjectMother.create(
-                fullName = "J.R.R. Tolkien",
-            )
+        val command = DeleteAuthorUseCase.Command(UUID.randomUUID().toString())
+        val authorId = AuthorId.fromString(command.authorId)
+        val author = AuthorObjectMother.create()
 
-        whenever(authorRepository.findById(authorId)).thenReturn(authorWithSingleRole)
+        whenever(authorRepository.findById(authorId)).thenReturn(author)
 
         // When
-        deleteAuthorUseCase.execute(input)
+        deleteAuthorUseCase.execute(command)
 
         // Then
         verify(authorRepository).findById(authorId)
@@ -39,17 +37,18 @@ class DeleteAuthorImplTest {
     @Test
     fun `should throw exception when author not found`() {
         // Given
-        val input = DeleteAuthorInputValuesObjectMother.createWithTolkienId()
-        val authorId = AuthorId.fromString(input.authorId)
+        val command = DeleteAuthorUseCase.Command(UUID.randomUUID().toString())
+        val authorId = AuthorId.fromString(command.authorId)
 
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
         // When & Then
         val exception =
             assertThrows<AuthorDomainException> {
-                deleteAuthorUseCase.execute(input)
+                deleteAuthorUseCase.execute(command)
             }
-        assertEquals("Author with id ${input.authorId} not found", exception.message)
+        assertEquals("Author with id ${command.authorId} not found", exception.message)
+        assertEquals("AUTHOR_NOT_FOUND", exception.subType)
         verify(authorRepository).findById(authorId)
     }
 }

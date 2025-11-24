@@ -13,7 +13,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ListAuthorImplTest {
+class ListAuthorInteractorTest {
     private val authorRepository = mock<AuthorRepository>()
     private val mapper = mock<ListAuthorsUseCaseMapper>()
     private val listAuthorsUseCase = ListAuthorsInteractor(authorRepository, mapper)

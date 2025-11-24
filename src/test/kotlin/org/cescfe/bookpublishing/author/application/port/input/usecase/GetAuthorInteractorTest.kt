@@ -12,7 +12,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class GetAuthorImplTest {
+class GetAuthorInteractorTest {
     private val authorRepository = mock<AuthorRepository>()
     private val getAuthorUseCase = GetAuthorInteractor(authorRepository)
 
