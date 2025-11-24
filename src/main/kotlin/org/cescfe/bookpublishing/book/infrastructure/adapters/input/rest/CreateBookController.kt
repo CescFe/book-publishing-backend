@@ -37,7 +37,7 @@ class CreateBookController(
             .buildAndExpand(bookId)
             .toUri()
 
-    fun mapDtoToCommand(dto: CreateBookRequestDTO): CreateBookUseCase.Command =
+    private fun mapDtoToCommand(dto: CreateBookRequestDTO): CreateBookUseCase.Command =
         CreateBookUseCase.Command(
             title = dto.title,
             authorId = dto.authorId,
