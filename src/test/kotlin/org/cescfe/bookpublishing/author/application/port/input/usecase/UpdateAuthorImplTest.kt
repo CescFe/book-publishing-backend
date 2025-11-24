@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.application.port.input.usecase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.UpdateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.UpdateAuthorInputValuesObjectMother
@@ -15,7 +15,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class UpdateAuthorImplTest {
-    private val authorRepository = mock<AuthorRepositoryView>()
+    private val authorRepository = mock<AuthorRepository>()
     private val mapper = mock<UpdateAuthorUseCaseMapper>()
     private val authorDomainService = mock<AuthorDomainService>()
     private val updateAuthorUseCase = UpdateAuthorInteractor(authorRepository, mapper, authorDomainService)

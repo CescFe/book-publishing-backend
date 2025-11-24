@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.CreateAuthorUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorInputValuesObjectMother
@@ -16,7 +16,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 class CreateAuthorImplTest {
-    private val authorRepository = mock<AuthorRepositoryView>()
+    private val authorRepository = mock<AuthorRepository>()
     private val mapper = mock<CreateAuthorUseCaseMapper>()
     private val authorDomainService = mock<AuthorDomainService>()
     private val createAuthorUseCase = CreateAuthorInteractor(authorRepository, mapper, authorDomainService)

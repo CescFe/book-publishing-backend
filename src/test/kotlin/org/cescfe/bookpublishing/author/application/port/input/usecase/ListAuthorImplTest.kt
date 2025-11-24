@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthor
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.author.domain.port.AuthorRepositoryView
+import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.ListAuthorsInputValuesObjectMother
 import org.mockito.kotlin.mock
@@ -14,7 +14,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ListAuthorImplTest {
-    private val authorRepository = mock<AuthorRepositoryView>()
+    private val authorRepository = mock<AuthorRepository>()
     private val mapper = mock<ListAuthorsUseCaseMapper>()
     private val listAuthorsUseCase = ListAuthorsInteractor(authorRepository, mapper)
 
