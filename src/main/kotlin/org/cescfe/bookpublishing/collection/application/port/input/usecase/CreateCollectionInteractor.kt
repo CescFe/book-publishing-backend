@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.collection.application.usecase
+package org.cescfe.bookpublishing.collection.application.port.input.usecase
 
 import org.cescfe.bookpublishing.collection.application.port.input.CreateCollectionUseCase
 import org.cescfe.bookpublishing.collection.application.port.input.mapper.CreateCollectionUseCaseMapper

@@ -1,7 +1,6 @@
-package org.cescfe.bookpublishing.collection.application.port.usecase
+package org.cescfe.bookpublishing.collection.application.port.input.usecase
 
 import org.cescfe.bookpublishing.collection.application.port.input.mapper.CreateCollectionUseCaseMapper
-import org.cescfe.bookpublishing.collection.application.usecase.CreateCollectionInteractor
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
 import org.cescfe.bookpublishing.collection.domain.port.CollectionRepository
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionObjectMother

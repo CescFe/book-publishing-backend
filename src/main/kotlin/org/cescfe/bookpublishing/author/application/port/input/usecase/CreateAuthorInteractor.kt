@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.CreateAuthorUseCaseMapper
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class CreateAuthorImpl(
+class CreateAuthorInteractor(
     private val authorRepository: AuthorRepositoryView,
     private val mapper: CreateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,

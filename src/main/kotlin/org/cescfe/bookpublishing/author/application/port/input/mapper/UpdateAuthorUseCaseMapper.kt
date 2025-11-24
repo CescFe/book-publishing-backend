@@ -23,14 +23,4 @@ class UpdateAuthorUseCaseMapper {
             email = input.email?.let { Email(it) },
             website = input.website?.let { Website(it) },
         )
-
-    fun toInputValues(author: Author): UpdateAuthorUseCase.InputValues =
-        UpdateAuthorUseCase.InputValues(
-            authorId = author.id.value.toString(),
-            fullName = author.fullName.value,
-            pseudonym = author.pseudonym?.value,
-            biography = author.biography?.value,
-            email = author.email?.value,
-            website = author.website?.value,
-        )
 }

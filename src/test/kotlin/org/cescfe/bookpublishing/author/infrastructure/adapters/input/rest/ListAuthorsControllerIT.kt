@@ -58,7 +58,7 @@ class ListAuthorsControllerIT {
         val paginatedResult =
             PaginatedResult(
                 data = listOf(testAuthorSummary),
-                meta =
+                metadata =
                     PaginationMeta(
                         total = 1L,
                         page = 1,
@@ -93,7 +93,7 @@ class ListAuthorsControllerIT {
         val emptyResult =
             PaginatedResult(
                 data = listOf<AuthorSummary>(),
-                meta =
+                metadata =
                     PaginationMeta(
                         total = 0L,
                         page = 1,

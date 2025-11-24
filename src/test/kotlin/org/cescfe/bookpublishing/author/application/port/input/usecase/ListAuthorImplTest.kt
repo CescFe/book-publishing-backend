@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthorsUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 class ListAuthorImplTest {
     private val authorRepository = mock<AuthorRepositoryView>()
     private val mapper = mock<ListAuthorsUseCaseMapper>()
-    private val listAuthorsUseCase = ListAuthorsImpl(authorRepository, mapper)
+    private val listAuthorsUseCase = ListAuthorsInteractor(authorRepository, mapper)
 
     @Test
     fun `should return paginated result when authors found`() {
@@ -31,7 +31,7 @@ class ListAuthorImplTest {
         val expectedResult =
             PaginatedResult(
                 data = authors,
-                meta =
+                metadata =
                     PaginationMeta(
                         total = 2,
                         page = 1,
@@ -64,7 +64,7 @@ class ListAuthorImplTest {
         val expectedResult =
             PaginatedResult(
                 data = emptyAuthors,
-                meta =
+                metadata =
                     PaginationMeta(
                         total = 0,
                         page = 1,
@@ -97,7 +97,7 @@ class ListAuthorImplTest {
         val expectedResult =
             PaginatedResult(
                 data = authors,
-                meta =
+                metadata =
                     PaginationMeta(
                         total = 3,
                         page = 2,

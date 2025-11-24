@@ -46,6 +46,10 @@ class AuthorDomainException(
         fun websiteInvalidProtocol(): AuthorDomainException =
             AuthorDomainException("Website must start with http:// or https://", "WEBSITE_INVALID_PROTOCOL")
 
+        // AuthorId exceptions
+        fun authorIdInvalidFormat(id: String): AuthorDomainException =
+            AuthorDomainException("Author id '$id' has invalid format. Expected a valid UUID", "AUTHOR_ID_INVALID_FORMAT")
+
         // Author not found exception
         fun authorNotFound(id: String): AuthorDomainException =
             AuthorDomainException("Author with id $id not found", "AUTHOR_NOT_FOUND")

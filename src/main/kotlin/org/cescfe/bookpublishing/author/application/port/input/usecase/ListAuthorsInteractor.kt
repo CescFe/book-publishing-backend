@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.application.port.input.interactor
+package org.cescfe.bookpublishing.author.application.port.input.usecase
 
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthorsUseCaseMapper
@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ListAuthorsImpl(
+class ListAuthorsInteractor(
     private val authorRepository: AuthorRepositoryView,
     private val mapper: ListAuthorsUseCaseMapper,
 ) : ListAuthorsUseCase {
