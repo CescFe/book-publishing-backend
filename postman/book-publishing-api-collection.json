@@ -319,17 +319,35 @@
             "description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
           },
           "response": []
-        },
+        }
+      ]
+    },
+    {
+      "name": "Collections",
+      "item": [
         {
-          "name": "Delete author",
+          "name": "Create collection",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Successful DELETE request\", function () {",
-                  "    pm.expect(pm.response.code).to.be.oneOf([200, 202, 204]);",
+                  "// Parse the JSON response",
+                  "let response = pm.response.json();",
+                  "",
+                  "// verify backend returns id property",
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "    pm.expect(response).to.have.property(\"id\");",
                   "});",
+                  "",
+                  "// Save id as env variable",
+                  "if (response.id) {",
+                  "    pm.environment.set(\"collection_id\", response.id);",
+                  "    console.log(\"✅ Saved collection_id:\", response.id);",
+                  "} else {",
+                  "    console.warn(\"⚠️ No 'id' found in response:\", response);",
+                  "}",
                   ""
                 ],
                 "type": "text/javascript",
@@ -349,11 +367,11 @@
                 }
               ]
             },
-            "method": "DELETE",
+            "method": "POST",
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "",
+              "raw": "{\n    \"name\": \"Fantasy Classics\",\n    \"reading_level\": \"ADULT\",\n    \"primary_language\": \"ENGLISH\",\n    \"secondary_languages\": [\"CATALAN\", \"SPANISH\"],\n    \"primary_genre\": \"FANTASY\",\n    \"secondary_genres\": [\"ADVENTURE\", \"HISTORICAL_FICTION\"]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -361,25 +379,88 @@
               }
             },
             "url": {
-              "raw": "{{base_url}}/api/{{api_version}}/authors/:id",
+              "raw": "{{base_url}}/api/{{api_version}}/collections",
               "host": [
                 "{{base_url}}"
               ],
               "path": [
                 "api",
                 "{{api_version}}",
-                "authors",
-                ":id"
-              ],
-              "variable": [
+                "collections"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create book",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Parse the JSON response",
+                  "let response = pm.response.json();",
+                  "",
+                  "// verify backend returns id property",
+                  "pm.test(\"Successful POST request\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "    pm.expect(response).to.have.property(\"id\");",
+                  "});",
+                  "",
+                  "// Save id as env variable",
+                  "if (response.id) {",
+                  "    pm.environment.set(\"book_id\", response.id);",
+                  "    console.log(\"✅ Saved book_id:\", response.id);",
+                  "} else {",
+                  "    console.warn(\"⚠️ No 'id' found in response:\", response);",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
                 {
-                  "key": "id",
-                  "value": "{{author_id}}",
-                  "description": "uuid"
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
                 }
               ]
             },
-            "description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"The Lord of the Rings\",\n    \"author_id\": \"{{author_id}}\",\n    \"collection_id\": \"{{collection_id}}\",\n    \"reading_level\": \"ADULT\",\n    \"primary_language\": \"ENGLISH\",\n    \"secondary_languages\": [\"CATALAN\", \"SPANISH\"],\n    \"primary_genre\": \"FANTASY\",\n    \"secondary_genres\": [\"ADVENTURE\", \"HISTORICAL_FICTION\"],\n    \"base_price\": 29.99,\n    \"vat_rate\": 0.04,\n    \"isbn\": \"9780007141326\",\n    \"publication_date\": \"1954-07-29\",\n    \"page_count\": 1178,\n    \"cover_image_path\": \"/images/lotr-cover.jpg\",\n    \"description\": \"An epic high fantasy novel written by J.R.R. Tolkien.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/{{api_version}}/books",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "{{api_version}}",
+                "books"
+              ]
+            }
           },
           "response": []
         }

@@ -22,6 +22,8 @@ import java.time.LocalDate
 import java.util.UUID
 
 object BookObjectMother {
+    private const val BOOK_ID_CONTROLLER_IT = "223e4567-e89b-12d3-a456-426614174000"
+
     fun create(
         id: UUID = UUID.randomUUID(),
         title: String = "Test Book",
@@ -88,5 +90,29 @@ object BookObjectMother {
         create(
             title = "Minimal Book",
             basePrice = 9.99,
+        )
+
+    // ==============
+    // Controller IT
+    // ==============
+    fun createForControllerIT(): Book =
+        create(
+            id = UUID.fromString(BOOK_ID_CONTROLLER_IT),
+            title = "The Lord of the Rings",
+            authorId = UUID.fromString("223e4567-e89b-12d3-a456-426614174001"),
+            collectionId = UUID.fromString("223e4567-e89b-12d3-a456-426614174002"),
+            readingLevel = ReadingLevel.ADULT,
+            primaryLanguage = Language.ENGLISH,
+            secondaryLanguages = listOf(Language.CATALAN, Language.SPANISH),
+            primaryGenre = Genre.FANTASY,
+            secondaryGenres = listOf(Genre.ADVENTURE, Genre.HISTORICAL_FICTION),
+            basePrice = 29.99,
+            vatRate = 0.04,
+            isbn = "9780007141326",
+            publicationDate = LocalDate.of(1954, 7, 29),
+            pageCount = 1178,
+            coverImagePath = "/images/lotr-cover.jpg",
+            description = "An epic high fantasy novel written by J.R.R. Tolkien.",
+            status = Status.PUBLISHED,
         )
 }
