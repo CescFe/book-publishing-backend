@@ -17,6 +17,11 @@ class DeleteCollectionInteractorTest {
     private val collectionRepository: CollectionRepository = mock()
     private val deleteCollectionUseCase = DeleteCollectionInteractor(collectionRepository)
 
+    companion object {
+        private const val EXPECTED_ERROR_MESSAGE = "Collection with id %s not found"
+        private const val EXPECTED_ERROR_SUBTYPE = "COLLECTION_NOT_FOUND"
+    }
+
     @Test
     fun `should delete collection successfully`() {
         // Given
@@ -47,8 +52,8 @@ class DeleteCollectionInteractorTest {
             assertThrows<CollectionDomainException> {
                 deleteCollectionUseCase.execute(command)
             }
-        assertEquals("Collection with id ${command.collectionId} not found", exception.message)
-        assertEquals("COLLECTION_NOT_FOUND", exception.subType)
+        assertEquals(String.format(EXPECTED_ERROR_MESSAGE, command.collectionId), exception.message)
+        assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
         verify(collectionRepository).findById(collectionId)
     }
 }

@@ -17,6 +17,14 @@ class GetCollectionInteractorTest {
     private val collectionRepository: CollectionRepository = mock()
     private val getCollectionUseCase = GetCollectionInteractor(collectionRepository)
 
+    companion object {
+        private const val NOT_FOUND_MESSAGE = "Collection with id %s not found"
+        private const val NOT_FOUND_SUBTYPE = "COLLECTION_NOT_FOUND"
+        private const val INVALID_UUID = "invalid-uuid"
+        private const val INVALID_UUID_MESSAGE = "Collection id '%s' has invalid format. Expected a valid UUID"
+        private const val INVALID_UUID_SUBTYPE = "COLLECTION_ID_INVALID_FORMAT"
+    }
+
     @Test
     fun `should return collection when found`() {
         // Given
@@ -47,22 +55,22 @@ class GetCollectionInteractorTest {
             assertThrows<CollectionDomainException> {
                 getCollectionUseCase.execute(query)
             }
-        assertEquals("Collection with id ${query.collectionId} not found", exception.message)
-        assertEquals("COLLECTION_NOT_FOUND", exception.subType)
+        assertEquals(String.format(NOT_FOUND_MESSAGE, query.collectionId), exception.message)
+        assertEquals(NOT_FOUND_SUBTYPE, exception.subType)
         verify(collectionRepository).findById(collectionId)
     }
 
     @Test
     fun `should throw exception when collectionId is invalid`() {
         // Given
-        val query = GetCollectionUseCase.Query(collectionId = "invalid-uuid")
+        val query = GetCollectionUseCase.Query(collectionId = INVALID_UUID)
 
         // When & Then
         val exception =
             assertThrows<CollectionDomainException> {
                 getCollectionUseCase.execute(query)
             }
-        assertEquals("Collection id 'invalid-uuid' has invalid format. Expected a valid UUID", exception.message)
-        assertEquals("COLLECTION_ID_INVALID_FORMAT", exception.subType)
+        assertEquals(String.format(INVALID_UUID_MESSAGE, query.collectionId), exception.message)
+        assertEquals(INVALID_UUID_SUBTYPE, exception.subType)
     }
 }
