@@ -18,11 +18,11 @@ class GetBookInteractorTest {
     private val getBookUseCase = GetBookInteractor(bookRepository)
 
     companion object {
-        private const val NOT_FOUND_MESSAGE = "Collection with id %s not found"
-        private const val NOT_FOUND_SUBTYPE = "COLLECTION_NOT_FOUND"
+        private const val NOT_FOUND_MESSAGE = "Book with id %s not found"
+        private const val NOT_FOUND_SUBTYPE = "BOOK_NOT_FOUND"
         private const val INVALID_UUID = "invalid-uuid"
-        private const val INVALID_UUID_MESSAGE = "Collection id '%s' has invalid format. Expected a valid UUID"
-        private const val INVALID_UUID_SUBTYPE = "COLLECTION_ID_INVALID_FORMAT"
+        private const val INVALID_UUID_MESSAGE = "Book id '%s' has invalid format. Expected a valid UUID"
+        private const val INVALID_UUID_SUBTYPE = "BOOK_ID_INVALID_FORMAT"
     }
 
     @Test
