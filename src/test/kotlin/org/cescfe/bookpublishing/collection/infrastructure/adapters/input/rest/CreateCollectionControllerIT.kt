@@ -36,6 +36,8 @@ class CreateCollectionControllerIT {
     private lateinit var createCollectionUseCase: CreateCollectionUseCase
 
     companion object {
+        private const val URI = "/api/v1/collections"
+        private const val ROLE = "ROLE_ADMIN"
         const val TEST_COLLECTION_ID = "223e4567-e89b-12d3-a456-426614174000"
     }
 
@@ -62,8 +64,8 @@ class CreateCollectionControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .post("/api/v1/collections")
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .post(URI)
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE)))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestBody),
             ).andExpect(MockMvcResultMatchers.status().isCreated)

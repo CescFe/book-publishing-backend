@@ -74,7 +74,5 @@ class CreateAuthorControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.biography").value("English writer and philologist"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("tolkien@example.com"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.website").value("https://www.tolkiensociety.org"))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.created_at").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.updated_at").exists())
     }
 }

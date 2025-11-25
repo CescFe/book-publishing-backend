@@ -1,11 +1,10 @@
-package org.cescfe.bookpublishing.collection.infrastructure.adapters
+package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.collection.application.port.input.DeleteCollectionUseCase
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
-import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.DeleteCollectionController
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
 import org.mockito.kotlin.whenever
 import java.util.UUID
 import kotlin.test.Test
@@ -23,7 +22,7 @@ class DeleteCollectionControllerTest {
 
     @BeforeEach
     fun setup() {
-        deleteCollectionUseCase = mock()
+        deleteCollectionUseCase = Mockito.mock()
         deleteCollectionController = DeleteCollectionController(deleteCollectionUseCase)
     }
 
