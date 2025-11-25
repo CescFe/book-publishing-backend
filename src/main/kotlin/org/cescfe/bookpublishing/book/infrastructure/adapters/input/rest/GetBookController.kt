@@ -16,12 +16,9 @@ class GetBookController(
     private val mapper: BookRestMapper,
 ) : GetBookByIdApi {
     override fun getBookByID(id: UUID): ResponseEntity<CreateBook201ResponseDTO> {
-        val inputValues = mapPathToInputValues(id)
-        val book = getBookUseCase.execute(inputValues)
+        val query = GetBookUseCase.Query(bookId = id.toString())
+        val book = getBookUseCase.execute(query)
         val responseDto = mapper.toDto(book)
         return ResponseEntity.ok(responseDto)
     }
-
-    private fun mapPathToInputValues(bookId: UUID): GetBookUseCase.Query =
-        GetBookUseCase.Query(bookId = bookId.toString())
 }

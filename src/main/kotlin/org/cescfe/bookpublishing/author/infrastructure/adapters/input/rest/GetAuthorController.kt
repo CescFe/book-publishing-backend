@@ -16,12 +16,9 @@ class GetAuthorController(
     private val mapper: AuthorRestMapper,
 ) : GetAuthorByIdApi {
     override fun getAuthorByID(id: UUID): ResponseEntity<CreateAuthor201ResponseDTO> {
-        val inputValues = mapPathToInputValues(id)
-        val author = getAuthorUseCase.execute(inputValues)
+        val query = GetAuthorUseCase.Query(authorId = id.toString())
+        val author = getAuthorUseCase.execute(query)
         val responseDto = mapper.toDto(author)
         return ResponseEntity.ok(responseDto)
     }
-
-    private fun mapPathToInputValues(authorId: UUID): GetAuthorUseCase.Query =
-        GetAuthorUseCase.Query(authorId = authorId.toString())
 }
