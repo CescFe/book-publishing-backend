@@ -8,13 +8,16 @@ import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import java.util.UUID
+import kotlin.test.assertEquals
 
 class DeleteAuthorControllerTest {
     private lateinit var deleteAuthorUseCase: DeleteAuthorUseCase
     private lateinit var deleteAuthorController: DeleteAuthorController
 
     companion object {
-        const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val NOT_FOUND_MESSAGE = "Author with id %s not found"
+        private const val NOT_FOUND_SUBTYPE = "AUTHOR_NOT_FOUND"
+        private const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
     @BeforeEach
@@ -31,8 +34,11 @@ class DeleteAuthorControllerTest {
         )
 
         // When & Then
-        assertThrows<AuthorDomainException> {
-            deleteAuthorController.deleteAuthor(UUID.fromString(NON_EXISTENT_AUTHOR_ID))
-        }
+        val exception =
+            assertThrows<AuthorDomainException> {
+                deleteAuthorController.deleteAuthor(UUID.fromString(NON_EXISTENT_AUTHOR_ID))
+            }
+        assertEquals(String.format(NOT_FOUND_MESSAGE, NON_EXISTENT_AUTHOR_ID), exception.message)
+        assertEquals(NOT_FOUND_SUBTYPE, exception.subType)
     }
 }

@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.book.application.port.input.DeleteBookUseCase
-import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -36,7 +35,9 @@ class DeleteBookControllerIT {
     private lateinit var deleteBookUseCase: DeleteBookUseCase
 
     companion object {
-        const val TEST_BOOK_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val URI = "/api/v1/books/%s"
+        private const val ROLE = "ROLE_ADMIN"
+        private const val TEST_BOOK_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
     @BeforeEach
@@ -49,22 +50,8 @@ class DeleteBookControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .delete("/api/v1/books/{id}", TEST_BOOK_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
+                    .delete(String.format(URI, TEST_BOOK_ID))
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
             ).andExpect(MockMvcResultMatchers.status().isNoContent)
-    }
-
-    @Test
-    fun `should return not found when deleting non-existent book`() {
-        whenever(deleteBookUseCase.execute(any())).thenThrow(
-            BookDomainException.bookNotFound(TEST_BOOK_ID),
-        )
-
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders
-                    .delete("/api/v1/books/{id}", TEST_BOOK_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
-            ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

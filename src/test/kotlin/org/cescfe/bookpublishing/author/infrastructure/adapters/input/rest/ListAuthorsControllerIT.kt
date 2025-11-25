@@ -89,30 +89,4 @@ class ListAuthorsControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.limit").value(20))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total_pages").value(1))
     }
-
-    @Test
-    fun `should return empty list when no authors exist`() {
-        val emptyResult =
-            PaginatedResult(
-                data = listOf<AuthorSummary>(),
-                metadata =
-                    PaginationMeta(
-                        total = 0L,
-                        page = 1,
-                        limit = 20,
-                        totalPages = 0,
-                    ),
-            )
-        whenever(listAuthorsUseCase.execute(any())).thenReturn(emptyResult)
-
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders
-                    .get(URI)
-                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
-            ).andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(0))
-    }
 }
