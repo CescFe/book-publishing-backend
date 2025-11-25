@@ -65,7 +65,6 @@ class DeleteCollectionControllerIT {
                 MockMvcRequestBuilders
                     .delete("/api/v1/collections/{id}", TEST_COLLECTION_ID)
                     .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
-            )
-            .andExpect(MockMvcResultMatchers.status().isNotFound)
+            ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }
