@@ -43,7 +43,9 @@ class GetAuthorControllerIT {
     private lateinit var getAuthorUseCase: GetAuthorUseCase
 
     companion object {
-        const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val URI = "/api/v1/authors/%s"
+        private const val ROLE = "ROLE_USER"
+        private const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
     @BeforeEach
@@ -65,8 +67,8 @@ class GetAuthorControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .get("/api/v1/authors/{id}", TEST_AUTHOR_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
+                    .get(String.format(URI, TEST_AUTHOR_ID))
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(TEST_AUTHOR_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.full_name").value("J.R.R. Tolkien"))
@@ -85,8 +87,8 @@ class GetAuthorControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .get("/api/v1/authors/{id}", TEST_AUTHOR_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
+                    .get(String.format(URI, TEST_AUTHOR_ID))
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
             ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

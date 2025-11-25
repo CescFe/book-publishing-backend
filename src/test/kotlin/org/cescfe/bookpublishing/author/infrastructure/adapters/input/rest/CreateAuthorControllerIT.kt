@@ -36,7 +36,9 @@ class CreateAuthorControllerIT {
     private lateinit var createAuthorUseCase: CreateAuthorUseCase
 
     companion object {
-        const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val URI = "/api/v1/authors"
+        private const val ROLE = "ROLE_ADMIN"
+        private const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
     @BeforeEach
@@ -61,8 +63,8 @@ class CreateAuthorControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .post("/api/v1/authors")
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .post(String.format(URI, TEST_AUTHOR_ID), requestBody)
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE)))
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(requestBody),
             ).andExpect(MockMvcResultMatchers.status().isCreated)
