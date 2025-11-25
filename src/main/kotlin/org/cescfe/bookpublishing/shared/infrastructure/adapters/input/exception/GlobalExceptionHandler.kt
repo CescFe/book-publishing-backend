@@ -3,6 +3,7 @@ package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception
 import jakarta.validation.ConstraintViolationException
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
+import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.ApiException
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.NotFoundException
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception.model.ApiError
@@ -33,6 +34,29 @@ class GlobalExceptionHandler {
         return buildErrorResponse(
             status = status,
             message = ex.message ?: "Invalid book data",
+            code = ex.subType,
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+    }
+
+    @ExceptionHandler(CollectionDomainException::class)
+    fun handleCollectionDomainException(
+        ex: CollectionDomainException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> {
+        val status =
+            when (ex.subType) {
+                "COLLECTION_NOT_FOUND" -> HttpStatus.NOT_FOUND
+                else -> HttpStatus.BAD_REQUEST
+            }
+
+        return buildErrorResponse(
+            status = status,
+            message = ex.message ?: "Invalid collection data",
             code = ex.subType,
             details =
                 mapOf(
