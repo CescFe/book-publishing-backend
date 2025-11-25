@@ -16,29 +16,7 @@ data class Collection(
     val primaryGenre: Genre? = null,
     val secondaryGenres: SecondaryGenres? = null,
     val audit: Metadata? = null,
-) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Collection) return false
-
-        return id == other.id &&
-            name == other.name &&
-            readingLevel == other.readingLevel &&
-            primaryLanguage == other.primaryLanguage &&
-            secondaryLanguages == other.secondaryLanguages &&
-            primaryGenre == other.primaryGenre &&
-            secondaryGenres == other.secondaryGenres
-    }
-
-    override fun hashCode(): Int =
-        id.hashCode() +
-            name.hashCode() +
-            (readingLevel?.hashCode() ?: 0) +
-            (primaryLanguage?.hashCode() ?: 0) +
-            (secondaryLanguages?.hashCode() ?: 0) +
-            (primaryGenre?.hashCode() ?: 0) +
-            (secondaryGenres?.hashCode() ?: 0)
-}
+)
 
 @JvmInline
 value class CollectionId(

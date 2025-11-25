@@ -30,7 +30,7 @@ class GetAuthorInteractorTest {
         // Given
         val query = GetAuthorUseCase.Query(authorId = UUID.randomUUID().toString())
         val authorId = AuthorId.fromString(query.authorId)
-        val expectedAuthor = AuthorObjectMother.createTolkien()
+        val expectedAuthor = AuthorObjectMother.createWithAllFields()
 
         whenever(authorRepository.findById(authorId)).thenReturn(expectedAuthor)
 

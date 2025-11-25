@@ -9,6 +9,7 @@ import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
 import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.entity.AuthorEntity
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.springframework.stereotype.Component
 
 @Component
@@ -31,6 +32,13 @@ class AuthorPersistenceMapper {
             biography = entity.biography?.let { Biography(it) },
             email = entity.email?.let { Email(it) },
             website = entity.website?.let { Website(it) },
+            audit =
+                Metadata(
+                    createdAt = entity.createdAt,
+                    createdBy = entity.createdBy,
+                    updatedAt = entity.updatedAt,
+                    updatedBy = entity.updatedBy,
+                ),
         )
 
     fun toDomainSummary(entity: AuthorEntity): AuthorSummary =

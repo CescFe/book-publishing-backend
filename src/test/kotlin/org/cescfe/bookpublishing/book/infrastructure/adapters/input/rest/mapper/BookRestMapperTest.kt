@@ -12,7 +12,14 @@ class BookRestMapperTest {
     @Test
     fun `should map domain book to response DTO`() {
         // Given
-        val book = BookObjectMother.createWithAllFields()
+        val audit =
+            org.cescfe.bookpublishing.shared.domain.model.Metadata(
+                createdAt = java.time.LocalDateTime.now(),
+                createdBy = "admin",
+                updatedAt = java.time.LocalDateTime.now(),
+                updatedBy = "admin",
+            )
+        val book = BookObjectMother.createWithAllFields().copy(audit = audit)
 
         // When
         val dto = mapper.toDto(book)
@@ -35,6 +42,10 @@ class BookRestMapperTest {
         assertEquals(book.pageCount!!.value, dto.pageCount)
         assertEquals(book.coverImagePath!!.value, dto.coverImagePath)
         assertEquals(book.description!!.value, dto.description)
+        assertEquals(book.audit?.createdAt?.atOffset(java.time.ZoneOffset.UTC), dto.createdAt)
+        assertEquals(book.audit?.createdBy, dto.createdBy)
+        assertEquals(book.audit?.updatedAt?.atOffset(java.time.ZoneOffset.UTC), dto.updatedAt)
+        assertEquals(book.audit?.updatedBy, dto.updatedBy)
     }
 
     @Test

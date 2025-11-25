@@ -2,6 +2,7 @@ package org.cescfe.bookpublishing.book.domain.model
 
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -28,6 +29,7 @@ data class Book(
     val coverImagePath: CoverImagePath? = null,
     val description: Description? = null,
     val status: Status? = null,
+    val audit: Metadata? = null,
 ) {
     val finalPrice: Double
         get() = calculateFinalPrice()

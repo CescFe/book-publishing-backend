@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.author.domain.model
 
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import java.util.UUID
 
 data class Author(
@@ -10,6 +11,7 @@ data class Author(
     val biography: Biography? = null,
     val email: Email? = null,
     val website: Website? = null,
+    val audit: Metadata? = null,
 )
 
 @JvmInline

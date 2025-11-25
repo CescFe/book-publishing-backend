@@ -30,7 +30,7 @@ class UpdateAuthorInteractorTest {
         // Given
         val input = UpdateAuthorCommandObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
-        val existingAuthor = AuthorObjectMother.createTolkien()
+        val existingAuthor = AuthorObjectMother.createWithAllFields()
         val updatedAuthor =
             AuthorObjectMother.create(
                 id = authorId.value,
@@ -79,7 +79,7 @@ class UpdateAuthorInteractorTest {
                 email = EXISTING_EMAIL,
             )
         val authorId = AuthorId.fromString(input.authorId)
-        val existingAuthor = AuthorObjectMother.createTolkien()
+        val existingAuthor = AuthorObjectMother.createWithAllFields()
 
         whenever(authorRepository.findById(authorId)).thenReturn(existingAuthor)
         whenever(authorDomainService.ensureEmailUniquenessForUpdate(EXISTING_EMAIL, input.authorId))

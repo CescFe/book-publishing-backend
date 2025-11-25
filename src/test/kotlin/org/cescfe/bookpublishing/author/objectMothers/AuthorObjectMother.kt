@@ -7,6 +7,7 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import java.util.UUID
 
 object AuthorObjectMother {
@@ -19,6 +20,7 @@ object AuthorObjectMother {
         biography: String? = null,
         email: String? = null,
         website: String? = null,
+        audit: Metadata? = null,
     ): Author =
         Author(
             id = AuthorId(id),
@@ -27,9 +29,10 @@ object AuthorObjectMother {
             biography = biography?.let { Biography(it) },
             email = email?.let { Email(it) },
             website = website?.let { Website(it) },
+            audit = audit,
         )
 
-    fun createTolkien(): Author =
+    fun createWithAllFields(): Author =
         create(
             fullName = "J.R.R. Tolkien",
             pseudonym = "Tolkien",
@@ -43,16 +46,10 @@ object AuthorObjectMother {
             fullName = "Minimal Author",
         )
 
-    fun createWithEmail(email: String): Author =
-        create(
-            fullName = "Test Author",
-            email = email,
-        )
-
     // ==============
     // Controller IT
     // ==============
-    fun createWithAllFields(): Author =
+    fun createForControllerIT(): Author =
         create(
             id = UUID.fromString(AUTHOR_ID_CONTROLLER_IT),
             fullName = "J.R.R. Tolkien",

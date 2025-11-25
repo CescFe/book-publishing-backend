@@ -91,6 +91,10 @@ class BookPersistenceMapperTest {
         assertEquals(entity.coverImagePath, result.coverImagePath!!.value)
         assertEquals(entity.description, result.description!!.value)
         assertEquals(entity.status, result.status)
+        assertEquals(entity.createdAt, result.audit?.createdAt)
+        assertEquals(entity.createdBy, result.audit?.createdBy)
+        assertEquals(entity.updatedAt, result.audit?.updatedAt)
+        assertEquals(entity.updatedBy, result.audit?.updatedBy)
     }
 
     @Test

@@ -18,7 +18,7 @@ class AuthorPersistenceMapperTest {
     @Test
     fun `should map author domain to entity correctly`() {
         // Given
-        val author = AuthorObjectMother.createTolkien()
+        val author = AuthorObjectMother.createWithAllFields()
 
         // When
         val result = authorMapper.fromDomain(author)
@@ -64,6 +64,10 @@ class AuthorPersistenceMapperTest {
         assertEquals(Biography(entity.biography!!), result.biography)
         assertEquals(Email(entity.email!!), result.email)
         assertEquals(Website(entity.website!!), result.website)
+        assertEquals(entity.createdAt, result.audit?.createdAt)
+        assertEquals(entity.createdBy, result.audit?.createdBy)
+        assertEquals(entity.updatedAt, result.audit?.updatedAt)
+        assertEquals(entity.updatedBy, result.audit?.updatedBy)
     }
 
     @Test
