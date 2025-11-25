@@ -13,7 +13,7 @@ class DeleteAuthorControllerTest {
     private lateinit var deleteAuthorUseCase: DeleteAuthorUseCase
     private lateinit var deleteAuthorController: DeleteAuthorController
 
-    companion object{
+    companion object {
         const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 

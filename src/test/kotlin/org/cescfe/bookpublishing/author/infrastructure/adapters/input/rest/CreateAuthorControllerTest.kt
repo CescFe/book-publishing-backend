@@ -15,7 +15,7 @@ class CreateAuthorControllerTest {
     private lateinit var mapper: AuthorRestMapper
     private lateinit var createAuthorController: CreateAuthorController
 
-    companion object{
+    companion object {
         const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
