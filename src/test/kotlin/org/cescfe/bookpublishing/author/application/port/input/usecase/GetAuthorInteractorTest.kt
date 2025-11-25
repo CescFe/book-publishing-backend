@@ -17,6 +17,14 @@ class GetAuthorInteractorTest {
     private val authorRepository: AuthorRepository = mock()
     private val getAuthorUseCase = GetAuthorInteractor(authorRepository)
 
+    companion object {
+        private const val NOT_FOUND_MESSAGE = "Author with id %s not found"
+        private const val NOT_FOUND_SUBTYPE = "AUTHOR_NOT_FOUND"
+        private const val INVALID_UUID = "invalid-uuid"
+        private const val INVALID_UUID_MESSAGE = "Author id '%s' has invalid format. Expected a valid UUID"
+        private const val INVALID_UUID_SUBTYPE = "AUTHOR_ID_INVALID_FORMAT"
+    }
+
     @Test
     fun `should return author when found`() {
         // Given
@@ -47,22 +55,22 @@ class GetAuthorInteractorTest {
             assertThrows<AuthorDomainException> {
                 getAuthorUseCase.execute(query)
             }
-        assertEquals("Author with id ${query.authorId} not found", exception.message)
-        assertEquals("AUTHOR_NOT_FOUND", exception.subType)
+        assertEquals(String.format(NOT_FOUND_MESSAGE, query.authorId), exception.message)
+        assertEquals(NOT_FOUND_SUBTYPE, exception.subType)
         verify(authorRepository).findById(authorId)
     }
 
     @Test
     fun `should throw exception when authorId is invalid`() {
         // Given
-        val query = GetAuthorUseCase.Query(authorId = "invalid-uuid")
+        val query = GetAuthorUseCase.Query(authorId = INVALID_UUID)
 
         // When & Then
         val exception =
             assertThrows<AuthorDomainException> {
                 getAuthorUseCase.execute(query)
             }
-        assertEquals("Author id 'invalid-uuid' has invalid format. Expected a valid UUID", exception.message)
-        assertEquals("AUTHOR_ID_INVALID_FORMAT", exception.subType)
+        assertEquals(String.format(INVALID_UUID_MESSAGE, query.authorId), exception.message)
+        assertEquals(INVALID_UUID_SUBTYPE, exception.subType)
     }
 }
