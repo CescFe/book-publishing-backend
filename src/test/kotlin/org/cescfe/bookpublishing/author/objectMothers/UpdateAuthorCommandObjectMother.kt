@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.objectMothers
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import java.util.UUID
 
-object UpdateAuthorInputValuesObjectMother {
+object UpdateAuthorCommandObjectMother {
     fun create(
         authorId: String = UUID.randomUUID().toString(),
         fullName: String = "Updated Author",

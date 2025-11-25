@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.objectMothers
 
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 
-object ListAuthorsInputValuesObjectMother {
+object ListAuthorsQueryObjectMother {
     fun create(
         page: Int = 1,
         limit: Int = 20,

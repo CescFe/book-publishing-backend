@@ -1,6 +1,6 @@
 package org.cescfe.bookpublishing.author.application.port.input.mapper
 
-import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorInputValuesObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorCommandObjectMother
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -11,7 +11,7 @@ class CreateAuthorUseCaseMapperTest {
     @Test
     fun `should map input values to domain author`() {
         // Given
-        val input = CreateAuthorInputValuesObjectMother.createTolkien()
+        val input = CreateAuthorCommandObjectMother.createTolkien()
 
         // When
         val result = mapper.toDomain(input)
@@ -27,7 +27,7 @@ class CreateAuthorUseCaseMapperTest {
     @Test
     fun `should map input values with minimal fields`() {
         // Given
-        val input = CreateAuthorInputValuesObjectMother.createMinimal()
+        val input = CreateAuthorCommandObjectMother.createMinimal()
 
         // When
         val result = mapper.toDomain(input)

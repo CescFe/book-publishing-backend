@@ -6,7 +6,7 @@ import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
-import org.cescfe.bookpublishing.author.objectMothers.UpdateAuthorInputValuesObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.UpdateAuthorCommandObjectMother
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -28,7 +28,7 @@ class UpdateAuthorInteractorTest {
     @Test
     fun `should update author successfully`() {
         // Given
-        val input = UpdateAuthorInputValuesObjectMother.createWithTolkienId()
+        val input = UpdateAuthorCommandObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
         val existingAuthor = AuthorObjectMother.createTolkien()
         val updatedAuthor =
@@ -56,7 +56,7 @@ class UpdateAuthorInteractorTest {
     @Test
     fun `should throw exception when author not found`() {
         // Given
-        val input = UpdateAuthorInputValuesObjectMother.createWithTolkienId()
+        val input = UpdateAuthorCommandObjectMother.createWithTolkienId()
         val authorId = AuthorId.fromString(input.authorId)
 
         whenever(authorRepository.findById(authorId)).thenReturn(null)
@@ -74,7 +74,7 @@ class UpdateAuthorInteractorTest {
     fun `should throw exception when email already exists for another author`() {
         // Given
         val input =
-            UpdateAuthorInputValuesObjectMother.create(
+            UpdateAuthorCommandObjectMother.create(
                 authorId = EXISTING_ID,
                 email = EXISTING_EMAIL,
             )

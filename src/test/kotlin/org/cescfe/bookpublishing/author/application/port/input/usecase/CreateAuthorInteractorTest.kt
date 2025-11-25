@@ -5,7 +5,7 @@ import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.cescfe.bookpublishing.author.domain.service.AuthorDomainService
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
-import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorInputValuesObjectMother
+import org.cescfe.bookpublishing.author.objectMothers.CreateAuthorCommandObjectMother
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.any
@@ -31,7 +31,7 @@ class CreateAuthorInteractorTest {
     @Test
     fun `should create author successfully`() {
         // Given
-        val input = CreateAuthorInputValuesObjectMother.createTolkien()
+        val input = CreateAuthorCommandObjectMother.createTolkien()
         val expectedAuthor = AuthorObjectMother.createTolkien()
 
         whenever(mapper.toDomain(input)).thenReturn(expectedAuthor)
@@ -51,7 +51,7 @@ class CreateAuthorInteractorTest {
     @Test
     fun `should create author without optional fields`() {
         // Given
-        val input = CreateAuthorInputValuesObjectMother.createMinimal()
+        val input = CreateAuthorCommandObjectMother.createMinimal()
         val expectedAuthor = AuthorObjectMother.createMinimal()
 
         whenever(mapper.toDomain(input)).thenReturn(expectedAuthor)
@@ -71,7 +71,7 @@ class CreateAuthorInteractorTest {
     @Test
     fun `should throw exception when email already exists`() {
         // Given
-        val input = CreateAuthorInputValuesObjectMother.createWithEmail(EXISTING_EMAIL)
+        val input = CreateAuthorCommandObjectMother.createWithEmail(EXISTING_EMAIL)
 
         whenever(authorDomainService.ensureEmailUniqueness(EXISTING_EMAIL))
             .thenThrow(AuthorDomainException.emailAlreadyExists(EXISTING_EMAIL))
