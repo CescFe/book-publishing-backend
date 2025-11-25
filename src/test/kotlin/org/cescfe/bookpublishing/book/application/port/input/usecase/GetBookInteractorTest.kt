@@ -39,6 +39,7 @@ class GetBookInteractorTest {
 
         // Then
         assertEquals(expectedBook, result)
+        assertEquals(expectedBook.finalPrice, result.finalPrice)
         verify(bookRepository).findById(bookId)
     }
 

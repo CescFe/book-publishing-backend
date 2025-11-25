@@ -34,6 +34,7 @@ class BookRestMapper {
                 },
             basePrice = domain.basePrice.value,
             vatRate = domain.vatRate?.value,
+            finalPrice = domain.finalPrice,
             isbn = domain.isbn?.value,
             publicationDate = domain.publicationDate?.value,
             pageCount = domain.pageCount?.value,
