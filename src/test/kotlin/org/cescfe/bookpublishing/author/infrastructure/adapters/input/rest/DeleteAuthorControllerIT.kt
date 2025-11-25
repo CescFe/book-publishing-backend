@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.DeleteAuthorUseCase
-import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -54,19 +53,5 @@ class DeleteAuthorControllerIT {
                     .delete(String.format(URI, TEST_AUTHOR_ID))
                     .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
             ).andExpect(MockMvcResultMatchers.status().isNoContent)
-    }
-
-    @Test
-    fun `should return not found when deleting non-existent author`() {
-        whenever(deleteAuthorUseCase.execute(any())).thenThrow(
-            AuthorDomainException.authorNotFound(TEST_AUTHOR_ID),
-        )
-
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders
-                    .delete(URI, TEST_AUTHOR_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE))),
-            ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

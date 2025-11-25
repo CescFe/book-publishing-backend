@@ -7,7 +7,7 @@ import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.Creat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
+import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
 class CreateAuthorControllerTest {
@@ -15,10 +15,14 @@ class CreateAuthorControllerTest {
     private lateinit var mapper: AuthorRestMapper
     private lateinit var createAuthorController: CreateAuthorController
 
+    companion object{
+        const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+    }
+
     @BeforeEach
     fun setup() {
-        createAuthorUseCase = org.mockito.kotlin.mock()
-        mapper = org.mockito.kotlin.mock()
+        createAuthorUseCase = mock()
+        mapper = mock()
         createAuthorController = CreateAuthorController(createAuthorUseCase, mapper)
     }
 
@@ -30,7 +34,7 @@ class CreateAuthorControllerTest {
                 fullName = "",
             )
 
-        whenever(createAuthorUseCase.execute(any())).thenThrow(
+        whenever(createAuthorUseCase.execute(CreateAuthorUseCase.Command(NON_EXISTENT_AUTHOR_ID))).thenThrow(
             AuthorDomainException.fullNameCannotBeBlank(),
         )
 
