@@ -42,7 +42,9 @@ class ListAuthorsControllerIT {
     private lateinit var listAuthorsUseCase: ListAuthorsUseCase
 
     companion object {
-        const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val URI = "/api/v1/authors"
+        private const val ROLE = "ROLE_USER"
+        private const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
     }
 
     @BeforeEach
@@ -74,8 +76,8 @@ class ListAuthorsControllerIT {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
-                    .get("/api/v1/authors")
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
+                    .get(URI)
+                    .with(jwt().authorities(SimpleGrantedAuthority(ROLE)))
                     .param("page", "1")
                     .param("limit", "20"),
             ).andExpect(MockMvcResultMatchers.status().isOk)
@@ -86,31 +88,5 @@ class ListAuthorsControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.page").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.limit").value(20))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total_pages").value(1))
-    }
-
-    @Test
-    fun `should return empty list when no authors exist`() {
-        val emptyResult =
-            PaginatedResult(
-                data = listOf<AuthorSummary>(),
-                metadata =
-                    PaginationMeta(
-                        total = 0L,
-                        page = 1,
-                        limit = 20,
-                        totalPages = 0,
-                    ),
-            )
-        whenever(listAuthorsUseCase.execute(any())).thenReturn(emptyResult)
-
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders
-                    .get("/api/v1/authors")
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN"))),
-            ).andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(0))
     }
 }

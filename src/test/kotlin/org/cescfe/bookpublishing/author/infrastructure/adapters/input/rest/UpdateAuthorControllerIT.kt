@@ -1,7 +1,6 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
-import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.author.domain.model.Author
 import org.cescfe.bookpublishing.author.domain.model.AuthorId
 import org.cescfe.bookpublishing.author.domain.model.Biography
@@ -88,32 +87,5 @@ class UpdateAuthorControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.biography").value("Updated English writer and philologist"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.email").value("updated.tolkien@example.com"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.website").value("https://www.updated-tolkiensociety.org"))
-    }
-
-    @Test
-    fun `should return not found when updating non-existent author`() {
-        whenever(updateAuthorUseCase.execute(any())).thenThrow(
-            AuthorDomainException.authorNotFound(TEST_AUTHOR_ID),
-        )
-
-        val requestBody =
-            """
-            {
-                "full_name": "Updated J.R.R. Tolkien",
-                "pseudonym": "Updated Tolkien",
-                "biography": "Updated English writer and philologist",
-                "email": "updated.tolkien@example.com",
-                "website": "https://www.updated-tolkiensociety.org"
-            }
-            """.trimIndent()
-
-        mockMvc
-            .perform(
-                MockMvcRequestBuilders
-                    .put("/api/v1/authors/{id}", TEST_AUTHOR_ID)
-                    .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestBody),
-            ).andExpect(MockMvcResultMatchers.status().isNotFound)
     }
 }

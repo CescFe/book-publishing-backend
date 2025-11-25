@@ -7,18 +7,25 @@ import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.Creat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class CreateAuthorControllerTest {
     private lateinit var createAuthorUseCase: CreateAuthorUseCase
     private lateinit var mapper: AuthorRestMapper
     private lateinit var createAuthorController: CreateAuthorController
 
+    companion object {
+        private const val ERROR_MESSAGE = "Full name cannot be blank"
+        private const val ERROR_SUBTYPE = "FULL_NAME_CANNOT_BE_BLANK"
+    }
+
     @BeforeEach
     fun setup() {
-        createAuthorUseCase = org.mockito.kotlin.mock()
-        mapper = org.mockito.kotlin.mock()
+        createAuthorUseCase = mock()
+        mapper = mock()
         createAuthorController = CreateAuthorController(createAuthorUseCase, mapper)
     }
 
@@ -35,8 +42,11 @@ class CreateAuthorControllerTest {
         )
 
         // When & Then
-        assertThrows<AuthorDomainException> {
-            createAuthorController.createAuthor(requestDTO)
-        }
+        val exception =
+            assertThrows<AuthorDomainException> {
+                createAuthorController.createAuthor(requestDTO)
+            }
+        assertEquals(ERROR_MESSAGE, exception.message)
+        assertEquals(ERROR_SUBTYPE, exception.subType)
     }
 }
