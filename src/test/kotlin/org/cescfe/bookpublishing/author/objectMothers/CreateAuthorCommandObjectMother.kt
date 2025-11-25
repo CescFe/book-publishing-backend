@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.objectMothers
 
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 
-object CreateAuthorInputValuesObjectMother {
+object CreateAuthorCommandObjectMother {
     fun create(
         fullName: String = "Test Author",
         pseudonym: String? = null,
