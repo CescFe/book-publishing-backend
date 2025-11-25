@@ -59,8 +59,20 @@ class JpaCollectionRepositoryIT {
         // Then
         assertNotNull(savedCollection)
         assertNotNull(foundCollection)
-        assertEquals(collection, foundCollection)
-        assertEquals(savedCollection, foundCollection)
+
+        assertEquals(collection.id.value, foundCollection.id.value)
+        assertEquals(collection.name.value, foundCollection.name.value)
+        assertEquals(collection.readingLevel, foundCollection.readingLevel)
+        assertEquals(collection.primaryLanguage, foundCollection.primaryLanguage)
+        assertEquals(collection.primaryGenre, foundCollection.primaryGenre)
+        assertEquals(collection.secondaryLanguages!!.value, foundCollection.secondaryLanguages!!.value)
+        assertEquals(collection.secondaryGenres!!.value, foundCollection.secondaryGenres!!.value)
+
+        assertNotNull(foundCollection.audit)
+        assertNotNull(foundCollection.audit.createdAt)
+        assertNotNull(foundCollection.audit.createdBy)
+        assertNotNull(foundCollection.audit.updatedAt)
+        assertNotNull(foundCollection.audit.updatedBy)
     }
 
     @Test

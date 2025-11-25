@@ -90,8 +90,31 @@ class JpaBookRepositoryIT {
         // Then
         assertNotNull(savedBook)
         assertNotNull(foundBook)
-        assertEquals(book, foundBook)
-        assertEquals(savedBook, foundBook)
+
+        assertEquals(book.id.value, foundBook.id.value)
+        assertEquals(book.title.value, foundBook.title.value)
+        assertEquals(book.authorId.value, foundBook.authorId.value)
+        assertEquals(book.collectionId.value, foundBook.collectionId.value)
+        assertEquals(book.basePrice.value, foundBook.basePrice.value)
+        assertEquals(book.vatRate!!.value, foundBook.vatRate!!.value)
+        assertEquals(book.finalPrice, foundBook.finalPrice)
+        assertEquals(book.isbn!!.value, foundBook.isbn!!.value)
+        assertEquals(book.publicationDate!!.value, foundBook.publicationDate!!.value)
+        assertEquals(book.pageCount!!.value, foundBook.pageCount!!.value)
+        assertEquals(book.coverImagePath!!.value, foundBook.coverImagePath!!.value)
+        assertEquals(book.description!!.value, foundBook.description!!.value)
+        assertEquals(book.readingLevel, foundBook.readingLevel)
+        assertEquals(book.primaryLanguage, foundBook.primaryLanguage)
+        assertEquals(book.secondaryLanguages!!.value, foundBook.secondaryLanguages!!.value)
+        assertEquals(book.primaryGenre, foundBook.primaryGenre)
+        assertEquals(book.secondaryGenres!!.value, foundBook.secondaryGenres!!.value)
+        assertEquals(book.status, foundBook.status)
+
+        assertNotNull(foundBook.audit)
+        assertNotNull(foundBook.audit.createdAt)
+        assertNotNull(foundBook.audit.createdBy)
+        assertNotNull(foundBook.audit.updatedAt)
+        assertNotNull(foundBook.audit.updatedBy)
     }
 
     @Test

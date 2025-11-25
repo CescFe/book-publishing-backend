@@ -16,6 +16,7 @@ import org.cescfe.bookpublishing.book.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.book.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.book.domain.model.VatRate
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.entity.BookEntity
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.springframework.stereotype.Component
 
 @Component
@@ -60,6 +61,13 @@ class BookPersistenceMapper {
             coverImagePath = entity.coverImagePath?.let { CoverImagePath(it) },
             description = entity.description?.let { Description(it) },
             status = entity.status,
+            audit =
+                Metadata(
+                    createdAt = entity.createdAt,
+                    createdBy = entity.createdBy,
+                    updatedAt = entity.updatedAt,
+                    updatedBy = entity.updatedBy,
+                ),
         )
 
     fun toDomainSummary(entity: BookEntity): BookSummary =

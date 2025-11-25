@@ -3,6 +3,7 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBook201ResponseDTO
 import org.springframework.stereotype.Component
+import java.time.ZoneOffset
 
 @Component
 class BookRestMapper {
@@ -40,5 +41,9 @@ class BookRestMapper {
             pageCount = domain.pageCount?.value,
             coverImagePath = domain.coverImagePath?.value,
             description = domain.description?.value,
+            createdAt = domain.audit?.createdAt?.atOffset(ZoneOffset.UTC),
+            createdBy = domain.audit?.createdBy,
+            updatedAt = domain.audit?.updatedAt?.atOffset(ZoneOffset.UTC),
+            updatedBy = domain.audit?.updatedBy,
         )
 }

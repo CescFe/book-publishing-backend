@@ -50,7 +50,7 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should save and find author by id`() {
         // Given
-        val author = AuthorObjectMother.createTolkien()
+        val author = AuthorObjectMother.createWithAllFields()
 
         // When
         val savedAuthor = jpaAuthorRepository.save(author)
@@ -59,8 +59,19 @@ class JpaAuthorRepositoryIT {
         // Then
         assertNotNull(savedAuthor)
         assertNotNull(foundAuthor)
-        assertEquals(author, foundAuthor)
-        assertEquals(savedAuthor, foundAuthor)
+
+        assertEquals(author.id.value, foundAuthor.id.value)
+        assertEquals(author.fullName.value, foundAuthor.fullName.value)
+        assertEquals(author.pseudonym!!.value, foundAuthor.pseudonym!!.value)
+        assertEquals(author.biography!!.value, foundAuthor.biography!!.value)
+        assertEquals(author.email!!.value, foundAuthor.email!!.value)
+        assertEquals(author.website!!.value, foundAuthor.website!!.value)
+
+        assertNotNull(foundAuthor.audit)
+        assertNotNull(foundAuthor.audit.createdAt)
+        assertNotNull(foundAuthor.audit.createdBy)
+        assertNotNull(foundAuthor.audit.updatedAt)
+        assertNotNull(foundAuthor.audit.updatedBy)
     }
 
     @Test
@@ -111,14 +122,26 @@ class JpaAuthorRepositoryIT {
     fun `should find author by email`() {
         // Given
         val author = AuthorObjectMother.create(email = "test@example.com")
-        jpaAuthorRepository.save(author)
+        val savedAuthor = jpaAuthorRepository.save(author)
 
         // When
-        val found = jpaAuthorRepository.findByEmail("test@example.com")
+        val foundAuthor = jpaAuthorRepository.findByEmail(savedAuthor.email!!.value)
 
         // Then
-        assertNotNull(found)
-        assertEquals(author, found)
+        assertNotNull(foundAuthor)
+
+        assertEquals(author.id.value, foundAuthor.id.value)
+        assertEquals(author.fullName.value, foundAuthor.fullName.value)
+        assertNull(foundAuthor.pseudonym)
+        assertNull(foundAuthor.biography)
+        assertEquals(author.email!!.value, foundAuthor.email!!.value)
+        assertNull(foundAuthor.website)
+
+        assertNotNull(foundAuthor.audit)
+        assertNotNull(foundAuthor.audit.createdAt)
+        assertNotNull(foundAuthor.audit.createdBy)
+        assertNotNull(foundAuthor.audit.updatedAt)
+        assertNotNull(foundAuthor.audit.updatedBy)
     }
 
     @Test
@@ -153,7 +176,7 @@ class JpaAuthorRepositoryIT {
     @Test
     fun `should delete author by id`() {
         // Given
-        val author = AuthorObjectMother.createTolkien()
+        val author = AuthorObjectMother.createWithAllFields()
         jpaAuthorRepository.save(author)
 
         assertTrue(jpaAuthorRepository.existsById(author.id))

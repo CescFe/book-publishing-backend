@@ -15,6 +15,7 @@ import org.cescfe.bookpublishing.book.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.book.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.book.domain.model.VatRate
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -42,6 +43,7 @@ object BookObjectMother {
         coverImagePath: String? = null,
         description: String? = null,
         status: Status? = null,
+        audit: Metadata? = null,
     ): Book =
         Book(
             id = BookId(id),
@@ -61,6 +63,7 @@ object BookObjectMother {
             coverImagePath = coverImagePath?.let { CoverImagePath(it) },
             description = description?.let { Description(it) },
             status = status,
+            audit = audit,
         )
 
     fun createWithAllFields(

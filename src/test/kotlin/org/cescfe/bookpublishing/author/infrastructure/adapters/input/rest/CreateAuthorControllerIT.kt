@@ -43,7 +43,7 @@ class CreateAuthorControllerIT {
 
     @BeforeEach
     fun setup() {
-        val testAuthor = AuthorObjectMother.createWithAllFields()
+        val testAuthor = AuthorObjectMother.createForControllerIT()
         whenever(createAuthorUseCase.execute(any())).thenReturn(testAuthor)
     }
 

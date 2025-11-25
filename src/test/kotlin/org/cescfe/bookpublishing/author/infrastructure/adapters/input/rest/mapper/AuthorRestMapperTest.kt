@@ -11,7 +11,14 @@ class AuthorRestMapperTest {
     @Test
     fun `should map author to DTO successfully`() {
         // Given
-        val author = AuthorObjectMother.createWithAllFields()
+        val audit =
+            org.cescfe.bookpublishing.shared.domain.model.Metadata(
+                createdAt = java.time.LocalDateTime.now(),
+                createdBy = "admin",
+                updatedAt = java.time.LocalDateTime.now(),
+                updatedBy = "admin",
+            )
+        val author = AuthorObjectMother.createForControllerIT().copy(audit = audit)
 
         // When
         val result = mapper.toDto(author)
@@ -23,6 +30,10 @@ class AuthorRestMapperTest {
         assertEquals(author.biography!!.value, result.biography)
         assertEquals(author.email!!.value, result.email)
         assertEquals(author.website!!.value, result.website.toString())
+        assertEquals(author.audit?.createdAt?.atOffset(java.time.ZoneOffset.UTC), result.createdAt)
+        assertEquals(author.audit?.createdBy, result.createdBy)
+        assertEquals(author.audit?.updatedAt?.atOffset(java.time.ZoneOffset.UTC), result.updatedAt)
+        assertEquals(author.audit?.updatedBy, result.updatedBy)
     }
 
     @Test

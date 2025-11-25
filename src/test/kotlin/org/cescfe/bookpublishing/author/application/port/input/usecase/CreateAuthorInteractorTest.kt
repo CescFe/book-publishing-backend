@@ -32,7 +32,7 @@ class CreateAuthorInteractorTest {
     fun `should create author successfully`() {
         // Given
         val input = CreateAuthorCommandObjectMother.createTolkien()
-        val expectedAuthor = AuthorObjectMother.createTolkien()
+        val expectedAuthor = AuthorObjectMother.createWithAllFields()
 
         whenever(mapper.toDomain(input)).thenReturn(expectedAuthor)
         whenever(authorRepository.save(any())).thenReturn(expectedAuthor)
