@@ -8,7 +8,9 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class CreateAuthorControllerTest {
     private lateinit var createAuthorUseCase: CreateAuthorUseCase
@@ -16,7 +18,8 @@ class CreateAuthorControllerTest {
     private lateinit var createAuthorController: CreateAuthorController
 
     companion object {
-        const val NON_EXISTENT_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val ERROR_MESSAGE = "Full name cannot be blank"
+        private const val ERROR_SUBTYPE = "FULL_NAME_CANNOT_BE_BLANK"
     }
 
     @BeforeEach
@@ -34,13 +37,16 @@ class CreateAuthorControllerTest {
                 fullName = "",
             )
 
-        whenever(createAuthorUseCase.execute(CreateAuthorUseCase.Command(NON_EXISTENT_AUTHOR_ID))).thenThrow(
+        whenever(createAuthorUseCase.execute(any())).thenThrow(
             AuthorDomainException.fullNameCannotBeBlank(),
         )
 
         // When & Then
-        assertThrows<AuthorDomainException> {
-            createAuthorController.createAuthor(requestDTO)
-        }
+        val exception =
+            assertThrows<AuthorDomainException> {
+                createAuthorController.createAuthor(requestDTO)
+            }
+        assertEquals(ERROR_MESSAGE, exception.message)
+        assertEquals(ERROR_SUBTYPE, exception.subType)
     }
 }
