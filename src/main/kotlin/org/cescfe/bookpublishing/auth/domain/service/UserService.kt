@@ -20,16 +20,17 @@ class UserService(
                 val username = userConfig.username ?: return@mapNotNull null
                 val password = userConfig.password ?: return@mapNotNull null
 
-                val authorities = userConfig.roles
-                    .map { SimpleGrantedAuthority("ROLE_$it") }
+                val authorities =
+                    userConfig.roles
+                        .map { SimpleGrantedAuthority("ROLE_$it") }
 
-                username to User
-                    .withUsername(username)
-                    .password(passwordEncoder.encode(password))
-                    .authorities(authorities)
-                    .build()
-            }
-            .toMap()
+                username to
+                    User
+                        .withUsername(username)
+                        .password(passwordEncoder.encode(password))
+                        .authorities(authorities)
+                        .build()
+            }.toMap()
     }
 
     override fun loadUserByUsername(username: String): UserDetails =
