@@ -11,7 +11,7 @@ import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import java.util.UUID
 
 object BookSummaryObjectMother {
-    private const val BOOK_ID_CONTRACT_TEST = "477537ff-7e8b-4930-bd41-d7f3589120b1"
+    private const val BOOK_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
 
     fun create(
         id: UUID = UUID.randomUUID(),
@@ -34,7 +34,7 @@ object BookSummaryObjectMother {
 
     fun createFirstBookSummary(): BookSummary =
         create(
-            id = UUID.fromString(BOOK_ID_CONTRACT_TEST),
+            id = UUID.fromString(BOOK_ID),
             title = "The Hobbit",
             authorId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
             collectionId = UUID.fromString("223e4567-e89b-12d3-a456-426614174000"),
