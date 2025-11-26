@@ -16,6 +16,7 @@ import org.cescfe.bookpublishing.book.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.book.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.book.domain.model.VatRate
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.entity.BookEntity
+import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookSummaryProjection
 import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.springframework.stereotype.Component
 
@@ -70,13 +71,13 @@ class BookPersistenceMapper {
                 ),
         )
 
-    fun toDomainSummary(entity: BookEntity): BookSummary =
+    fun toDomainSummary(projection: BookSummaryProjection): BookSummary =
         BookSummary(
-            id = BookId(entity.id),
-            title = BookTitle(entity.title),
-            authorId = AuthorIdRef(entity.authorId),
-            collectionId = CollectionIdRef(entity.collectionId),
-            basePrice = BasePrice(entity.basePrice),
-            status = entity.status,
+            id = BookId(projection.id),
+            title = BookTitle(projection.title),
+            authorId = AuthorIdRef(projection.authorId),
+            collectionId = CollectionIdRef(projection.collectionId),
+            basePrice = BasePrice(projection.basePrice),
+            status = projection.status,
         )
 }
