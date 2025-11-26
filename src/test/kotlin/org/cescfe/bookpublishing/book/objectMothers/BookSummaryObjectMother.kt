@@ -21,16 +21,22 @@ object BookSummaryObjectMother {
         basePrice: Double = 19.23,
         isbn: String? = null,
         status: String? = null,
-    ): BookSummary =
-        BookSummary(
+        finalPrice: Double? = null,
+    ): BookSummary {
+        val calculatedFinalPrice =
+            finalPrice ?: org.cescfe.bookpublishing.book.domain.model.Book
+                .calculateFinalPrice(basePrice, null)
+        return BookSummary(
             id = BookId(id),
             title = BookTitle(title),
             authorId = AuthorIdRef(authorId),
             collectionId = CollectionIdRef(collectionId),
             basePrice = BasePrice(basePrice),
+            finalPrice = calculatedFinalPrice,
             isbn = isbn?.let(::ISBN),
             status = status?.let(Status::valueOf),
         )
+    }
 
     fun createFirstBookSummary(): BookSummary =
         create(

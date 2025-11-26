@@ -1,5 +1,6 @@
 package org.cescfe.bookpublishing.book.objectMothers
 
+import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.entity.BookEntity
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
@@ -16,6 +17,7 @@ object BookEntityObjectMother {
         collectionId: UUID = UUID.randomUUID(),
         basePrice: Double = 19.99,
         vatRate: Double? = null,
+        finalPrice: Double? = null,
         isbn: String? = null,
         publicationDate: LocalDate? = null,
         pageCount: Int? = null,
@@ -27,35 +29,34 @@ object BookEntityObjectMother {
         primaryGenre: Genre? = null,
         secondaryGenres: List<Genre>? = null,
         status: Status? = null,
-    ): BookEntity {
-        val entity =
-            BookEntity(
-                id = id,
-                title = title,
-                authorId = authorId,
-                collectionId = collectionId,
-                basePrice = basePrice,
-                vatRate = vatRate,
-                isbn = isbn,
-                publicationDate = publicationDate,
-                pageCount = pageCount,
-                coverImagePath = coverImagePath,
-                description = description,
-                readingLevel = readingLevel,
-                primaryLanguage = primaryLanguage,
-                secondaryLanguages = secondaryLanguages,
-                primaryGenre = primaryGenre,
-                secondaryGenres = secondaryGenres,
-                status = status,
-            )
-        return entity
-    }
+    ): BookEntity =
+        BookEntity(
+            id = id,
+            title = title,
+            authorId = authorId,
+            collectionId = collectionId,
+            basePrice = basePrice,
+            vatRate = vatRate,
+            finalPrice = Book.calculateFinalPrice(basePrice, vatRate),
+            isbn = isbn,
+            publicationDate = publicationDate,
+            pageCount = pageCount,
+            coverImagePath = coverImagePath,
+            description = description,
+            readingLevel = readingLevel,
+            primaryLanguage = primaryLanguage,
+            secondaryLanguages = secondaryLanguages,
+            primaryGenre = primaryGenre,
+            secondaryGenres = secondaryGenres,
+            status = status,
+        )
 
     fun createWithAllFields(): BookEntity =
         create(
             title = "The Lord of the Rings",
             basePrice = 29.99,
             vatRate = 0.04,
+            finalPrice = Book.calculateFinalPrice(29.99, 0.04),
             isbn = "9780007141326",
             publicationDate = LocalDate.of(1954, 7, 29),
             pageCount = 1178,

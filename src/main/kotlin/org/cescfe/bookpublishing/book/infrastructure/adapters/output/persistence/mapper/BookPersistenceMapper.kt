@@ -34,6 +34,7 @@ class BookPersistenceMapper {
             primaryGenre = book.primaryGenre,
             secondaryGenres = book.secondaryGenres?.value,
             basePrice = book.basePrice.value,
+            finalPrice = book.finalPrice,
             vatRate = book.vatRate?.value,
             isbn = book.isbn?.value,
             publicationDate = book.publicationDate?.value,
@@ -56,6 +57,7 @@ class BookPersistenceMapper {
             secondaryGenres = entity.secondaryGenres?.let { SecondaryGenres(it) },
             basePrice = BasePrice(entity.basePrice),
             vatRate = entity.vatRate?.let { VatRate(it) },
+            finalPrice = entity.finalPrice,
             isbn = entity.isbn?.let { ISBN(it) },
             publicationDate = entity.publicationDate?.let { PublicationDate(it) },
             pageCount = entity.pageCount?.let { PageCount(it) },
@@ -78,6 +80,7 @@ class BookPersistenceMapper {
             authorId = AuthorIdRef(projection.authorId),
             collectionId = CollectionIdRef(projection.collectionId),
             basePrice = BasePrice(projection.basePrice),
+            finalPrice = projection.finalPrice,
             status = projection.status,
         )
 }

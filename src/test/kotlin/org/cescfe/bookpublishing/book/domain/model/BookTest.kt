@@ -44,6 +44,7 @@ class BookTest {
                 secondaryGenres = secondaryGenres,
                 basePrice = basePrice,
                 vatRate = vatRate,
+                finalPrice = Book.calculateFinalPrice(basePrice.value, vatRate.value),
                 isbn = isbn,
                 publicationDate = publicationDate,
                 pageCount = pageCount,
@@ -64,6 +65,7 @@ class BookTest {
         assertEquals(secondaryGenres, book.secondaryGenres)
         assertEquals(basePrice, book.basePrice)
         assertEquals(vatRate, book.vatRate)
+        assertEquals(20.75, book.finalPrice)
         assertEquals(isbn, book.isbn)
         assertEquals(publicationDate, book.publicationDate)
         assertEquals(pageCount, book.pageCount)
@@ -89,6 +91,7 @@ class BookTest {
                 authorId = authorId,
                 collectionId = collectionId,
                 basePrice = basePrice,
+                finalPrice = Book.calculateFinalPrice(basePrice.value, null),
             )
 
         // Then
@@ -103,6 +106,7 @@ class BookTest {
         assertEquals(null, book.secondaryGenres)
         assertEquals(basePrice, book.basePrice)
         assertEquals(null, book.vatRate)
+        assertEquals(20.75, book.finalPrice)
         assertEquals(null, book.isbn)
         assertEquals(null, book.publicationDate)
         assertEquals(null, book.pageCount)
@@ -122,6 +126,7 @@ class BookTest {
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(100.0),
                 vatRate = null,
+                finalPrice = Book.calculateFinalPrice(100.0, null),
             )
 
         // When
@@ -142,6 +147,7 @@ class BookTest {
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(100.0),
                 vatRate = VatRate.fromDouble(0.21),
+                finalPrice = Book.calculateFinalPrice(100.0, 0.21),
             )
 
         // When
@@ -162,6 +168,7 @@ class BookTest {
                 collectionId = CollectionIdRef(UUID.randomUUID()),
                 basePrice = BasePrice.fromDouble(19.99),
                 vatRate = VatRate.fromDouble(0.04),
+                finalPrice = Book.calculateFinalPrice(19.99, 0.04),
             )
 
         // When
