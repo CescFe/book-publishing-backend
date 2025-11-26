@@ -16,15 +16,14 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 class CreateAuthorInteractorTest {
-    private val authorRepository = mock<AuthorRepository>()
-    private val mapper = mock<CreateAuthorUseCaseMapper>()
-    private val authorDomainService = mock<AuthorDomainService>()
+    private val authorRepository: AuthorRepository = mock()
+    private val mapper: CreateAuthorUseCaseMapper = mock()
+    private val authorDomainService: AuthorDomainService = mock()
     private val createAuthorUseCase = CreateAuthorInteractor(authorRepository, mapper, authorDomainService)
 
     companion object {
-        private const val TOLKIEN_EMAIL = "tolkien@example.com"
-        private const val EXISTING_EMAIL = "existing@example.com"
-        private const val EXPECTED_ERROR_MESSAGE = "Author with email '$EXISTING_EMAIL' already exists"
+        private const val EMAIL = "tolkien@example.com"
+        private const val EXPECTED_ERROR_MESSAGE = "Author with email '$EMAIL' already exists"
         private const val EXPECTED_ERROR_SUBTYPE = "EMAIL_ALREADY_EXISTS"
     }
 
@@ -43,7 +42,7 @@ class CreateAuthorInteractorTest {
         // Then
         assertEquals(expectedAuthor, result)
 
-        verify(authorDomainService).ensureEmailUniqueness(TOLKIEN_EMAIL)
+        verify(authorDomainService).ensureEmailUniqueness(EMAIL)
         verify(mapper).toDomain(input)
         verify(authorRepository).save(any())
     }
@@ -71,10 +70,10 @@ class CreateAuthorInteractorTest {
     @Test
     fun `should throw exception when email already exists`() {
         // Given
-        val input = CreateAuthorCommandObjectMother.createWithEmail(EXISTING_EMAIL)
+        val input = CreateAuthorCommandObjectMother.createWithEmail(EMAIL)
 
-        whenever(authorDomainService.ensureEmailUniqueness(EXISTING_EMAIL))
-            .thenThrow(AuthorDomainException.emailAlreadyExists(EXISTING_EMAIL))
+        whenever(authorDomainService.ensureEmailUniqueness(EMAIL))
+            .thenThrow(AuthorDomainException.emailAlreadyExists(EMAIL))
 
         // When & Then
         val exception =
@@ -84,7 +83,7 @@ class CreateAuthorInteractorTest {
 
         assertEquals(EXPECTED_ERROR_MESSAGE, exception.message)
         assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
-        verify(authorDomainService).ensureEmailUniqueness(EXISTING_EMAIL)
+        verify(authorDomainService).ensureEmailUniqueness(EMAIL)
         verify(mapper, never()).toDomain(any())
         verify(authorRepository, never()).save(any())
     }

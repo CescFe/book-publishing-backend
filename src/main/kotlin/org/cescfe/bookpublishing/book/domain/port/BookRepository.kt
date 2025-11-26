@@ -23,4 +23,8 @@ interface BookRepository {
     fun existsById(id: BookId): Boolean
 
     fun findByTitle(title: String): Book?
+
+    fun findByIsbn(isbn: String): Book?
+
+    fun existsByIsbn(isbn: String): Boolean
 }

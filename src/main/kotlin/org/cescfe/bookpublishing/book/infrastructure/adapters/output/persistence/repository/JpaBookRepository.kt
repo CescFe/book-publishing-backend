@@ -52,4 +52,11 @@ class JpaBookRepository(
         bookJpaEntityRepository
             .findByTitle(title)
             ?.let { bookMapper.toDomain(it) }
+
+    override fun findByIsbn(isbn: String): Book? =
+        bookJpaEntityRepository
+            .findByIsbn(isbn)
+            ?.let { bookMapper.toDomain(it) }
+
+    override fun existsByIsbn(isbn: String): Boolean = bookJpaEntityRepository.existsByIsbn(isbn)
 }
