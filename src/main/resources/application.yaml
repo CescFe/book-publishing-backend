@@ -22,6 +22,18 @@ jwt:
   secret: "mySecretKeyThatIsAtLeast32CharactersLong"
   expiration: 900
 
+auth:
+  users:
+    - username: ${ADMIN_NAME}
+      password: ${ADMIN_PASSWORD}
+      roles:
+        - ADMIN
+        - USER
+    - username: ${USER_NAME}
+      password: ${USER_PASSWORD}
+      roles:
+        - USER
+
 server:
   port: ${SERVER_PORT:8080}
 

@@ -1,5 +1,6 @@
 package org.cescfe.bookpublishing.auth.domain.service
 
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config.AuthProperties
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,36 +12,22 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     private val passwordEncoder: PasswordEncoder,
+    private val authProperties: AuthProperties,
 ) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
-        val users =
-            mapOf(
-                "admin@example.com" to passwordEncoder.encode("admin123"),
-                "user@example.com" to passwordEncoder.encode("user123"),
-            )
-
-        val password =
-            users[username]
+        val userConfig =
+            authProperties.users.find { it.username == username }
                 ?: throw UsernameNotFoundException("User not found: $username")
 
         val authorities =
-            when (username) {
-                "admin@example.com" ->
-                    listOf(
-                        SimpleGrantedAuthority("ROLE_ADMIN"),
-                        SimpleGrantedAuthority("ROLE_USER"),
-                    )
-                "user@example.com" ->
-                    listOf(
-                        SimpleGrantedAuthority("ROLE_USER"),
-                    )
-                else -> listOf(SimpleGrantedAuthority("ROLE_USER"))
+            userConfig.roles.map { role ->
+                SimpleGrantedAuthority("ROLE_$role")
             }
 
         return User
             .builder()
-            .username(username)
-            .password(password)
+            .username(userConfig.username)
+            .password(passwordEncoder.encode(userConfig.password))
             .authorities(authorities)
             .build()
     }
