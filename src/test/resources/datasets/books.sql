@@ -29,7 +29,7 @@ INSERT INTO publishing.collection (
 -- Create book
 INSERT INTO publishing.book (
     id, title, author_id, collection_id,
-    base_price, vat_rate,
+    base_price, vat_rate, final_price,
     isbn, publication_date, page_count,
     cover_image_path, description,
     reading_level, primary_language,
@@ -41,7 +41,7 @@ INSERT INTO publishing.book (
      'SQL Inserted Book',
      '00000000-0000-0000-0000-000000000010',
      '00000000-0000-0000-0000-000000000020',
-     19.99, 0.04,
+     19.99, 0.04, 20.79,
      '9784567890123',
      '2024-01-01', 350,
      '/covers/sql-book.jpg',
