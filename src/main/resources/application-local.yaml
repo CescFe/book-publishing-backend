@@ -14,6 +14,18 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: false
 
+auth:
+  users:
+    - username: ${LOCAL_ADMIN_NAME}
+      password: ${LOCAL_ADMIN_PASSWORD}
+      roles:
+        - ADMIN
+        - USER
+    - username: ${LOCAL_USER_NAME}
+      password: ${LOCAL_USER_PASSWORD}
+      roles:
+        - USER
+
 logging:
   level:
     org.cescfe.bookpublishing: DEBUG

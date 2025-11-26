@@ -14,21 +14,25 @@ class UserService(
     private val passwordEncoder: PasswordEncoder,
     private val authProperties: AuthProperties,
 ) : UserDetailsService {
-    override fun loadUserByUsername(username: String): UserDetails {
-        val userConfig =
-            authProperties.users.find { it.username == username }
-                ?: throw UsernameNotFoundException("User not found: $username")
+    private val usersCache: Map<String, UserDetails> by lazy {
+        authProperties.users
+            .mapNotNull { userConfig ->
+                val username = userConfig.username ?: return@mapNotNull null
+                val password = userConfig.password ?: return@mapNotNull null
 
-        val authorities =
-            userConfig.roles.map { role ->
-                SimpleGrantedAuthority("ROLE_$role")
+                val authorities = userConfig.roles
+                    .map { SimpleGrantedAuthority("ROLE_$it") }
+
+                username to User
+                    .withUsername(username)
+                    .password(passwordEncoder.encode(password))
+                    .authorities(authorities)
+                    .build()
             }
-
-        return User
-            .builder()
-            .username(userConfig.username)
-            .password(passwordEncoder.encode(userConfig.password))
-            .authorities(authorities)
-            .build()
+            .toMap()
     }
+
+    override fun loadUserByUsername(username: String): UserDetails =
+        usersCache[username]
+            ?: throw UsernameNotFoundException("User not found: $username")
 }

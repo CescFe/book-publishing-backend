@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -20,6 +21,18 @@ import org.springframework.web.servlet.NoHandlerFoundException
 
 @RestControllerAdvice
 class GlobalExceptionHandler {
+    @ExceptionHandler(BadCredentialsException::class)
+    fun handleBadCredentials(
+        ex: BadCredentialsException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> =
+        buildErrorResponse(
+            status = HttpStatus.UNAUTHORIZED,
+            message = ex.message ?: "Invalid username or password",
+            code = "BAD_CREDENTIALS",
+            details = mapOf("path" to getPath(request)),
+        )
+
     @ExceptionHandler(BookDomainException::class)
     fun handleBookDomainException(
         ex: BookDomainException,
