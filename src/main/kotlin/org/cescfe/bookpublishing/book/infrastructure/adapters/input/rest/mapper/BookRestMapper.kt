@@ -41,6 +41,7 @@ class BookRestMapper {
             pageCount = domain.pageCount?.value,
             coverImagePath = domain.coverImagePath?.value,
             description = domain.description?.value,
+            status = domain.status?.let { CreateBook201ResponseDTO.Status.valueOf(it.name) },
             createdAt = domain.audit?.createdAt?.atOffset(ZoneOffset.UTC),
             createdBy = domain.audit?.createdBy,
             updatedAt = domain.audit?.updatedAt?.atOffset(ZoneOffset.UTC),
