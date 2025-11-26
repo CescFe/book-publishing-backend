@@ -14,14 +14,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ListAuthorInteractorTest {
-    private val authorRepository = mock<AuthorRepository>()
-    private val mapper = mock<ListAuthorsUseCaseMapper>()
+    private val authorRepository: AuthorRepository = mock()
+    private val mapper: ListAuthorsUseCaseMapper = mock()
     private val listAuthorsUseCase = ListAuthorsInteractor(authorRepository, mapper)
 
     @Test
     fun `should return paginated result when authors found`() {
         // Given
-        val input = ListAuthorsQueryObjectMother.create(page = 1, limit = 2)
+        val query = ListAuthorsQueryObjectMother.create(page = 1, limit = 2)
         val authors =
             listOf(
                 AuthorSummaryObjectMother.createFirstAuthorSummary(),
@@ -40,25 +40,25 @@ class ListAuthorInteractorTest {
                     ),
             )
 
-        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(authors)
+        whenever(authorRepository.findAllSummary(query.page, query.limit)).thenReturn(authors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
-        whenever(mapper.toPaginatedResult(authors, totalCount, input.page, input.limit))
+        whenever(mapper.toPaginatedResult(authors, totalCount, query.page, query.limit))
             .thenReturn(expectedResult)
 
         // When
-        val result = listAuthorsUseCase.execute(input)
+        val result = listAuthorsUseCase.execute(query)
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAllSummary(input.page, input.limit)
+        verify(authorRepository).findAllSummary(query.page, query.limit)
         verify(authorRepository).countAll()
-        verify(mapper).toPaginatedResult(authors, totalCount, input.page, input.limit)
+        verify(mapper).toPaginatedResult(authors, totalCount, query.page, query.limit)
     }
 
     @Test
     fun `should return empty result when no authors found`() {
         // Given
-        val input = ListAuthorsQueryObjectMother.create(page = 1, limit = 10)
+        val query = ListAuthorsQueryObjectMother.create(page = 1, limit = 10)
         val emptyAuthors = emptyList<AuthorSummary>()
         val totalCount = 0L
         val expectedResult =
@@ -73,25 +73,25 @@ class ListAuthorInteractorTest {
                     ),
             )
 
-        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(emptyAuthors)
+        whenever(authorRepository.findAllSummary(query.page, query.limit)).thenReturn(emptyAuthors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
-        whenever(mapper.toPaginatedResult(emptyAuthors, totalCount, input.page, input.limit))
+        whenever(mapper.toPaginatedResult(emptyAuthors, totalCount, query.page, query.limit))
             .thenReturn(expectedResult)
 
         // When
-        val result = listAuthorsUseCase.execute(input)
+        val result = listAuthorsUseCase.execute(query)
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAllSummary(input.page, input.limit)
+        verify(authorRepository).findAllSummary(query.page, query.limit)
         verify(authorRepository).countAll()
-        verify(mapper).toPaginatedResult(emptyAuthors, totalCount, input.page, input.limit)
+        verify(mapper).toPaginatedResult(emptyAuthors, totalCount, query.page, query.limit)
     }
 
     @Test
     fun `should handle pagination correctly for second page`() {
         // Given
-        val input = ListAuthorsQueryObjectMother.create(page = 2, limit = 1)
+        val query = ListAuthorsQueryObjectMother.create(page = 2, limit = 1)
         val authors = listOf(AuthorSummaryObjectMother.createFirstAuthorSummary())
         val totalCount = 3L
         val expectedResult =
@@ -106,18 +106,18 @@ class ListAuthorInteractorTest {
                     ),
             )
 
-        whenever(authorRepository.findAllSummary(input.page, input.limit)).thenReturn(authors)
+        whenever(authorRepository.findAllSummary(query.page, query.limit)).thenReturn(authors)
         whenever(authorRepository.countAll()).thenReturn(totalCount)
-        whenever(mapper.toPaginatedResult(authors, totalCount, input.page, input.limit))
+        whenever(mapper.toPaginatedResult(authors, totalCount, query.page, query.limit))
             .thenReturn(expectedResult)
 
         // When
-        val result = listAuthorsUseCase.execute(input)
+        val result = listAuthorsUseCase.execute(query)
 
         // Then
         assertEquals(expectedResult, result)
-        verify(authorRepository).findAllSummary(input.page, input.limit)
+        verify(authorRepository).findAllSummary(query.page, query.limit)
         verify(authorRepository).countAll()
-        verify(mapper).toPaginatedResult(authors, totalCount, input.page, input.limit)
+        verify(mapper).toPaginatedResult(authors, totalCount, query.page, query.limit)
     }
 }

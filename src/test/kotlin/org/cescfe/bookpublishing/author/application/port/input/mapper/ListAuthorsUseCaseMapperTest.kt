@@ -46,7 +46,7 @@ class ListAuthorsUseCaseMapperTest {
         assertEquals(5, result.metadata.total)
         assertEquals(2, result.metadata.page)
         assertEquals(2, result.metadata.limit)
-        assertEquals(3, result.metadata.totalPages) // ceil(5/2) = 3
+        assertEquals(3, result.metadata.totalPages)
     }
 
     @Test
