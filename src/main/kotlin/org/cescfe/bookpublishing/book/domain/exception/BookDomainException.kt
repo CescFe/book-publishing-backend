@@ -43,6 +43,9 @@ class BookDomainException(
                 "ISBN_INVALID_FORMAT",
             )
 
+        fun isbnAlreadyExists(isbn: String): BookDomainException =
+            BookDomainException("Book with ISBN '$isbn' already exists", "ISBN_ALREADY_EXISTS")
+
         // PublicationDate exceptions
         fun publicationDateInvalidFormat(): BookDomainException =
             BookDomainException("Publication date must be a valid date", "PUBLICATION_DATE_INVALID_FORMAT")

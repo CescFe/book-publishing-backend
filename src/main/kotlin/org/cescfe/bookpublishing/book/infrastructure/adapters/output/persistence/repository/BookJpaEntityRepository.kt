@@ -10,6 +10,10 @@ import java.util.UUID
 interface BookJpaEntityRepository : JpaRepository<BookEntity, UUID> {
     fun findByTitle(title: String): BookEntity?
 
+    fun findByIsbn(isbn: String): BookEntity?
+
+    fun existsByIsbn(isbn: String): Boolean
+
     fun findAllByOrderByTitleAsc(): List<BookEntity>
 
     fun findAllByOrderByTitleAsc(pageable: Pageable): List<BookEntity>
