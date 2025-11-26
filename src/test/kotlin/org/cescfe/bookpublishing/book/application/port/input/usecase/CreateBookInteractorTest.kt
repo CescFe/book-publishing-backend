@@ -3,6 +3,7 @@ package org.cescfe.bookpublishing.book.application.port.input.usecase
 import org.cescfe.bookpublishing.book.application.port.input.mapper.CreateBookUseCaseMapper
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.cescfe.bookpublishing.book.domain.port.BookRepository
+import org.cescfe.bookpublishing.book.domain.service.BookDomainService
 import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
 import org.cescfe.bookpublishing.book.objectMothers.CreateBookCommandObjectMother
 import org.junit.jupiter.api.Test
@@ -15,13 +16,17 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 class CreateBookInteractorTest {
-    private val bookRepository = mock<BookRepository>()
-    private val mapper = mock<CreateBookUseCaseMapper>()
-    private val createBookUseCase = CreateBookInteractor(bookRepository, mapper)
+    private val bookRepository: BookRepository = mock()
+    private val mapper: CreateBookUseCaseMapper = mock()
+    private val bookDomainService: BookDomainService = mock()
+    private val createBookUseCase = CreateBookInteractor(bookRepository, mapper, bookDomainService)
 
     companion object {
-        private const val EXPECTED_ERROR_MESSAGE = "Book title cannot be blank"
-        private const val EXPECTED_ERROR_SUBTYPE = "TITLE_CANNOT_BE_BLANK"
+        private const val ISBN = "9780007141326"
+        private const val TITLE_BLANK_ERROR_MESSAGE = "Book title cannot be blank"
+        private const val TITLE_BLANK_ERROR_SUBTYPE = "TITLE_CANNOT_BE_BLANK"
+        private const val ISBN_EXISTS_ERROR_MESSAGE = "Book with ISBN '$ISBN' already exists"
+        private const val ISBN_EXISTS_ERROR_SUBTYPE = "ISBN_ALREADY_EXISTS"
     }
 
     @Test
@@ -39,6 +44,7 @@ class CreateBookInteractorTest {
         // Then
         assertEquals(expectedBook, result)
 
+        verify(bookDomainService).ensureIsbnUniqueness(ISBN)
         verify(mapper).toDomain(input)
         verify(bookRepository).save(any())
     }
@@ -58,6 +64,7 @@ class CreateBookInteractorTest {
         // Then
         assertEquals(expectedBook, result)
 
+        verify(bookDomainService).ensureIsbnUniqueness(null)
         verify(mapper).toDomain(input)
         verify(bookRepository).save(expectedBook)
     }
@@ -76,9 +83,30 @@ class CreateBookInteractorTest {
                 createBookUseCase.execute(input)
             }
 
-        assertEquals(EXPECTED_ERROR_MESSAGE, exception.message)
-        assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
+        assertEquals(TITLE_BLANK_ERROR_MESSAGE, exception.message)
+        assertEquals(TITLE_BLANK_ERROR_SUBTYPE, exception.subType)
         verify(mapper).toDomain(input)
+        verify(bookRepository, never()).save(any())
+    }
+
+    @Test
+    fun `should throw exception when ISBN already exists`() {
+        // Given
+        val input = CreateBookCommandObjectMother.createWithIsbn(ISBN)
+
+        whenever(bookDomainService.ensureIsbnUniqueness(ISBN))
+            .thenThrow(BookDomainException.isbnAlreadyExists(ISBN))
+
+        // When & Then
+        val exception =
+            assertThrows<BookDomainException> {
+                createBookUseCase.execute(input)
+            }
+
+        assertEquals(ISBN_EXISTS_ERROR_MESSAGE, exception.message)
+        assertEquals(ISBN_EXISTS_ERROR_SUBTYPE, exception.subType)
+        verify(bookDomainService).ensureIsbnUniqueness(ISBN)
+        verify(mapper, never()).toDomain(any())
         verify(bookRepository, never()).save(any())
     }
 }

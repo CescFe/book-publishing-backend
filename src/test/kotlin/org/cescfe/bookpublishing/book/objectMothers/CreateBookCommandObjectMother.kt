@@ -74,4 +74,10 @@ object CreateBookCommandObjectMother {
             title = "Minimal Book",
             basePrice = 9.99,
         )
+
+    fun createWithIsbn(isbn: String?): CreateBookUseCase.Command =
+        create(
+            title = "Test Book with ISBN",
+            isbn = isbn,
+        )
 }
