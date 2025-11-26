@@ -8,7 +8,7 @@ import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import java.util.UUID
 
 object AuthorSummaryObjectMother {
-    private const val AUTHOR_ID_CONTRACT_TEST = "477537ff-7e8b-4930-bd41-d7f3589120b1"
+    private const val AUTHOR_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
 
     fun create(
         id: UUID = UUID.randomUUID(),
@@ -25,7 +25,7 @@ object AuthorSummaryObjectMother {
 
     fun createFirstAuthorSummary(): AuthorSummary =
         create(
-            id = UUID.fromString(AUTHOR_ID_CONTRACT_TEST),
+            id = UUID.fromString(AUTHOR_ID),
             fullName = "J.R.R. Tolkien",
             pseudonym = "Tolkien",
             email = "tolkien@example.com",
