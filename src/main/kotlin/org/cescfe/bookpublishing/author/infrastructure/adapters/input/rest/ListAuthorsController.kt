@@ -21,20 +21,11 @@ class ListAuthorsController(
         limit: Int,
         search: String?,
     ): ResponseEntity<GetAuthors200ResponseDTO> {
-        val inputValues = mapParametersToInputValues(page, limit)
-        val result = listAuthorsUseCase.execute(inputValues)
+        val query = ListAuthorsUseCase.Query(page, limit)
+        val result = listAuthorsUseCase.execute(query)
         val responseDto = mapResultToDto(result)
         return ResponseEntity.ok(responseDto)
     }
-
-    private fun mapParametersToInputValues(
-        page: Int,
-        limit: Int,
-    ): ListAuthorsUseCase.Query =
-        ListAuthorsUseCase.Query(
-            page = page,
-            limit = limit,
-        )
 
     private fun mapResultToDto(result: PaginatedResult<AuthorSummary>): GetAuthors200ResponseDTO =
         GetAuthors200ResponseDTO(
@@ -48,11 +39,11 @@ class ListAuthorsController(
                 ),
         )
 
-    private fun toDto(authorSummary: AuthorSummary): GetAuthors200ResponseAllOfDataInnerDTO =
+    private fun toDto(domain: AuthorSummary): GetAuthors200ResponseAllOfDataInnerDTO =
         GetAuthors200ResponseAllOfDataInnerDTO(
-            id = authorSummary.id.value,
-            fullName = authorSummary.fullName.value,
-            pseudonym = authorSummary.pseudonym?.value,
-            email = authorSummary.email?.value,
+            id = domain.id.value,
+            fullName = domain.fullName.value,
+            pseudonym = domain.pseudonym?.value,
+            email = domain.email?.value,
         )
 }

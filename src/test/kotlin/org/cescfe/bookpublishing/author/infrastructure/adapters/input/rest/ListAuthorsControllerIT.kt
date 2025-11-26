@@ -1,13 +1,9 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
-import org.cescfe.bookpublishing.author.domain.model.AuthorId
-import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
-import org.cescfe.bookpublishing.author.domain.model.Email
-import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.author.domain.model.Pseudonym
+import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -22,7 +18,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
@@ -44,18 +39,12 @@ class ListAuthorsControllerIT {
     companion object {
         private const val URI = "/api/v1/authors"
         private const val ROLE = "ROLE_USER"
-        private const val TEST_AUTHOR_ID = "123e4567-e89b-12d3-a456-426614174000"
+        private const val AUTHOR_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
     }
 
     @BeforeEach
     fun setup() {
-        val testAuthorSummary =
-            AuthorSummary(
-                id = AuthorId(UUID.fromString(TEST_AUTHOR_ID)),
-                fullName = FullName("J.R.R. Tolkien"),
-                pseudonym = Pseudonym("Tolkien"),
-                email = Email("tolkien@example.com"),
-            )
+        val testAuthorSummary = AuthorSummaryObjectMother.createFirstAuthorSummary()
 
         val paginatedResult =
             PaginatedResult(
@@ -82,7 +71,7 @@ class ListAuthorsControllerIT {
                     .param("limit", "20"),
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(TEST_AUTHOR_ID))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(AUTHOR_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].full_name").value("J.R.R. Tolkien"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.page").value(1))
