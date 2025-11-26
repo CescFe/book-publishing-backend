@@ -19,8 +19,8 @@ object AuthorSummaryObjectMother {
         AuthorSummary(
             id = AuthorId(id),
             fullName = FullName(fullName),
-            pseudonym = pseudonym?.let { Pseudonym(it) },
-            email = email?.let { Email(it) },
+            pseudonym = pseudonym?.let(::Pseudonym),
+            email = email?.let(::Email),
         )
 
     fun createFirstAuthorSummary(): AuthorSummary =

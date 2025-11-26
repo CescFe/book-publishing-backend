@@ -1,30 +1,30 @@
-package org.cescfe.bookpublishing.author.application.port.input.mapper
+package org.cescfe.bookpublishing.book.application.port.input.mapper
 
-import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
-import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
-import kotlin.test.Test
+import org.cescfe.bookpublishing.book.domain.model.BookSummary
+import org.cescfe.bookpublishing.book.objectMothers.BookSummaryObjectMother
+import org.junit.Test
 import kotlin.test.assertEquals
 
-class ListAuthorsUseCaseMapperTest {
-    private val mapper = ListAuthorsUseCaseMapper()
+class ListBooksUseCaseMapperTest {
+    private val mapper = ListBooksUseCaseMapper()
 
     @Test
     fun `should map to paginated result correctly`() {
         // Given
-        val authors =
+        val books =
             listOf(
-                AuthorSummaryObjectMother.createFirstAuthorSummary(),
-                AuthorSummaryObjectMother.createSecondAuthorSummary(),
+                BookSummaryObjectMother.createFirstBookSummary(),
+                BookSummaryObjectMother.createSecondBookSummary(),
             )
         val totalCount = 2L
         val page = 1
         val limit = 2
 
         // When
-        val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
+        val result = mapper.toPaginatedResult(books, totalCount, page, limit)
 
         // Then
-        assertEquals(authors, result.data)
+        assertEquals(books, result.data)
         assertEquals(2, result.metadata.total)
         assertEquals(1, result.metadata.page)
         assertEquals(2, result.metadata.limit)
@@ -34,13 +34,13 @@ class ListAuthorsUseCaseMapperTest {
     @Test
     fun `should calculate total pages correctly for multiple pages`() {
         // Given
-        val authors = listOf(AuthorSummaryObjectMother.createFirstAuthorSummary())
+        val books = listOf(BookSummaryObjectMother.createFirstBookSummary())
         val totalCount = 5L
         val page = 2
         val limit = 2
 
         // When
-        val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
+        val result = mapper.toPaginatedResult(books, totalCount, page, limit)
 
         // Then
         assertEquals(5, result.metadata.total)
@@ -52,16 +52,16 @@ class ListAuthorsUseCaseMapperTest {
     @Test
     fun `should handle empty result correctly`() {
         // Given
-        val authors = emptyList<AuthorSummary>()
+        val books = emptyList<BookSummary>()
         val totalCount = 0L
         val page = 1
         val limit = 10
 
         // When
-        val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
+        val result = mapper.toPaginatedResult(books, totalCount, page, limit)
 
         // Then
-        assertEquals(emptyList(), result.data)
+        assertEquals(books, result.data)
         assertEquals(0, result.metadata.total)
         assertEquals(1, result.metadata.page)
         assertEquals(10, result.metadata.limit)
