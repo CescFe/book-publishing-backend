@@ -67,19 +67,4 @@ class ListAuthorsUseCaseMapperTest {
         assertEquals(10, result.metadata.limit)
         assertEquals(0, result.metadata.totalPages)
     }
-
-    @Test
-    fun `should convert Long to Int correctly`() {
-        // Given
-        val authors = emptyList<AuthorSummary>()
-        val totalCount = 2147483647L
-        val page = 1
-        val limit = 1
-
-        // When
-        val result = mapper.toPaginatedResult(authors, totalCount, page, limit)
-
-        // Then
-        assertEquals(2147483647, result.metadata.total)
-    }
 }

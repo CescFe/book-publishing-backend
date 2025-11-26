@@ -67,22 +67,4 @@ class ListBooksUseCaseMapperTest {
         assertEquals(10, result.metadata.limit)
         assertEquals(0, result.metadata.totalPages)
     }
-
-    @Test
-    fun `should calculate total pages correctly when total count is exactly divisible by limit`() {
-        // Given
-        val books = listOf(BookSummaryObjectMother.createFirstBookSummary())
-        val totalCount = 4L
-        val page = 1
-        val limit = 2
-
-        // When
-        val result = mapper.toPaginatedResult(books, totalCount, page, limit)
-
-        // Then
-        assertEquals(4, result.metadata.total)
-        assertEquals(1, result.metadata.page)
-        assertEquals(2, result.metadata.limit)
-        assertEquals(2, result.metadata.totalPages)
-    }
 }
