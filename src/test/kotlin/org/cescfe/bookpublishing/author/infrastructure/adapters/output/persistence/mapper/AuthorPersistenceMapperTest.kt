@@ -6,9 +6,12 @@ import org.cescfe.bookpublishing.author.domain.model.Email
 import org.cescfe.bookpublishing.author.domain.model.FullName
 import org.cescfe.bookpublishing.author.domain.model.Pseudonym
 import org.cescfe.bookpublishing.author.domain.model.Website
+import org.cescfe.bookpublishing.author.infrastructure.adapters.output.persistence.projection.AuthorSummaryProjection
 import org.cescfe.bookpublishing.author.objectMothers.AuthorEntityObjectMother
 import org.cescfe.bookpublishing.author.objectMothers.AuthorObjectMother
 import org.junit.jupiter.api.Test
+import java.util.UUID
+import java.util.UUID.randomUUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -85,5 +88,26 @@ class AuthorPersistenceMapperTest {
         assertNull(result.biography)
         assertNull(result.email)
         assertNull(result.website)
+    }
+
+    @Test
+    fun `should map projection to author summary correctly`() {
+        // Given
+        val projection =
+            object : AuthorSummaryProjection {
+                override val id: UUID = randomUUID()
+                override val fullName: String = "Test Author"
+                override val pseudonym: String = "Test Pseudonym"
+                override val email: String = "test@email.com"
+            }
+
+        // When
+        val result = authorMapper.toDomainSummary(projection)
+
+        // Then
+        assertEquals(AuthorId(projection.id), result.id)
+        assertEquals(FullName(projection.fullName), result.fullName)
+        assertEquals(Pseudonym(projection.pseudonym), result.pseudonym)
+        assertEquals(Email(projection.email), result.email)
     }
 }

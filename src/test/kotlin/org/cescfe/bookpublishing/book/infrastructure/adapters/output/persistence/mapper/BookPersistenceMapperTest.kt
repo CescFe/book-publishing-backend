@@ -1,8 +1,12 @@
 package org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.mapper
 
+import org.cescfe.bookpublishing.book.domain.model.enum.Status
+import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookSummaryProjection
 import org.cescfe.bookpublishing.book.objectMothers.BookEntityObjectMother
 import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
 import org.junit.jupiter.api.Test
+import java.util.UUID
+import java.util.UUID.randomUUID
 import kotlin.test.assertEquals
 
 class BookPersistenceMapperTest {
@@ -112,5 +116,33 @@ class BookPersistenceMapperTest {
         assertEquals(entity.collectionId, result.collectionId.value)
         assertEquals(entity.basePrice, result.basePrice.value)
         assertEquals(entity.status, result.status)
+    }
+
+    @Test
+    fun `should map projection to book summary correctly`() {
+        // Given
+        val projection =
+            object : BookSummaryProjection {
+                override val id: UUID = randomUUID()
+                override val title: String = "Test Book"
+                override val authorId: UUID = randomUUID()
+                override val collectionId: UUID = randomUUID()
+                override val basePrice: Double = 19.99
+                override val finalPrice: Double = 20.79
+                override val isbn: String? = null
+                override val status = Status.PUBLISHED
+            }
+
+        // When
+        val result = bookMapper.toDomainSummary(projection)
+
+        // Then
+        assertEquals(projection.id, result.id.value)
+        assertEquals(projection.title, result.title.value)
+        assertEquals(projection.authorId, result.authorId.value)
+        assertEquals(projection.collectionId, result.collectionId.value)
+        assertEquals(projection.basePrice, result.basePrice.value)
+        assertEquals(projection.finalPrice, result.finalPrice)
+        assertEquals(projection.status, result.status)
     }
 }

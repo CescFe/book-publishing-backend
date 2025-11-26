@@ -16,6 +16,7 @@ import org.cescfe.bookpublishing.book.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.book.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.book.domain.model.VatRate
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.entity.BookEntity
+import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookSummaryProjection
 import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.springframework.stereotype.Component
 
@@ -33,6 +34,7 @@ class BookPersistenceMapper {
             primaryGenre = book.primaryGenre,
             secondaryGenres = book.secondaryGenres?.value,
             basePrice = book.basePrice.value,
+            finalPrice = book.finalPrice,
             vatRate = book.vatRate?.value,
             isbn = book.isbn?.value,
             publicationDate = book.publicationDate?.value,
@@ -55,6 +57,7 @@ class BookPersistenceMapper {
             secondaryGenres = entity.secondaryGenres?.let { SecondaryGenres(it) },
             basePrice = BasePrice(entity.basePrice),
             vatRate = entity.vatRate?.let { VatRate(it) },
+            finalPrice = entity.finalPrice,
             isbn = entity.isbn?.let { ISBN(it) },
             publicationDate = entity.publicationDate?.let { PublicationDate(it) },
             pageCount = entity.pageCount?.let { PageCount(it) },
@@ -70,13 +73,14 @@ class BookPersistenceMapper {
                 ),
         )
 
-    fun toDomainSummary(entity: BookEntity): BookSummary =
+    fun toDomainSummary(projection: BookSummaryProjection): BookSummary =
         BookSummary(
-            id = BookId(entity.id),
-            title = BookTitle(entity.title),
-            authorId = AuthorIdRef(entity.authorId),
-            collectionId = CollectionIdRef(entity.collectionId),
-            basePrice = BasePrice(entity.basePrice),
-            status = entity.status,
+            id = BookId(projection.id),
+            title = BookTitle(projection.title),
+            authorId = AuthorIdRef(projection.authorId),
+            collectionId = CollectionIdRef(projection.collectionId),
+            basePrice = BasePrice(projection.basePrice),
+            finalPrice = projection.finalPrice,
+            status = projection.status,
         )
 }

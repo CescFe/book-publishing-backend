@@ -32,6 +32,7 @@ class CreateBookUseCaseMapper {
             secondaryGenres = command.secondaryGenres?.let(::SecondaryGenres),
             basePrice = BasePrice(command.basePrice),
             vatRate = command.vatRate?.let(::VatRate),
+            finalPrice = Book.calculateFinalPrice(command.basePrice, command.vatRate),
             isbn = command.isbn?.let(::ISBN),
             publicationDate = command.publicationDate?.let(::PublicationDate),
             pageCount = command.pageCount?.let(::PageCount),

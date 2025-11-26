@@ -30,6 +30,8 @@ data class BookEntity(
     val collectionId: UUID,
     @Column(name = "base_price", nullable = false)
     val basePrice: Double,
+    @Column(name = "final_price", nullable = false)
+    val finalPrice: Double,
     @Column(name = "vat_rate")
     val vatRate: Double?,
     @Column(name = "isbn")

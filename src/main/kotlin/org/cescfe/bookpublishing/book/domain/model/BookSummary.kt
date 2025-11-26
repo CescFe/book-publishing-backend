@@ -8,6 +8,7 @@ data class BookSummary(
     val authorId: AuthorIdRef,
     val collectionId: CollectionIdRef,
     val basePrice: BasePrice,
+    val finalPrice: Double,
     val isbn: ISBN? = null,
     val status: Status? = null,
 )

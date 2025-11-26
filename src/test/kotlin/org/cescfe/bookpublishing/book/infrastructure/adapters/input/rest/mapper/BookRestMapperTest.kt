@@ -1,7 +1,9 @@
 package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper
 
 import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -13,10 +15,10 @@ class BookRestMapperTest {
     fun `should map domain book to response DTO`() {
         // Given
         val audit =
-            org.cescfe.bookpublishing.shared.domain.model.Metadata(
-                createdAt = java.time.LocalDateTime.now(),
+            Metadata(
+                createdAt = LocalDateTime.now(),
                 createdBy = "admin",
-                updatedAt = java.time.LocalDateTime.now(),
+                updatedAt = LocalDateTime.now(),
                 updatedBy = "admin",
             )
         val book = BookObjectMother.createWithAllFields().copy(audit = audit)
@@ -42,10 +44,11 @@ class BookRestMapperTest {
         assertEquals(book.pageCount!!.value, dto.pageCount)
         assertEquals(book.coverImagePath!!.value, dto.coverImagePath)
         assertEquals(book.description!!.value, dto.description)
-        assertEquals(book.audit?.createdAt?.atOffset(java.time.ZoneOffset.UTC), dto.createdAt)
-        assertEquals(book.audit?.createdBy, dto.createdBy)
-        assertEquals(book.audit?.updatedAt?.atOffset(java.time.ZoneOffset.UTC), dto.updatedAt)
-        assertEquals(book.audit?.updatedBy, dto.updatedBy)
+        assertEquals(book.status!!.name, dto.status!!.name)
+        assertEquals(book.audit!!.createdAt!!.atOffset(java.time.ZoneOffset.UTC), dto.createdAt)
+        assertEquals(book.audit.createdBy, dto.createdBy)
+        assertEquals(book.audit.updatedAt!!.atOffset(java.time.ZoneOffset.UTC), dto.updatedAt)
+        assertEquals(book.audit.updatedBy, dto.updatedBy)
     }
 
     @Test
@@ -75,5 +78,6 @@ class BookRestMapperTest {
         assertNull(dto.pageCount)
         assertNull(dto.coverImagePath)
         assertNull(dto.description)
+        assertNull(dto.status)
     }
 }

@@ -23,6 +23,7 @@ data class Book(
     val secondaryGenres: SecondaryGenres? = null,
     val basePrice: BasePrice,
     val vatRate: VatRate? = null,
+    val finalPrice: Double,
     val isbn: ISBN? = null,
     val publicationDate: PublicationDate? = null,
     val pageCount: PageCount? = null,
@@ -31,13 +32,15 @@ data class Book(
     val status: Status? = null,
     val audit: Metadata? = null,
 ) {
-    val finalPrice: Double
-        get() = calculateFinalPrice()
-
-    private fun calculateFinalPrice(): Double {
-        val vat = vatRate?.value ?: 0.04
-        val finalPrice = basePrice.value * (1 + vat)
-        return (finalPrice * 100).roundToInt() / 100.0
+    companion object {
+        fun calculateFinalPrice(
+            basePrice: Double,
+            vatRate: Double?,
+        ): Double {
+            val vat = vatRate ?: 0.04
+            val finalPrice = basePrice * (1 + vat)
+            return (finalPrice * 100).roundToInt() / 100.0
+        }
     }
 }
 
