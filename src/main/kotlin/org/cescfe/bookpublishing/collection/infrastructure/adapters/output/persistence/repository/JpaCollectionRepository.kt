@@ -51,5 +51,5 @@ class JpaCollectionRepository(
     override fun findByName(name: String): Collection? =
         collectionJpaEntityRepository
             .findByName(name)
-            ?.let { entity -> collectionMapper.toDomain(entity) }
+            ?.let { collectionMapper.toDomain(it) }
 }

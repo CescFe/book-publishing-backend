@@ -11,6 +11,7 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.junit.jupiter.api.Test
+import java.util.UUID
 import java.util.UUID.randomUUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -105,12 +106,10 @@ class CollectionPersistenceMapperTest {
     @Test
     fun `should map projection to collection summary correctly`() {
         // Given
-        val id = randomUUID()
-        val name = "Test Collection"
         val projection =
             object : CollectionSummaryProjection {
-                override val id = id
-                override val name = name
+                override val id: UUID = randomUUID()
+                override val name: String = "Test Collection"
                 override val readingLevel = ReadingLevel.CHILDREN
                 override val primaryLanguage = Language.ENGLISH
                 override val primaryGenre = Genre.FANTASY
@@ -120,10 +119,10 @@ class CollectionPersistenceMapperTest {
         val result = collectionMapper.toDomainSummary(projection)
 
         // Then
-        assertEquals(CollectionId(id), result.id)
-        assertEquals(CollectionName(name), result.name)
-        assertEquals(ReadingLevel.CHILDREN, result.readingLevel)
-        assertEquals(Language.ENGLISH, result.primaryLanguage)
-        assertEquals(Genre.FANTASY, result.primaryGenre)
+        assertEquals(CollectionId(projection.id), result.id)
+        assertEquals(CollectionName(projection.name), result.name)
+        assertEquals(projection.readingLevel, result.readingLevel)
+        assertEquals(projection.primaryLanguage, result.primaryLanguage)
+        assertEquals(projection.primaryGenre, result.primaryGenre)
     }
 }

@@ -22,7 +22,7 @@ class JpaAuthorRepository(
 
     override fun findAllSummary(): List<AuthorSummary> =
         authorJpaEntityRepository
-            .findAllByOrderByFullNameAsc()
+            .findAllProjectedByOrderByFullNameAsc()
             .map { authorMapper.toDomainSummary(it) }
 
     override fun findAllSummary(
@@ -31,7 +31,7 @@ class JpaAuthorRepository(
     ): List<AuthorSummary> {
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return authorJpaEntityRepository
-            .findAllByOrderByFullNameAsc(pageable)
+            .findAllProjectedByOrderByFullNameAsc(pageable)
             .map { authorMapper.toDomainSummary(it) }
     }
 
