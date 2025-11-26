@@ -7,10 +7,10 @@ import org.cescfe.bookpublishing.collection.application.port.input.mapper.ListCo
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.collection.domain.port.CollectionRepository
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionSummaryObjectMother
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class ListCollectionsInteractorTest {
