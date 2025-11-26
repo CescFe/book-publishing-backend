@@ -28,6 +28,7 @@ class GlobalExceptionHandler {
         val status =
             when (ex.subType) {
                 "BOOK_NOT_FOUND" -> HttpStatus.NOT_FOUND
+                "ISBN_ALREADY_EXISTS" -> HttpStatus.CONFLICT
                 else -> HttpStatus.BAD_REQUEST
             }
 
@@ -74,6 +75,7 @@ class GlobalExceptionHandler {
         val status =
             when (ex.subType) {
                 "AUTHOR_NOT_FOUND" -> HttpStatus.NOT_FOUND
+                "EMAIL_ALREADY_EXISTS" -> HttpStatus.CONFLICT
                 else -> HttpStatus.BAD_REQUEST
             }
 
