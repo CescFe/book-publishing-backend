@@ -26,6 +26,10 @@ auth:
       roles:
         - USER
 
+jwt:
+  secret: ${JWT_SECRET:mySecretKeyThatIsAtLeast32CharactersLong}
+  expiration: ${JWT_EXPIRATION:900}
+
 logging:
   level:
     org.cescfe.bookpublishing: DEBUG

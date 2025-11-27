@@ -11,13 +11,16 @@ import javax.crypto.SecretKey
 
 @Component
 class JwtUtil {
-    @Value("\${jwt.secret:mySecretKeyThatIsAtLeast32CharactersLong}")
+    @Value("\${jwt.secret}")
     private lateinit var secret: String
 
     @Value("\${jwt.expiration:900}")
     private var expiration: Long = 900
 
     private val key: SecretKey by lazy {
+        require(secret.length >= 32) {
+            "JWT secret must be at least 32 characters long for security"
+        }
         Keys.hmacShaKeyFor(secret.toByteArray())
     }
 
