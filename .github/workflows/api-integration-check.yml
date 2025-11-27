@@ -22,6 +22,10 @@ jobs:
       POSTGRES_IMAGE_VERSION: postgres:16.3
       LIQUIBASE_IMAGE_VERSION: liquibase/liquibase:4.19.0
       SPRING_PROFILES_ACTIVE: local
+      LOCAL_ADMIN_NAME: ${{secrets.LOCAL_ADMIN_NAME}}
+      LOCAL_ADMIN_PASSWORD: ${{secrets.LOCAL_ADMIN_PASSWORD}}
+      LOCAL_USER_NAME: ${{secrets.LOCAL_USER_NAME}}
+      LOCAL_USER_PASSWORD: ${{secrets.LOCAL_USER_PASSWORD}}
 
     steps:
       - uses: actions/checkout@v4

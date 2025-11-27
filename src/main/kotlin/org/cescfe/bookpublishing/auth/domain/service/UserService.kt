@@ -1,5 +1,6 @@
 package org.cescfe.bookpublishing.auth.domain.service
 
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config.AuthProperties
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,37 +12,28 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     private val passwordEncoder: PasswordEncoder,
+    private val authProperties: AuthProperties,
 ) : UserDetailsService {
-    override fun loadUserByUsername(username: String): UserDetails {
-        val users =
-            mapOf(
-                "admin@example.com" to passwordEncoder.encode("admin123"),
-                "user@example.com" to passwordEncoder.encode("user123"),
-            )
+    private val usersCache: Map<String, UserDetails> by lazy {
+        authProperties.users
+            .mapNotNull { userConfig ->
+                val username = userConfig.username ?: return@mapNotNull null
+                val password = userConfig.password ?: return@mapNotNull null
 
-        val password =
-            users[username]
-                ?: throw UsernameNotFoundException("User not found: $username")
+                val authorities =
+                    userConfig.roles
+                        .map { SimpleGrantedAuthority("ROLE_$it") }
 
-        val authorities =
-            when (username) {
-                "admin@example.com" ->
-                    listOf(
-                        SimpleGrantedAuthority("ROLE_ADMIN"),
-                        SimpleGrantedAuthority("ROLE_USER"),
-                    )
-                "user@example.com" ->
-                    listOf(
-                        SimpleGrantedAuthority("ROLE_USER"),
-                    )
-                else -> listOf(SimpleGrantedAuthority("ROLE_USER"))
-            }
-
-        return User
-            .builder()
-            .username(username)
-            .password(password)
-            .authorities(authorities)
-            .build()
+                username to
+                    User
+                        .withUsername(username)
+                        .password(passwordEncoder.encode(password))
+                        .authorities(authorities)
+                        .build()
+            }.toMap()
     }
+
+    override fun loadUserByUsername(username: String): UserDetails =
+        usersCache[username]
+            ?: throw UsernameNotFoundException("User not found: $username")
 }
