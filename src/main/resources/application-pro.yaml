@@ -1,37 +1,41 @@
 spring:
-  application:
-    name: book-publishing-backend
-  profiles:
-    active: local
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:root}
-    username: ${POSTGRES_USER:root}
-    password: ${POSTGRES_PASSWORD:root}
+    url: jdbc:postgresql://${NEON_DB_HOST}/${NEON_DB_NAME}?sslmode=require
+    username: ${NEON_DB_USER}
+    password: ${NEON_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: false
 
 auth:
   users:
-    - username: ${ADMIN_NAME}
-      password: ${ADMIN_PASSWORD}
+    - username: ${PRO_ADMIN_NAME}
+      password: ${PRO_ADMIN_PASSWORD}
       roles:
         - ADMIN
         - USER
-    - username: ${USER_NAME}
-      password: ${USER_PASSWORD}
+    - username: ${PRO_USER_NAME}
+      password: ${PRO_USER_PASSWORD}
       roles:
         - USER
 
 jwt:
-  secret: ${JWT_SECRET:mySecretKeyThatIsAtLeast32CharactersLong}
+  secret: ${JWT_SECRET}
   expiration: ${JWT_EXPIRATION:900}
 
 server:
@@ -41,5 +45,7 @@ logging:
   level:
     org.cescfe.bookpublishing: INFO
     org.springframework.web: INFO
-    org.hibernate.SQL: INFO
+    org.hibernate.SQL: WARN
     org.hibernate.type.descriptor.sql.BasicBinder: INFO
+    liquibase: INFO
+    com.zaxxer.hikari: INFO
