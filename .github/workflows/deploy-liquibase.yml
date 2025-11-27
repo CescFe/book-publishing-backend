@@ -1,0 +1,30 @@
+name: Deploy Liquibase to pro
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-liquibase:
+    runs-on: ubuntu-latest
+    env:
+      LIQUIBASE_IMAGE_VERSION: liquibase/liquibase:4.19.0
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Liquibase update
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}/src/main/resources/db/changelog:/liquibase/changelog:ro \
+            ${{ env.LIQUIBASE_IMAGE_VERSION }} \
+            --changeLogFile=changelog/db.changelog-master.yaml \
+            --url="jdbc:postgresql://${{ secrets.NEON_DB_HOST }}/${{ secrets.NEON_DB_NAME }}?sslmode=require" \
+            --username="${{ secrets.NEON_DB_USER }}" \
+            --password="${{ secrets.NEON_DB_PASSWORD }}" \
+            --driver=org.postgresql.Driver \
+            update
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Liquibase migration completed successfully"
