@@ -3,6 +3,14 @@ FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
+# Build arguments for GitHub Packages credentials
+ARG GITHUB_USERNAME
+ARG TOKEN_PAT
+
+# Set environment variables for Gradle
+ENV GITHUB_USERNAME=${GITHUB_USERNAME}
+ENV TOKEN_PAT=${TOKEN_PAT}
+
 # Copy Gradle wrapper and build files
 COPY gradlew .
 COPY gradle gradle
