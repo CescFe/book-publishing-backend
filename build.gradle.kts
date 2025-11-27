@@ -21,7 +21,6 @@ val jjwtSecurity = "0.13.0"
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
-        vendor.set(JvmVendorSpec.AMAZON)
     }
 }
 
