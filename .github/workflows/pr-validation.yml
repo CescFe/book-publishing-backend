@@ -33,5 +33,5 @@ jobs:
       - name: Run Spotless check
         run: ./gradlew spotlessCheck
 
-      - name: Run unit tests
+      - name: Run all tests
         run: ./gradlew test

@@ -16,13 +16,13 @@ spring:
 
 auth:
   users:
-    - username: ${LOCAL_ADMIN_NAME}
-      password: ${LOCAL_ADMIN_PASSWORD}
+    - username: ${LOCAL_ADMIN_NAME:admin@example.com}
+      password: ${LOCAL_ADMIN_PASSWORD:admin123}
       roles:
         - ADMIN
         - USER
-    - username: ${LOCAL_USER_NAME}
-      password: ${LOCAL_USER_PASSWORD}
+    - username: ${LOCAL_USER_NAME:user@example.com}
+      password: ${LOCAL_USER_PASSWORD:user123}
       roles:
         - USER
 

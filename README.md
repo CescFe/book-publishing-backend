@@ -3,26 +3,44 @@
 [![GitHub release](https://img.shields.io/github/v/release/CescFe/book-publishing-backend?color=blue)](https://github.com/CescFe/book-publishing-backend/releases/latest)
 [![GitHub license](https://img.shields.io/github/license/CescFe/book-publishing-backend?color=blue)](https://github.com/CescFe/book-publishing-backend/blob/main/LICENSE)
 
-Backend service for the Book Publishing platform. Implements the [book-publishing-api-spec](https://github.com/CescFe/book-publishing-api-spec) RESTful API to manage books, authors, and collections.
+Backend service for the Book Publishing platform.
 
-## 📌 About the Project
+---
 
-### 🔎 Tech Stack
+## 📑 Table of Contents
 
-- Kotlin 2.1
-- Spring Boot 3.5
-- Spring Web / Validation
-- Spring Data JPA
-- PostgreSQL
-- Testcontainers
-- Liquibase
-- Gradle
-- GitHub Actions
-- Docker
+- [Overview](#-overview)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [Getting Started](#-getting-started)
+- [Environment Profiles](#environment-profiles)
+- [Testing Policy](#-testing-policy)
+- [Code Quality](#code-quality)
+- [CI/CD Workflow](#-cicd-workflow)
+- [API Documentation](#api-documentation)
 
-### 🏗️ Architecture
+---
 
-This project follows **Hexagonal Architecture** (Ports and Adapters) with **Vertical Slice Architecture**:
+## 📌 Overview
+
+This repository implements the [book-publishing-api-spec](https://github.com/CescFe/book-publishing-api-spec) RESTful API to manage books, authors, and collections.
+
+## 🔎 Tech Stack
+
+| Category   | Technologies                                                  |
+|------------|---------------------------------------------------------------|
+| Language   | Kotlin 2.1                                                    |
+| Framework  | Spring Boot 3.5, Spring Web, Spring Data JPA, Spring Security |
+| Database   | PostgreSQL                                                    |
+| Migrations | Liquibase                                                     |
+| Testing    | JUnit 5, Testcontainers, MockMvc                              |
+| Build      | Gradle                                                        |
+| CI/CD      | GitHub Actions                                                |
+| Container  | Docker                                                        |
+
+## 🏗️ Architecture
+
+This project follows **Hexagonal Architecture** (Ports and Adapters), **Domain-Driven Design** with **Vertical Slice Architecture**:
 
 - **Domain**: Business entities and rules
 - **Application**: Use cases and application services
@@ -61,39 +79,27 @@ src/main/kotlin/org/cescfe/bookpublishing/
 └── BookPublishingApplication.kt
 ```
 
-### 🧪 Testing Policy
-
-The project follows a testing strategy aligned with Hexagonal Architecture:
-- *Unit Tests*: Validate mappers, domain logic and application services in isolation, without Spring or infrastructure.
-- *Integration Tests*: Use Testcontainers + PostgreSQL to validate persistence adapters, entity mappings, auditing fields, JSONB handling, and repository behaviour.
-- *Dataset-based Tests*: Certain integration tests load SQL datasets (/datasets/*.sql) to verify JPA mapping and audit fields against realistic database records.
-- *What is intentionally not tested*: JPA built-ins (count, existsById, deleteById) unless wrapped with custom logic
-The goal is to ensure correctness without duplicating framework tests or introducing unnecessary maintenance burden.
-
 ## 🚀 Getting Started
 
 ### ✏️ Prerequisites
 
 - Java 21 or higher
 - Docker and Docker Compose
+- 💡 In local environment, is required a `.env` file to set the `Token PAT` credentials
 
-### 🚀 Running the Application
+### 🏃 Running the Application
 
-#### Local env
-1. Start PostgreSQL
-    >docker-compose up -d
-2. Run the application
-    >./gradlew bootRun --args='--spring.profiles.active=local'
+#### 1. Start infrastructure (PostgreSQL + Liquibase)
+>docker-compose up -d
+#### 2. Run the application
+>./gradlew bootRun --args='--spring.profiles.active=local'
 
-#### Clean (saving data)
+#### Stop services (preserving data)
 >docker-compose down
-
-#### Clean ALL (data included)
+#### Stop services and delete all data
 >docker-compose down -v
 
-The application will start on `http://localhost:8080`
-
-### Available Endpoints
+### API Endpoints
 - `GET /api/v1/health` - Health check endpoint
 
 #### Authentication
@@ -106,66 +112,66 @@ The application will start on `http://localhost:8080`
 - `PUT /api/v1/authors/{id}` - Update author
 - `DELETE /api/v1/authors/{id}` - Delete author
 
-### Database
+#### Collections
+- `GET /api/v1/collections` - Get all collections (paginated)
+- `POST /api/v1/collections` - Create a new collection
+- `GET /api/v1/collections/{id}` - Get collection by ID
+- `DELETE /api/v1/collections/{id}` - Delete collection
 
-- **Local Development**: PostgreSQL (via Docker)
+#### Books
+- `GET /api/v1/books` - Get all books (paginated)
+- `POST /api/v1/books` - Create a new book
+- `GET /api/v1/books/{id}` - Get book by ID
+- `DELETE /api/v1/books/{id}` - Delete book
 
-### Environment Profiles
+## Environment Profiles
 
 - `local` → Development with local PostgreSQL
 - `test` → Testcontainers (auto-enabled)
 - `development` → GitHub CI/CD workflow
+- `pro` → Connected to real Database
 
-### Code Quality
+## 🧪 Testing Policy
+
+The project follows a testing strategy aligned with Hexagonal Architecture:
+- *Unit Tests*: Validate mappers, domain logic and application services in isolation, without Spring or infrastructure.
+- *Integration Tests*: Use Testcontainers + PostgreSQL to validate persistence adapters, entity mappings, auditing fields, JSONB handling, and repository behaviour.
+- *Dataset-based Tests*: Certain integration tests load SQL datasets (/datasets/*.sql) to verify JPA mapping and audit fields against realistic database records.
+- *What is intentionally not tested*: JPA built-ins do not wrapped with custom logic
+  The goal is to ensure correctness without duplicating framework tests or introducing unnecessary maintenance burden.
+
+## Code Quality
 
 ```bash
-# Check code style
-./gradlew ktlintCheck
-
-# Fix code style issues
-./gradlew ktlintFormat
-
-# Check all formatting
+# Check formatting
 ./gradlew spotlessCheck
 
 # Apply formatting
 ./gradlew spotlessApply
-
-# Run all quality checks
-./gradlew check
 ```
 
-## Testing
+## 🕹️ CI/CD Workflow
 
-```bash
-# Run all tests
-./gradlew test
+### Automatic Validation
 
-# Run specific test
-./gradlew test --tests "HealthControllerTest"
+Every pull request automatically runs:
+- ✅ **Pull Request Validation** - Spotless check + all Gradle tests (unit + integration)
+- ✅ **Integration Validation** (PRs in `Ready for Review`) - Builds JAR, starts Docker services, runs Newman/Postman E2E tests
 
-# Run tests with coverage
-./gradlew test jacocoTestReport
-```
+### Release Process
 
-## 🕹️ Building
+The release process is partially automated:
+- ✅ **Deploy Backend** - Render automatically deploys pro using Dockerfile when there is a Push to `main`
+- ✅ **Migrate Database** - Run manually **Deploy Liquibase to pro** GitHub Action
 
-```bash
-# Build JAR
-./gradlew build
+### Create Tag and Release
 
-# Build Docker image
-docker build -t book-publishing-backend .
-
-# Build with Jib (Google Container Tools)
-./gradlew jib
-```
+1. Go to **Actions** → **Create Release Tag**
+2. Run manually with the desired version (e.g., `v0.1.0`)
+3. This creates a Git tag
+4. Go to **Tags** → Click on **Release**
 
 ## API Documentation
 
-- **Swagger UI**: `http://localhost:8080/swagger-ui.html` (when available)
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
 - **OpenAPI Spec**: `http://localhost:8080/v3/api-docs`
-
-## License
-
-This project is licensed under the MIT License (see the [LICENSE](LICENSE) file for details).
