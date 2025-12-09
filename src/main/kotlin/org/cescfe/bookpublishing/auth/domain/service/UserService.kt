@@ -33,7 +33,19 @@ class UserService(
             }.toMap()
     }
 
-    override fun loadUserByUsername(username: String): UserDetails =
-        usersCache[username]
-            ?: throw UsernameNotFoundException("User not found: $username")
+    override fun loadUserByUsername(username: String): UserDetails {
+        val cachedUser =
+            usersCache[username]
+                ?: throw UsernameNotFoundException("User not found: $username")
+
+        return User
+            .withUsername(cachedUser.username)
+            .password(cachedUser.password)
+            .authorities(cachedUser.authorities)
+            .accountExpired(!cachedUser.isAccountNonExpired)
+            .accountLocked(!cachedUser.isAccountNonLocked)
+            .credentialsExpired(!cachedUser.isCredentialsNonExpired)
+            .disabled(!cachedUser.isEnabled)
+            .build()
+    }
 }
