@@ -12,11 +12,25 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
+import org.cescfe.bookpublishing.auth.domain.service.UserService
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
+import org.springframework.security.crypto.password.PasswordEncoder
+
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtRequestFilter: JwtRequestFilter,
 ) {
+    @Bean
+    fun authenticationProvider(
+        userService: UserService,
+        passwordEncoder: PasswordEncoder,
+    ): DaoAuthenticationProvider {
+        val authProvider = DaoAuthenticationProvider(userService)
+        authProvider.setPasswordEncoder(passwordEncoder)
+        return authProvider
+    }
+
     @Bean
     fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager = config.authenticationManager
 
