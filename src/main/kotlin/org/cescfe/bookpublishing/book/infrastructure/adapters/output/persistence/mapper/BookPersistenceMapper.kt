@@ -15,9 +15,14 @@ import org.cescfe.bookpublishing.book.domain.model.PublicationDate
 import org.cescfe.bookpublishing.book.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.book.domain.model.SecondaryLanguages
 import org.cescfe.bookpublishing.book.domain.model.VatRate
+import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.entity.BookEntity
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookSummaryProjection
+import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookWithRelationsProjection
 import org.cescfe.bookpublishing.shared.domain.model.Metadata
+import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
+import org.cescfe.bookpublishing.shared.domain.model.enum.Language
+import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.springframework.stereotype.Component
 
 @Component
@@ -83,4 +88,57 @@ class BookPersistenceMapper {
             finalPrice = projection.finalPrice,
             status = projection.status,
         )
+
+    fun toDomainWithRelations(projection: BookWithRelationsProjection): Book =
+        Book(
+            id = BookId(projection.id),
+            title = BookTitle(projection.title),
+            authorId = AuthorIdRef(projection.authorId),
+            collectionId = CollectionIdRef(projection.collectionId),
+            readingLevel = projection.readingLevel?.let { ReadingLevel.valueOf(it) },
+            primaryLanguage = projection.primaryLanguage?.let { Language.valueOf(it) },
+            secondaryLanguages = parseSecondaryLanguages(projection.secondaryLanguages),
+            primaryGenre = projection.primaryGenre?.let { Genre.valueOf(it) },
+            secondaryGenres = parseSecondaryGenres(projection.secondaryGenres),
+            basePrice = BasePrice(projection.basePrice),
+            vatRate = projection.vatRate?.let { VatRate(it) },
+            finalPrice = projection.finalPrice,
+            isbn = projection.isbn?.let { ISBN(it) },
+            publicationDate = projection.publicationDate?.let { PublicationDate(it) },
+            pageCount = projection.pageCount?.let { PageCount(it) },
+            coverImagePath = projection.coverImagePath?.let { CoverImagePath(it) },
+            description = projection.description?.let { Description(it) },
+            status = projection.status?.let { Status.valueOf(it) },
+            audit =
+                Metadata(
+                    createdAt = projection.createdAt,
+                    createdBy = projection.createdBy,
+                    updatedAt = projection.updatedAt,
+                    updatedBy = projection.updatedBy,
+                ),
+        )
+
+    private fun parseSecondaryLanguages(json: String?): SecondaryLanguages? {
+        if (json.isNullOrBlank()) return null
+        val languages =
+            json
+                .removeSurrounding("[", "]")
+                .split(",")
+                .map { it.trim().removeSurrounding("\"") }
+                .filter { it.isNotBlank() }
+                .map { Language.valueOf(it) }
+        return if (languages.isEmpty()) null else SecondaryLanguages(languages)
+    }
+
+    private fun parseSecondaryGenres(json: String?): SecondaryGenres? {
+        if (json.isNullOrBlank()) return null
+        val genres =
+            json
+                .removeSurrounding("[", "]")
+                .split(",")
+                .map { it.trim().removeSurrounding("\"") }
+                .filter { it.isNotBlank() }
+                .map { Genre.valueOf(it) }
+        return if (genres.isEmpty()) null else SecondaryGenres(genres)
+    }
 }

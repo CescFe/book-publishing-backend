@@ -7,7 +7,9 @@ interface BookSummaryProjection {
     val id: UUID
     val title: String
     val authorId: UUID
+    val authorName: String
     val collectionId: UUID
+    val collectionName: String
     val basePrice: Double
     val finalPrice: Double
     val isbn: String?
