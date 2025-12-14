@@ -165,11 +165,12 @@ class JpaBookRepositoryIT {
         val savedCollection = collectionJpaEntityRepository.save(collection)
         testEntityManager.flush()
 
-        val book = BookObjectMother.create(
-            title = "Test Book",
-            authorId = savedAuthor.id,
-            collectionId = savedCollection.id,
-        )
+        val book =
+            BookObjectMother.create(
+                title = "Test Book",
+                authorId = savedAuthor.id,
+                collectionId = savedCollection.id,
+            )
         jpaBookRepository.save(book)
         testEntityManager.flush()
 
@@ -198,16 +199,18 @@ class JpaBookRepositoryIT {
         val savedCollection = collectionJpaEntityRepository.save(collection)
         testEntityManager.flush()
 
-        val book1 = BookObjectMother.create(
-            title = "Alpha Book",
-            authorId = savedAuthor.id,
-            collectionId = savedCollection.id,
-        )
-        val book2 = BookObjectMother.create(
-            title = "Beta Book",
-            authorId = savedAuthor.id,
-            collectionId = savedCollection.id,
-        )
+        val book1 =
+            BookObjectMother.create(
+                title = "Alpha Book",
+                authorId = savedAuthor.id,
+                collectionId = savedCollection.id,
+            )
+        val book2 =
+            BookObjectMother.create(
+                title = "Beta Book",
+                authorId = savedAuthor.id,
+                collectionId = savedCollection.id,
+            )
         jpaBookRepository.save(book1)
         jpaBookRepository.save(book2)
         testEntityManager.flush()

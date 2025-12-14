@@ -16,9 +16,8 @@ class JpaBookRepository(
 ) : BookRepository {
     override fun findById(id: BookId): Book? =
         bookJpaEntityRepository
-            .findById(id.value)
-            .map { bookMapper.toDomain(it) }
-            .orElse(null)
+            .findByIdWithRelations(id.value)
+            ?.let { bookMapper.toDomainWithRelations(it) }
 
     override fun findAllSummary(): List<BookSummary> =
         bookJpaEntityRepository

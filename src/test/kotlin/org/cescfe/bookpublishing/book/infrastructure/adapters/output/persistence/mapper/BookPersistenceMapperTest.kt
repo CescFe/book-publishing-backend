@@ -2,9 +2,15 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistenc
 
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookSummaryProjection
+import org.cescfe.bookpublishing.book.infrastructure.adapters.output.persistence.projection.BookWithRelationsProjection
 import org.cescfe.bookpublishing.book.objectMothers.BookEntityObjectMother
 import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
+import org.cescfe.bookpublishing.shared.domain.model.enum.Language
+import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import java.util.UUID.randomUUID
 import kotlin.test.assertEquals
@@ -146,5 +152,62 @@ class BookPersistenceMapperTest {
         assertEquals(projection.basePrice, result.basePrice.value)
         assertEquals(projection.finalPrice, result.finalPrice)
         assertEquals(projection.status, result.status)
+    }
+
+    @Test
+    fun `should map projection with relations to book domain correctly`() {
+        // Given
+        val projection =
+            object : BookWithRelationsProjection {
+                override val id: UUID = randomUUID()
+                override val title: String = "Test Book With Relations"
+                override val authorId: UUID = randomUUID()
+                override val authorName: String = "Miguel de Cervantes"
+                override val collectionId: UUID = randomUUID()
+                override val collectionName: String = "Clásicos Españoles"
+                override val basePrice: Double = 19.99
+                override val vatRate: Double = 0.04
+                override val finalPrice: Double = 20.79
+                override val isbn: String = "9781234567890"
+                override val publicationDate: LocalDate = LocalDate.of(2024, 1, 15)
+                override val pageCount: Int = 350
+                override val coverImagePath: String = "/covers/test.jpg"
+                override val description: String = "Test description"
+                override val readingLevel: String = "ADULT"
+                override val primaryLanguage: String = "SPANISH"
+                override val secondaryLanguages: String = "[\"ENGLISH\", \"CATALAN\"]"
+                override val primaryGenre: String = "FICTION"
+                override val secondaryGenres: String = "[\"ADVENTURE\"]"
+                override val status: String = "PUBLISHED"
+                override val createdAt: LocalDateTime = LocalDateTime.now()
+                override val createdBy: String = "test-user"
+                override val updatedAt: LocalDateTime = LocalDateTime.now()
+                override val updatedBy: String = "test-user"
+            }
+
+        // When
+        val result = bookMapper.toDomainWithRelations(projection)
+
+        // Then
+        assertEquals(projection.id, result.id.value)
+        assertEquals(projection.title, result.title.value)
+        assertEquals(projection.authorId, result.authorId.value)
+        assertEquals(projection.collectionId, result.collectionId.value)
+        assertEquals(projection.basePrice, result.basePrice.value)
+        assertEquals(projection.vatRate, result.vatRate?.value)
+        assertEquals(projection.finalPrice, result.finalPrice)
+        assertEquals(projection.isbn, result.isbn?.value)
+        assertEquals(projection.publicationDate, result.publicationDate?.value)
+        assertEquals(projection.pageCount, result.pageCount?.value)
+        assertEquals(projection.coverImagePath, result.coverImagePath?.value)
+        assertEquals(projection.description, result.description?.value)
+        assertEquals(ReadingLevel.ADULT, result.readingLevel)
+        assertEquals(Language.SPANISH, result.primaryLanguage)
+        assertEquals(listOf(Language.ENGLISH, Language.CATALAN), result.secondaryLanguages?.value)
+        assertEquals(Genre.FICTION, result.primaryGenre)
+        assertEquals(listOf(Genre.ADVENTURE), result.secondaryGenres?.value)
+        assertEquals(Status.PUBLISHED, result.status)
+        assertEquals(projection.createdAt, result.audit?.createdAt)
+        assertEquals(projection.createdBy, result.audit?.createdBy)
     }
 }
