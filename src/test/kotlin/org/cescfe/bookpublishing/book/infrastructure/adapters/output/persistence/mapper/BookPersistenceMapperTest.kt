@@ -126,7 +126,9 @@ class BookPersistenceMapperTest {
                 override val id: UUID = randomUUID()
                 override val title: String = "Test Book"
                 override val authorId: UUID = randomUUID()
+                override val authorName: String = "Test Author"
                 override val collectionId: UUID = randomUUID()
+                override val collectionName: String = "Test Collection"
                 override val basePrice: Double = 19.99
                 override val finalPrice: Double = 20.79
                 override val isbn: String? = null

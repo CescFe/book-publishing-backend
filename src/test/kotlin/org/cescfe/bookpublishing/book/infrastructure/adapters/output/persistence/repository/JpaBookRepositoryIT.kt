@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
 import org.springframework.context.annotation.Import
+import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.jdbc.Sql
 import org.springframework.transaction.annotation.Transactional
@@ -151,6 +152,80 @@ class JpaBookRepositoryIT {
         assertEquals(2, books.size)
         assertTrue(books.any { it.title.value == "Book One" })
         assertTrue(books.any { it.title.value == "Book Two" })
+    }
+
+    @Test
+    fun `should find all books with author and collection names`() {
+        // Given
+        val author = AuthorEntityObjectMother.createSimple()
+        val savedAuthor = authorJpaEntityRepository.save(author)
+        testEntityManager.flush()
+
+        val collection = CollectionEntityObjectMother.createMinimal()
+        val savedCollection = collectionJpaEntityRepository.save(collection)
+        testEntityManager.flush()
+
+        val book = BookObjectMother.create(
+            title = "Test Book",
+            authorId = savedAuthor.id,
+            collectionId = savedCollection.id,
+        )
+        jpaBookRepository.save(book)
+        testEntityManager.flush()
+
+        // When
+        val summaries = bookJpaEntityRepository.findAllProjectedByOrderByTitleAsc()
+
+        // Then
+        assertEquals(1, summaries.size)
+        val summary = summaries.first()
+
+        assertEquals(book.title.value, summary.title)
+        assertEquals(savedAuthor.id, summary.authorId)
+        assertEquals(savedAuthor.fullName, summary.authorName)
+        assertEquals(savedCollection.id, summary.collectionId)
+        assertEquals(savedCollection.name, summary.collectionName)
+    }
+
+    @Test
+    fun `should find paginated books with author and collection names`() {
+        // Given
+        val author = AuthorEntityObjectMother.createSimple()
+        val savedAuthor = authorJpaEntityRepository.save(author)
+        testEntityManager.flush()
+
+        val collection = CollectionEntityObjectMother.createMinimal()
+        val savedCollection = collectionJpaEntityRepository.save(collection)
+        testEntityManager.flush()
+
+        val book1 = BookObjectMother.create(
+            title = "Alpha Book",
+            authorId = savedAuthor.id,
+            collectionId = savedCollection.id,
+        )
+        val book2 = BookObjectMother.create(
+            title = "Beta Book",
+            authorId = savedAuthor.id,
+            collectionId = savedCollection.id,
+        )
+        jpaBookRepository.save(book1)
+        jpaBookRepository.save(book2)
+        testEntityManager.flush()
+
+        // When
+        val pageable = PageRequest.of(0, 10)
+        val summaries = bookJpaEntityRepository.findAllProjectedByOrderByTitleAsc(pageable)
+
+        // Then
+        assertEquals(2, summaries.size)
+
+        assertEquals("Alpha Book", summaries[0].title)
+        assertEquals("Beta Book", summaries[1].title)
+
+        summaries.forEach { summary ->
+            assertEquals(savedAuthor.fullName, summary.authorName)
+            assertEquals(savedCollection.name, summary.collectionName)
+        }
     }
 
     @Test
