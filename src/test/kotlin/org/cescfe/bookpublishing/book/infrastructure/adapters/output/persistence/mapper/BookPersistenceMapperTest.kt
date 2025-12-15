@@ -137,7 +137,7 @@ class BookPersistenceMapperTest {
                 override val collectionName: String = "Test Collection"
                 override val basePrice: Double = 19.99
                 override val finalPrice: Double = 20.79
-                override val isbn: String? = null
+                override val isbn: String = "9781234567890"
                 override val status = Status.PUBLISHED
             }
 
@@ -153,6 +153,7 @@ class BookPersistenceMapperTest {
         assertEquals(projection.collectionName, result.collectionName)
         assertEquals(projection.basePrice, result.basePrice.value)
         assertEquals(projection.finalPrice, result.finalPrice)
+        assertEquals(projection.isbn, result.isbn!!.value)
         assertEquals(projection.status, result.status)
     }
 

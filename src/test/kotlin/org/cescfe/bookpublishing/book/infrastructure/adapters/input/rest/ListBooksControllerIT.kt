@@ -74,6 +74,16 @@ class ListBooksControllerIT {
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(BOOK_ID))
             .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].title").value("The Hobbit"))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.data[0].author.id").value("123e4567-e89b-12d3-a456-426614174000"),
+            ).andExpect(MockMvcResultMatchers.jsonPath("$.data[0].author.name").value("J.R.R. Tolkien"))
+            .andExpect(
+                MockMvcResultMatchers.jsonPath("$.data[0].collection.id").value("223e4567-e89b-12d3-a456-426614174000"),
+            ).andExpect(MockMvcResultMatchers.jsonPath("$.data[0].collection.name").value("The Lord of the Rings"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].base_price").value(25.50))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].final_price").value(26.52))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].isbn").value("9783161484100"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].status").value("PUBLISHED"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.page").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.limit").value(20))
