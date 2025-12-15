@@ -5,6 +5,7 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
 import java.util.UUID
 import kotlin.test.assertEquals
 
@@ -15,7 +16,9 @@ class BookTest {
         val id = BookId.generate()
         val title = BookTitle("The Invisible Life of Addie LaRue")
         val authorId = AuthorIdRef(UUID.randomUUID())
+        val authorName = "V. E. Schwab"
         val collectionId = CollectionIdRef(UUID.randomUUID())
+        val collectionName = "Fantasy Classics"
         val readingLevel = ReadingLevel.ADULT
         val primaryLanguage = Language.ENGLISH
         val secondaryLanguages = SecondaryLanguages(listOf(Language.CATALAN, Language.SPANISH))
@@ -36,7 +39,9 @@ class BookTest {
                 id = id,
                 title = title,
                 authorId = authorId,
+                authorName = authorName,
                 collectionId = collectionId,
+                collectionName = collectionName,
                 readingLevel = readingLevel,
                 primaryLanguage = primaryLanguage,
                 secondaryLanguages = secondaryLanguages,
@@ -57,7 +62,9 @@ class BookTest {
         assertEquals(id, book.id)
         assertEquals(title, book.title)
         assertEquals(authorId, book.authorId)
+        assertEquals(authorName, book.authorName)
         assertEquals(collectionId, book.collectionId)
+        assertEquals(collectionName, book.collectionName)
         assertEquals(readingLevel, book.readingLevel)
         assertEquals(primaryLanguage, book.primaryLanguage)
         assertEquals(secondaryLanguages, book.secondaryLanguages)
@@ -99,20 +106,22 @@ class BookTest {
         assertEquals(title, book.title)
         assertEquals(authorId, book.authorId)
         assertEquals(collectionId, book.collectionId)
-        assertEquals(null, book.readingLevel)
-        assertEquals(null, book.primaryLanguage)
-        assertEquals(null, book.secondaryLanguages)
-        assertEquals(null, book.primaryGenre)
-        assertEquals(null, book.secondaryGenres)
+        assertNull(book.readingLevel)
+        assertNull(book.primaryLanguage)
+        assertNull(book.secondaryLanguages)
+        assertNull(book.primaryGenre)
+        assertNull(book.secondaryGenres)
         assertEquals(basePrice, book.basePrice)
-        assertEquals(null, book.vatRate)
+        assertNull(book.vatRate)
         assertEquals(20.75, book.finalPrice)
-        assertEquals(null, book.isbn)
-        assertEquals(null, book.publicationDate)
-        assertEquals(null, book.pageCount)
-        assertEquals(null, book.coverImagePath)
-        assertEquals(null, book.description)
-        assertEquals(null, book.status)
+        assertNull(book.isbn)
+        assertNull(book.publicationDate)
+        assertNull(book.pageCount)
+        assertNull(book.coverImagePath)
+        assertNull(book.description)
+        assertNull(book.status)
+        assertNull(book.authorName)
+        assertNull(book.collectionName)
     }
 
     @Test

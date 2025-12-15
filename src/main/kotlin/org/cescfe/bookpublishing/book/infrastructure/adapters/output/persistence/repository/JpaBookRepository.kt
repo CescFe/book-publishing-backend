@@ -22,7 +22,7 @@ class JpaBookRepository(
     override fun findAllSummary(): List<BookSummary> =
         bookJpaEntityRepository
             .findAllProjectedByOrderByTitleAsc()
-            .map { bookMapper.toDomainSummary(it) }
+            .map { bookMapper.toDomainSummaryWithRelations(it) }
 
     override fun findAllSummary(
         page: Int,
@@ -31,7 +31,7 @@ class JpaBookRepository(
         val pageable: Pageable = PageRequest.of(page - 1, limit)
         return bookJpaEntityRepository
             .findAllProjectedByOrderByTitleAsc(pageable)
-            .map { bookMapper.toDomainSummary(it) }
+            .map { bookMapper.toDomainSummaryWithRelations(it) }
     }
 
     override fun countAll(): Long = bookJpaEntityRepository.count()

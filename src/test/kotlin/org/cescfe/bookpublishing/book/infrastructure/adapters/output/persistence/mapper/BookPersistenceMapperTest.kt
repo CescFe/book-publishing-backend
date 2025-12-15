@@ -142,13 +142,15 @@ class BookPersistenceMapperTest {
             }
 
         // When
-        val result = bookMapper.toDomainSummary(projection)
+        val result = bookMapper.toDomainSummaryWithRelations(projection)
 
         // Then
         assertEquals(projection.id, result.id.value)
         assertEquals(projection.title, result.title.value)
         assertEquals(projection.authorId, result.authorId.value)
+        assertEquals(projection.authorName, result.authorName)
         assertEquals(projection.collectionId, result.collectionId.value)
+        assertEquals(projection.collectionName, result.collectionName)
         assertEquals(projection.basePrice, result.basePrice.value)
         assertEquals(projection.finalPrice, result.finalPrice)
         assertEquals(projection.status, result.status)
@@ -192,7 +194,9 @@ class BookPersistenceMapperTest {
         assertEquals(projection.id, result.id.value)
         assertEquals(projection.title, result.title.value)
         assertEquals(projection.authorId, result.authorId.value)
+        assertEquals(projection.authorName, result.authorName)
         assertEquals(projection.collectionId, result.collectionId.value)
+        assertEquals(projection.collectionName, result.collectionName)
         assertEquals(projection.basePrice, result.basePrice.value)
         assertEquals(projection.vatRate, result.vatRate?.value)
         assertEquals(projection.finalPrice, result.finalPrice)
