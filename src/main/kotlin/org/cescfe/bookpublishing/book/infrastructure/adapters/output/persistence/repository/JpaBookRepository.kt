@@ -38,7 +38,8 @@ class JpaBookRepository(
 
     override fun save(book: Book): Book {
         val entity = bookMapper.fromDomain(book)
-        return bookMapper.toDomain(bookJpaEntityRepository.save(entity))
+        val saved = bookJpaEntityRepository.save(entity)
+        return findById(BookId(saved.id))!!
     }
 
     override fun deleteById(id: BookId) {

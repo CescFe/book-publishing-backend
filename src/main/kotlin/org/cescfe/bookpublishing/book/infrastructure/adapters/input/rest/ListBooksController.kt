@@ -56,7 +56,7 @@ class ListBooksController(
                     name = domain.collectionName,
                 ),
             basePrice = domain.basePrice.value,
-            finalPrice = null,
+            finalPrice = domain.finalPrice,
             isbn = domain.isbn?.value,
             status =
                 domain.status?.let {

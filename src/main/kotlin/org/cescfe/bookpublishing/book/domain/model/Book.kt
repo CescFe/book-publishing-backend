@@ -43,6 +43,8 @@ data class Book(
             val finalPrice = basePrice * (1 + vat)
             return (finalPrice * 100).roundToInt() / 100.0
         }
+
+        fun defaultStatus(status: Status?): Status = status ?: Status.DRAFT
     }
 }
 

@@ -38,6 +38,6 @@ class CreateBookUseCaseMapper {
             pageCount = command.pageCount?.let(::PageCount),
             coverImagePath = command.coverImagePath?.let(::CoverImagePath),
             description = command.description?.let(::Description),
-            status = command.status,
+            status = Book.defaultStatus(command.status),
         )
 }

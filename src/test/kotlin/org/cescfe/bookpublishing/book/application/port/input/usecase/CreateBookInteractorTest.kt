@@ -37,7 +37,6 @@ class CreateBookInteractorTest {
 
         whenever(mapper.toDomain(input)).thenReturn(expectedBook)
         whenever(bookRepository.save(any())).thenReturn(expectedBook)
-        whenever(bookRepository.findById(expectedBook.id)).thenReturn(expectedBook)
 
         // When
         val result = createBookUseCase.execute(input)
@@ -48,7 +47,6 @@ class CreateBookInteractorTest {
         verify(bookDomainService).ensureIsbnUniqueness(ISBN)
         verify(mapper).toDomain(input)
         verify(bookRepository).save(any())
-        verify(bookRepository).findById(expectedBook.id)
     }
 
     @Test
@@ -59,7 +57,6 @@ class CreateBookInteractorTest {
 
         whenever(mapper.toDomain(input)).thenReturn(expectedBook)
         whenever(bookRepository.save(any())).thenReturn(expectedBook)
-        whenever(bookRepository.findById(expectedBook.id)).thenReturn(expectedBook)
 
         // When
         val result = createBookUseCase.execute(input)
@@ -70,7 +67,6 @@ class CreateBookInteractorTest {
         verify(bookDomainService).ensureIsbnUniqueness(null)
         verify(mapper).toDomain(input)
         verify(bookRepository).save(expectedBook)
-        verify(bookRepository).findById(expectedBook.id)
     }
 
     @Test

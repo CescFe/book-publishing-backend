@@ -88,6 +88,7 @@ class BookPersistenceMapper {
             collectionName = projection.collectionName,
             basePrice = BasePrice(projection.basePrice),
             finalPrice = projection.finalPrice,
+            isbn = projection.isbn?.let { ISBN(it) },
             status = projection.status,
         )
 
