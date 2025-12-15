@@ -78,12 +78,14 @@ class BookPersistenceMapper {
                 ),
         )
 
-    fun toDomainSummary(projection: BookSummaryProjection): BookSummary =
+    fun toDomainSummaryWithRelations(projection: BookSummaryProjection): BookSummary =
         BookSummary(
             id = BookId(projection.id),
             title = BookTitle(projection.title),
             authorId = AuthorIdRef(projection.authorId),
+            authorName = projection.authorName,
             collectionId = CollectionIdRef(projection.collectionId),
+            collectionName = projection.collectionName,
             basePrice = BasePrice(projection.basePrice),
             finalPrice = projection.finalPrice,
             status = projection.status,
@@ -94,7 +96,9 @@ class BookPersistenceMapper {
             id = BookId(projection.id),
             title = BookTitle(projection.title),
             authorId = AuthorIdRef(projection.authorId),
+            authorName = projection.authorName,
             collectionId = CollectionIdRef(projection.collectionId),
+            collectionName = projection.collectionName,
             readingLevel = projection.readingLevel?.let { ReadingLevel.valueOf(it) },
             primaryLanguage = projection.primaryLanguage?.let { Language.valueOf(it) },
             secondaryLanguages = parseSecondaryLanguages(projection.secondaryLanguages),
