@@ -6,6 +6,8 @@ import org.cescfe.bookpublishing.book.application.port.input.ListBooksUseCase
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllBooksApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseAllOfDataInnerAuthorDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseAllOfDataInnerCollectionDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseAllOfDataInnerDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDTO
 import org.springframework.http.ResponseEntity
@@ -43,8 +45,16 @@ class ListBooksController(
         GetBooks200ResponseAllOfDataInnerDTO(
             id = domain.id.value,
             title = domain.title.value,
-            authorId = domain.authorId.value,
-            collectionId = domain.collectionId.value,
+            author =
+                GetBooks200ResponseAllOfDataInnerAuthorDTO(
+                    id = domain.authorId.value,
+                    name = domain.authorName,
+                ),
+            collection =
+                GetBooks200ResponseAllOfDataInnerCollectionDTO(
+                    id = domain.collectionId.value,
+                    name = domain.collectionName,
+                ),
             basePrice = domain.basePrice.value,
             finalPrice = null,
             isbn = domain.isbn?.value,
