@@ -1,5 +1,6 @@
 package org.cescfe.bookpublishing.book.application.port.input.mapper
 
+import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.objectMothers.CreateBookCommandObjectMother
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -50,6 +51,7 @@ class CreateBookUseCaseMapperTest {
         assertEquals(input.collectionId, result.collectionId.value)
         assertEquals(input.basePrice, result.basePrice.value)
         assertEquals(10.39, result.finalPrice)
+        assertEquals(Book.defaultStatus(input.status), result.status)
         assertNull(result.readingLevel)
         assertNull(result.primaryLanguage)
         assertNull(result.secondaryLanguages)
@@ -61,6 +63,5 @@ class CreateBookUseCaseMapperTest {
         assertNull(result.pageCount)
         assertNull(result.coverImagePath)
         assertNull(result.description)
-        assertNull(result.status)
     }
 }
