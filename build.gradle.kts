@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "org.cescfe"
-version = "0.3.2"
+version = "0.3.3"
 
 val bookPublishingApiSpec = "1.1.0"
 val ktLint = "1.7.1"
