@@ -18,6 +18,7 @@ class CreateBookInteractor(
     override fun execute(command: CreateBookUseCase.Command): Book {
         bookDomainService.ensureIsbnUniqueness(command.isbn)
         val book = mapper.toDomain(command)
-        return bookRepository.save(book)
+        val savedBook = bookRepository.save(book)
+        return bookRepository.findById(savedBook.id)!!
     }
 }

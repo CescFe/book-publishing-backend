@@ -16,12 +16,12 @@ class BookRestMapper {
             author =
                 GetBooks200ResponseAllOfDataInnerAuthorDTO(
                     id = domain.authorId.value,
-                    name = domain.authorName,
+                    name = domain.authorName!!,
                 ),
             collection =
                 GetBooks200ResponseAllOfDataInnerCollectionDTO(
                     id = domain.collectionId.value,
-                    name = domain.collectionName,
+                    name = domain.collectionName!!,
                 ),
             readingLevel =
                 domain.readingLevel?.let {
