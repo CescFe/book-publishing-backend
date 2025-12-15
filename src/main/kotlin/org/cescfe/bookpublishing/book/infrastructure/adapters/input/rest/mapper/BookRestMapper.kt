@@ -2,6 +2,8 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper
 
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBook201ResponseDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseAllOfDataInnerAuthorDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseAllOfDataInnerCollectionDTO
 import org.springframework.stereotype.Component
 import java.time.ZoneOffset
 
@@ -11,8 +13,16 @@ class BookRestMapper {
         CreateBook201ResponseDTO(
             id = domain.id.value,
             title = domain.title.value,
-            authorId = domain.authorId.value,
-            collectionId = domain.collectionId.value,
+            author =
+                GetBooks200ResponseAllOfDataInnerAuthorDTO(
+                    id = domain.authorId.value,
+                    name = domain.authorName,
+                ),
+            collection =
+                GetBooks200ResponseAllOfDataInnerCollectionDTO(
+                    id = domain.collectionId.value,
+                    name = domain.collectionName,
+                ),
             readingLevel =
                 domain.readingLevel?.let {
                     CreateBook201ResponseDTO.ReadingLevel.valueOf(it.name)
