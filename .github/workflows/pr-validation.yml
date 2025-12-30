@@ -21,17 +21,19 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-
       - run: chmod +x gradlew
 
+      - name: Download Spotless dependencies
+        run: ./gradlew spotlessInternalRegisterDependencies --build-cache
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true
+
       - name: Run Spotless check
-        run: ./gradlew spotlessCheck
+        run: ./gradlew spotlessCheck --build-cache
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true -Dorg.gradle.parallel=true
 
       - name: Run all tests
-        run: ./gradlew test
+        run: ./gradlew test --build-cache --parallel
+        env:
+          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true -Dorg.gradle.parallel=true
