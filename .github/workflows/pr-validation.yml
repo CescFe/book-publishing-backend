@@ -12,6 +12,10 @@ jobs:
     env:
       GITHUB_USERNAME: ${{ github.actor }}
       TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
+      GRADLE_OPTS: >
+        -Dorg.gradle.jvmargs=-Xmx2048m
+        -Dorg.gradle.caching=true
+        -Dorg.gradle.parallel=true
 
     steps:
       - uses: actions/checkout@v4
@@ -23,17 +27,8 @@ jobs:
 
       - run: chmod +x gradlew
 
-      - name: Download Spotless dependencies
-        run: ./gradlew spotlessInternalRegisterDependencies --build-cache
-        env:
-          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true
-
       - name: Run Spotless check
         run: ./gradlew spotlessCheck --build-cache
-        env:
-          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true -Dorg.gradle.parallel=true
 
       - name: Run all tests
         run: ./gradlew test --build-cache --parallel
-        env:
-          GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx2048m -Dorg.gradle.caching=true -Dorg.gradle.parallel=true

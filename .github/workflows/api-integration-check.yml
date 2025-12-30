@@ -15,17 +15,24 @@ jobs:
     env:
       GITHUB_USERNAME: ${{ github.actor }}
       TOKEN_PAT: ${{ secrets.TOKEN_PAT }}
+
       POSTGRES_DB: root
       POSTGRES_USER: root
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       POSTGRES_PORT: 5432
       POSTGRES_IMAGE_VERSION: postgres:16.3
       LIQUIBASE_IMAGE_VERSION: liquibase/liquibase:4.19.0
+
       SPRING_PROFILES_ACTIVE: local
       LOCAL_ADMIN_NAME: ${{secrets.LOCAL_ADMIN_NAME}}
       LOCAL_ADMIN_PASSWORD: ${{secrets.LOCAL_ADMIN_PASSWORD}}
       LOCAL_USER_NAME: ${{secrets.LOCAL_USER_NAME}}
       LOCAL_USER_PASSWORD: ${{secrets.LOCAL_USER_PASSWORD}}
+
+      GRADLE_OPTS: >
+        -Dorg.gradle.jvmargs=-Xmx2048m
+        -Dorg.gradle.caching=true
+        -Dorg.gradle.parallel=true
 
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +46,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build application JAR
-        run: ./gradlew clean bootJar
+        run: ./gradlew bootJar --build-cache
 
       - name: Start Docker services (Postgres + Liquibase)
         run: |
