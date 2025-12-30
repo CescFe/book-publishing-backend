@@ -20,18 +20,14 @@ class UpdateAuthorController(
         id: UUID,
         createAuthorRequestDTO: CreateAuthorRequestDTO,
     ): ResponseEntity<CreateAuthor201ResponseDTO> {
-        val inputValues = mapPathAndDtoToInputValues(id, createAuthorRequestDTO)
-        val updatedAuthor = updateAuthorUseCase.execute(inputValues)
+        val command = mapDtoToCommand(createAuthorRequestDTO)
+        val updatedAuthor = updateAuthorUseCase.execute(id.toString(), command)
         val responseDto = mapper.toDto(updatedAuthor)
         return ResponseEntity.ok(responseDto)
     }
 
-    private fun mapPathAndDtoToInputValues(
-        authorId: UUID,
-        dto: CreateAuthorRequestDTO,
-    ): UpdateAuthorUseCase.Command =
+    private fun mapDtoToCommand(dto: CreateAuthorRequestDTO): UpdateAuthorUseCase.Command =
         UpdateAuthorUseCase.Command(
-            authorId = authorId.toString(),
             fullName = dto.fullName,
             pseudonym = dto.pseudonym,
             biography = dto.biography,

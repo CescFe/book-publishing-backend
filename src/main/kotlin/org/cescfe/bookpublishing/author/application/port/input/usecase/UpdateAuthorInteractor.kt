@@ -17,13 +17,16 @@ class UpdateAuthorInteractor(
     private val mapper: UpdateAuthorUseCaseMapper,
     private val authorDomainService: AuthorDomainService,
 ) : UpdateAuthorUseCase {
-    override fun execute(command: UpdateAuthorUseCase.Command): Author {
-        val authorId = AuthorId.fromString(command.authorId)
+    override fun execute(
+        authorId: String,
+        command: UpdateAuthorUseCase.Command,
+    ): Author {
+        val authorIdDomain = AuthorId.fromString(authorId)
         val existingAuthor =
-            authorRepository.findById(authorId)
-                ?: throw AuthorDomainException.authorNotFound(command.authorId)
+            authorRepository.findById(authorIdDomain)
+                ?: throw AuthorDomainException.authorNotFound(authorId)
 
-        authorDomainService.ensureEmailUniquenessForUpdate(command.email, command.authorId)
+        authorDomainService.ensureEmailUniquenessForUpdate(command.email, authorId)
         val updatedAuthor = mapper.toDomain(command, existingAuthor)
 
         return authorRepository.save(updatedAuthor)

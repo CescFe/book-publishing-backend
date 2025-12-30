@@ -17,13 +17,13 @@ class UpdateBookInteractor(
     private val mapper: UpdateBookUseCaseMapper,
     private val bookDomainService: BookDomainService,
 ) : UpdateBookUseCase {
-    override fun execute(command: UpdateBookUseCase.Command): Book {
-        val bookId = BookId.fromString(command.bookId)
+    override fun execute(bookId: String, command: UpdateBookUseCase.Command): Book {
+        val bookIdDomain = BookId.fromString(bookId)
         val existingBook =
-            bookRepository.findById(bookId)
-                ?: throw BookDomainException.bookNotFound(command.bookId)
+            bookRepository.findById(bookIdDomain)
+                ?: throw BookDomainException.bookNotFound(bookId)
 
-        bookDomainService.ensureIsbnUniquenessForUpdate(command.isbn, command.bookId)
+        bookDomainService.ensureIsbnUniquenessForUpdate(command.isbn, bookId)
         val updatedBook = mapper.toDomain(command, existingBook)
 
         return bookRepository.save(updatedBook)

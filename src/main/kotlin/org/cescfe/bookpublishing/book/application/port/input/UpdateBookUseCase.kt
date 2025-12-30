@@ -9,10 +9,9 @@ import java.time.LocalDate
 import java.util.UUID
 
 interface UpdateBookUseCase {
-    fun execute(command: Command): Book
+    fun execute(bookId: String, command: Command): Book
 
     data class Command(
-        val bookId: String,
         val title: String,
         val authorId: UUID,
         val collectionId: UUID,
