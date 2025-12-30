@@ -18,24 +18,25 @@ class UpdateBookUseCaseMapperTest {
     fun `should map input values to domain book`() {
         // Given
         val existingBook = BookObjectMother.createWithAllFields()
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Updated Book Title",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-            readingLevel = ReadingLevel.YOUNG_ADULT,
-            primaryLanguage = Language.SPANISH,
-            secondaryLanguages = listOf(Language.ENGLISH),
-            primaryGenre = Genre.SCIENCE_FICTION,
-            secondaryGenres = listOf(Genre.THRILLER),
-            basePrice = 24.99,
-            vatRate = 0.10,
-            isbn = "9781234567890",
-            publicationDate = java.time.LocalDate.of(2024, 1, 15),
-            pageCount = 500,
-            coverImagePath = "/images/updated-cover.jpg",
-            description = "Updated description",
-        )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Updated Book Title",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+                readingLevel = ReadingLevel.YOUNG_ADULT,
+                primaryLanguage = Language.SPANISH,
+                secondaryLanguages = listOf(Language.ENGLISH),
+                primaryGenre = Genre.SCIENCE_FICTION,
+                secondaryGenres = listOf(Genre.THRILLER),
+                basePrice = 24.99,
+                vatRate = 0.10,
+                isbn = "9781234567890",
+                publicationDate = java.time.LocalDate.of(2024, 1, 15),
+                pageCount = 500,
+                coverImagePath = "/images/updated-cover.jpg",
+                description = "Updated description",
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)
@@ -66,13 +67,14 @@ class UpdateBookUseCaseMapperTest {
     fun `should map input values with minimal fields`() {
         // Given
         val existingBook = BookObjectMother.createMinimal()
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Updated Minimal Book",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-            basePrice = 15.99,
-        )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Updated Minimal Book",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+                basePrice = 15.99,
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)
@@ -103,22 +105,25 @@ class UpdateBookUseCaseMapperTest {
     fun `should preserve existing book id and audit`() {
         // Given
         val existingBookId = java.util.UUID.randomUUID()
-        val existingAudit = Metadata(
-            createdAt = java.time.LocalDateTime.of(2023, 1, 1, 10, 0),
-            createdBy = "test-user",
-            updatedAt = java.time.LocalDateTime.of(2023, 1, 2, 10, 0),
-            updatedBy = "test-user-updated",
-        )
-        val existingBook = BookObjectMother.create(
-            id = existingBookId,
-            audit = existingAudit,
-        )
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Updated Title",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-        )
+        val existingAudit =
+            Metadata(
+                createdAt = java.time.LocalDateTime.of(2023, 1, 1, 10, 0),
+                createdBy = "test-user",
+                updatedAt = java.time.LocalDateTime.of(2023, 1, 2, 10, 0),
+                updatedBy = "test-user-updated",
+            )
+        val existingBook =
+            BookObjectMother.create(
+                id = existingBookId,
+                audit = existingAudit,
+            )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Updated Title",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)
@@ -132,14 +137,15 @@ class UpdateBookUseCaseMapperTest {
     fun `should calculate final price correctly with custom vat rate`() {
         // Given
         val existingBook = BookObjectMother.createMinimal()
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Test Book",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-            basePrice = 20.00,
-            vatRate = 0.21,
-        )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Test Book",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+                basePrice = 20.00,
+                vatRate = 0.21,
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)
@@ -152,14 +158,15 @@ class UpdateBookUseCaseMapperTest {
     fun `should calculate final price correctly with default vat rate`() {
         // Given
         val existingBook = BookObjectMother.createMinimal()
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Test Book",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-            basePrice = 10.00,
-            vatRate = null,
-        )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Test Book",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+                basePrice = 10.00,
+                vatRate = null,
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)
@@ -172,12 +179,13 @@ class UpdateBookUseCaseMapperTest {
     fun `should use default status when status is null`() {
         // Given
         val existingBook = BookObjectMother.createMinimal()
-        val input = UpdateBookCommandObjectMother.create(
-            bookId = existingBook.id.value.toString(),
-            title = "Test Book",
-            authorId = existingBook.authorId.value,
-            collectionId = existingBook.collectionId.value,
-        )
+        val input =
+            UpdateBookCommandObjectMother.create(
+                bookId = existingBook.id.value.toString(),
+                title = "Test Book",
+                authorId = existingBook.authorId.value,
+                collectionId = existingBook.collectionId.value,
+            )
 
         // When
         val result = mapper.toDomain(input, existingBook)

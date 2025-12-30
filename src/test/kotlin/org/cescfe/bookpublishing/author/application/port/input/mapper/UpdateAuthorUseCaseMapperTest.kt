@@ -13,14 +13,15 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should map input values to domain author`() {
         // Given
         val existingAuthor = AuthorObjectMother.createWithAllFields()
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Updated Author Name",
-            pseudonym = "Updated Pseudonym",
-            biography = "Updated biography text",
-            email = "updated@example.com",
-            website = "https://www.updated-website.com",
-        )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Updated Author Name",
+                pseudonym = "Updated Pseudonym",
+                biography = "Updated biography text",
+                email = "updated@example.com",
+                website = "https://www.updated-website.com",
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
@@ -38,10 +39,11 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should map input values with minimal fields`() {
         // Given
         val existingAuthor = AuthorObjectMother.createMinimal()
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Updated Minimal Author",
-        )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Updated Minimal Author",
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
@@ -59,14 +61,16 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should preserve existing author id`() {
         // Given
         val existingAuthorId = java.util.UUID.randomUUID()
-        val existingAuthor = AuthorObjectMother.create(
-            id = existingAuthorId,
-            fullName = "Original Author",
-        )
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Updated Author",
-        )
+        val existingAuthor =
+            AuthorObjectMother.create(
+                id = existingAuthorId,
+                fullName = "Original Author",
+            )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Updated Author",
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
@@ -79,14 +83,15 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should map all optional fields when provided`() {
         // Given
         val existingAuthor = AuthorObjectMother.createMinimal()
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Complete Author",
-            pseudonym = "Pseudonym",
-            biography = "A detailed biography",
-            email = "author@example.com",
-            website = "https://www.author-website.com",
-        )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Complete Author",
+                pseudonym = "Pseudonym",
+                biography = "A detailed biography",
+                email = "author@example.com",
+                website = "https://www.author-website.com",
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
@@ -103,14 +108,15 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should handle null optional fields correctly`() {
         // Given
         val existingAuthor = AuthorObjectMother.createWithAllFields()
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Author Without Optional Fields",
-            pseudonym = null,
-            biography = null,
-            email = null,
-            website = null,
-        )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Author Without Optional Fields",
+                pseudonym = null,
+                biography = null,
+                email = null,
+                website = null,
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
@@ -127,11 +133,12 @@ class UpdateAuthorUseCaseMapperTest {
     fun `should update only specific fields while preserving id`() {
         // Given
         val existingAuthor = AuthorObjectMother.createWithAllFields()
-        val input = UpdateAuthorCommandObjectMother.create(
-            authorId = existingAuthor.id.value.toString(),
-            fullName = "Partially Updated Author",
-            pseudonym = "New Pseudonym",
-        )
+        val input =
+            UpdateAuthorCommandObjectMother.create(
+                authorId = existingAuthor.id.value.toString(),
+                fullName = "Partially Updated Author",
+                pseudonym = "New Pseudonym",
+            )
 
         // When
         val result = mapper.toDomain(input, existingAuthor)
