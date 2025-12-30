@@ -25,6 +25,16 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
       - run: chmod +x gradlew
 
       - name: Run Spotless check
