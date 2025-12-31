@@ -57,7 +57,7 @@ class UpdateAuthorControllerIT {
                 email = Email("updated.tolkien@example.com"),
                 website = Website("https://www.updated-tolkiensociety.org"),
             )
-        whenever(updateAuthorUseCase.execute(any())).thenReturn(updatedAuthor)
+        whenever(updateAuthorUseCase.execute(any(), any())).thenReturn(updatedAuthor)
     }
 
     @Test

@@ -20,7 +20,6 @@ class UpdateBookUseCaseMapperTest {
         val existingBook = BookObjectMother.createWithAllFields()
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Updated Book Title",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,
@@ -69,7 +68,6 @@ class UpdateBookUseCaseMapperTest {
         val existingBook = BookObjectMother.createMinimal()
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Updated Minimal Book",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,
@@ -119,7 +117,6 @@ class UpdateBookUseCaseMapperTest {
             )
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Updated Title",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,
@@ -139,7 +136,6 @@ class UpdateBookUseCaseMapperTest {
         val existingBook = BookObjectMother.createMinimal()
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Test Book",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,
@@ -160,7 +156,6 @@ class UpdateBookUseCaseMapperTest {
         val existingBook = BookObjectMother.createMinimal()
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Test Book",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,
@@ -181,7 +176,6 @@ class UpdateBookUseCaseMapperTest {
         val existingBook = BookObjectMother.createMinimal()
         val input =
             UpdateBookCommandObjectMother.create(
-                bookId = existingBook.id.value.toString(),
                 title = "Test Book",
                 authorId = existingBook.authorId.value,
                 collectionId = existingBook.collectionId.value,

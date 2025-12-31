@@ -28,8 +28,8 @@ class UpdateBookInteractorTest {
     @Test
     fun `should update book successfully`() {
         // Given
-        val input = UpdateBookCommandObjectMother.createWithTestId()
-        val bookId = BookId.fromString(input.bookId)
+        val command = UpdateBookCommandObjectMother.create()
+        val bookId = BookId.fromString(EXISTING_ID)
         val existingBook = BookObjectMother.createWithAllFields()
         val updatedBook =
             BookObjectMother.create(
@@ -38,35 +38,35 @@ class UpdateBookInteractorTest {
             )
 
         whenever(bookRepository.findById(bookId)).thenReturn(existingBook)
-        whenever(bookDomainService.ensureIsbnUniquenessForUpdate(input.isbn, input.bookId)).then { }
-        whenever(mapper.toDomain(input, existingBook)).thenReturn(updatedBook)
+        whenever(bookDomainService.ensureIsbnUniquenessForUpdate(command.isbn, EXISTING_ID)).then { }
+        whenever(mapper.toDomain(command, existingBook)).thenReturn(updatedBook)
         whenever(bookRepository.save(updatedBook)).thenReturn(updatedBook)
 
         // When
-        val result = updateBookUseCase.execute(input)
+        val result = updateBookUseCase.execute(EXISTING_ID, command)
 
         // Then
         assertEquals(updatedBook, result)
         verify(bookRepository).findById(bookId)
-        verify(bookDomainService).ensureIsbnUniquenessForUpdate(input.isbn, input.bookId)
-        verify(mapper).toDomain(input, existingBook)
+        verify(bookDomainService).ensureIsbnUniquenessForUpdate(command.isbn, EXISTING_ID)
+        verify(mapper).toDomain(command, existingBook)
         verify(bookRepository).save(updatedBook)
     }
 
     @Test
     fun `should throw exception when book not found`() {
         // Given
-        val input = UpdateBookCommandObjectMother.createWithTestId()
-        val bookId = BookId.fromString(input.bookId)
+        val command = UpdateBookCommandObjectMother.create()
+        val bookId = BookId.fromString(EXISTING_ID)
 
         whenever(bookRepository.findById(bookId)).thenReturn(null)
 
         // When & Then
         val exception =
             assertThrows<BookDomainException> {
-                updateBookUseCase.execute(input)
+                updateBookUseCase.execute(EXISTING_ID, command)
             }
-        assertEquals("Book with id ${input.bookId} not found", exception.message)
+        assertEquals("Book with id $EXISTING_ID not found", exception.message)
         assertEquals("BOOK_NOT_FOUND", exception.subType)
         verify(bookRepository).findById(bookId)
     }
@@ -74,23 +74,22 @@ class UpdateBookInteractorTest {
     @Test
     fun `should throw exception when isbn already exists for another book`() {
         // Given
-        val input =
+        val command =
             UpdateBookCommandObjectMother.create(
-                bookId = EXISTING_ID,
                 isbn = EXISTING_ISBN,
             )
-        val bookId = BookId.fromString(input.bookId)
+        val bookId = BookId.fromString(EXISTING_ID)
         val existingBook = BookObjectMother.createWithAllFields()
 
         whenever(bookRepository.findById(bookId)).thenReturn(existingBook)
-        whenever(bookDomainService.ensureIsbnUniquenessForUpdate(EXISTING_ISBN, input.bookId))
+        whenever(bookDomainService.ensureIsbnUniquenessForUpdate(EXISTING_ISBN, EXISTING_ID))
             .thenThrow(BookDomainException.isbnAlreadyExists(EXISTING_ISBN))
 
         // When & Then
         assertThrows<BookDomainException> {
-            updateBookUseCase.execute(input)
+            updateBookUseCase.execute(EXISTING_ID, command)
         }
         verify(bookRepository).findById(bookId)
-        verify(bookDomainService).ensureIsbnUniquenessForUpdate(EXISTING_ISBN, input.bookId)
+        verify(bookDomainService).ensureIsbnUniquenessForUpdate(EXISTING_ISBN, EXISTING_ID)
     }
 }
