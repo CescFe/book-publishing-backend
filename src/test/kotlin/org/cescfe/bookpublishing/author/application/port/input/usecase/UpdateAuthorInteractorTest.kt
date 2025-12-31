@@ -28,8 +28,8 @@ class UpdateAuthorInteractorTest {
     @Test
     fun `should update author successfully`() {
         // Given
-        val input = UpdateAuthorCommandObjectMother.createWithTolkienId()
-        val authorId = AuthorId.fromString(input.authorId)
+        val command = UpdateAuthorCommandObjectMother.createWithTolkienId()
+        val authorId = AuthorId.fromString(EXISTING_ID)
         val existingAuthor = AuthorObjectMother.createWithAllFields()
         val updatedAuthor =
             AuthorObjectMother.create(
@@ -38,58 +38,57 @@ class UpdateAuthorInteractorTest {
             )
 
         whenever(authorRepository.findById(authorId)).thenReturn(existingAuthor)
-        whenever(authorDomainService.ensureEmailUniquenessForUpdate(input.email, input.authorId)).then { }
-        whenever(mapper.toDomain(input, existingAuthor)).thenReturn(updatedAuthor)
+        whenever(authorDomainService.ensureEmailUniquenessForUpdate(command.email, EXISTING_ID)).then { }
+        whenever(mapper.toDomain(command, existingAuthor)).thenReturn(updatedAuthor)
         whenever(authorRepository.save(updatedAuthor)).thenReturn(updatedAuthor)
 
         // When
-        val result = updateAuthorUseCase.execute(input)
+        val result = updateAuthorUseCase.execute(EXISTING_ID, command)
 
         // Then
         assertEquals(updatedAuthor, result)
         verify(authorRepository).findById(authorId)
-        verify(authorDomainService).ensureEmailUniquenessForUpdate(input.email, input.authorId)
-        verify(mapper).toDomain(input, existingAuthor)
+        verify(authorDomainService).ensureEmailUniquenessForUpdate(command.email, EXISTING_ID)
+        verify(mapper).toDomain(command, existingAuthor)
         verify(authorRepository).save(updatedAuthor)
     }
 
     @Test
     fun `should throw exception when author not found`() {
         // Given
-        val input = UpdateAuthorCommandObjectMother.createWithTolkienId()
-        val authorId = AuthorId.fromString(input.authorId)
+        val command = UpdateAuthorCommandObjectMother.createWithTolkienId()
+        val authorId = AuthorId.fromString(EXISTING_ID)
 
         whenever(authorRepository.findById(authorId)).thenReturn(null)
 
         // When & Then
         val exception =
             assertThrows<AuthorDomainException> {
-                updateAuthorUseCase.execute(input)
+                updateAuthorUseCase.execute(EXISTING_ID, command)
             }
-        assertEquals("Author with id ${input.authorId} not found", exception.message)
+        assertEquals("Author with id $EXISTING_ID not found", exception.message)
         verify(authorRepository).findById(authorId)
     }
 
     @Test
     fun `should throw exception when email already exists for another author`() {
         // Given
-        val input =
+        val command =
             UpdateAuthorCommandObjectMother.create(
-                authorId = EXISTING_ID,
                 email = EXISTING_EMAIL,
             )
-        val authorId = AuthorId.fromString(input.authorId)
+        val authorId = AuthorId.fromString(EXISTING_ID)
         val existingAuthor = AuthorObjectMother.createWithAllFields()
 
         whenever(authorRepository.findById(authorId)).thenReturn(existingAuthor)
-        whenever(authorDomainService.ensureEmailUniquenessForUpdate(EXISTING_EMAIL, input.authorId))
+        whenever(authorDomainService.ensureEmailUniquenessForUpdate(EXISTING_EMAIL, EXISTING_ID))
             .thenThrow(AuthorDomainException.emailAlreadyExists(EXISTING_EMAIL))
 
         // When & Then
         assertThrows<AuthorDomainException> {
-            updateAuthorUseCase.execute(input)
+            updateAuthorUseCase.execute(EXISTING_ID, command)
         }
         verify(authorRepository).findById(authorId)
-        verify(authorDomainService).ensureEmailUniquenessForUpdate(EXISTING_EMAIL, input.authorId)
+        verify(authorDomainService).ensureEmailUniquenessForUpdate(EXISTING_EMAIL, EXISTING_ID)
     }
 }

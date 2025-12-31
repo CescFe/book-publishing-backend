@@ -15,7 +15,6 @@ class UpdateAuthorUseCaseMapperTest {
         val existingAuthor = AuthorObjectMother.createWithAllFields()
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Updated Author Name",
                 pseudonym = "Updated Pseudonym",
                 biography = "Updated biography text",
@@ -41,7 +40,6 @@ class UpdateAuthorUseCaseMapperTest {
         val existingAuthor = AuthorObjectMother.createMinimal()
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Updated Minimal Author",
             )
 
@@ -68,7 +66,6 @@ class UpdateAuthorUseCaseMapperTest {
             )
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Updated Author",
             )
 
@@ -85,7 +82,6 @@ class UpdateAuthorUseCaseMapperTest {
         val existingAuthor = AuthorObjectMother.createMinimal()
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Complete Author",
                 pseudonym = "Pseudonym",
                 biography = "A detailed biography",
@@ -110,7 +106,6 @@ class UpdateAuthorUseCaseMapperTest {
         val existingAuthor = AuthorObjectMother.createWithAllFields()
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Author Without Optional Fields",
                 pseudonym = null,
                 biography = null,
@@ -135,7 +130,6 @@ class UpdateAuthorUseCaseMapperTest {
         val existingAuthor = AuthorObjectMother.createWithAllFields()
         val input =
             UpdateAuthorCommandObjectMother.create(
-                authorId = existingAuthor.id.value.toString(),
                 fullName = "Partially Updated Author",
                 pseudonym = "New Pseudonym",
             )

@@ -8,28 +8,10 @@ import java.time.LocalDate
 import java.util.UUID
 
 object UpdateBookCommandObjectMother {
-    private const val TEST_BOOK_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
     private val TEST_AUTHOR_ID = UUID.randomUUID()
     private val TEST_COLLECTION_ID = UUID.randomUUID()
 
-    fun createWithTestId(
-        title: String = "Test Book",
-        authorId: UUID = TEST_AUTHOR_ID,
-        collectionId: UUID = TEST_COLLECTION_ID,
-        basePrice: Double = 19.99,
-        isbn: String? = null,
-    ): UpdateBookUseCase.Command =
-        UpdateBookUseCase.Command(
-            bookId = TEST_BOOK_ID,
-            title = title,
-            authorId = authorId,
-            collectionId = collectionId,
-            basePrice = basePrice,
-            isbn = isbn,
-        )
-
     fun create(
-        bookId: String = TEST_BOOK_ID,
         title: String = "Test Book",
         authorId: UUID = TEST_AUTHOR_ID,
         collectionId: UUID = TEST_COLLECTION_ID,
@@ -47,7 +29,6 @@ object UpdateBookCommandObjectMother {
         description: String? = null,
     ): UpdateBookUseCase.Command =
         UpdateBookUseCase.Command(
-            bookId = bookId,
             title = title,
             authorId = authorId,
             collectionId = collectionId,

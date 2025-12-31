@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import java.net.URI
 import java.util.UUID
@@ -46,14 +47,8 @@ class UpdateAuthorControllerTest {
 
         whenever(
             updateAuthorUseCase.execute(
-                UpdateAuthorUseCase.Command(
-                    authorId = NON_EXISTENT_AUTHOR_ID,
-                    fullName = requestDTO.fullName,
-                    pseudonym = requestDTO.pseudonym,
-                    biography = requestDTO.biography,
-                    email = requestDTO.email,
-                    website = requestDTO.website?.toString(),
-                ),
+                any(),
+                any(),
             ),
         ).thenThrow(
             AuthorDomainException.authorNotFound(NON_EXISTENT_AUTHOR_ID),

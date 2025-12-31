@@ -17,7 +17,10 @@ class UpdateBookInteractor(
     private val mapper: UpdateBookUseCaseMapper,
     private val bookDomainService: BookDomainService,
 ) : UpdateBookUseCase {
-    override fun execute(bookId: String, command: UpdateBookUseCase.Command): Book {
+    override fun execute(
+        bookId: String,
+        command: UpdateBookUseCase.Command,
+    ): Book {
         val bookIdDomain = BookId.fromString(bookId)
         val existingBook =
             bookRepository.findById(bookIdDomain)
