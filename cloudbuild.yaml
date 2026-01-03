@@ -1,0 +1,23 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    secretEnv:
+      - GITHUB_USERNAME
+      - TOKEN_PAT
+    args:
+      - '-c'
+      - |
+        docker build \
+          --build-arg GITHUB_USERNAME=$$GITHUB_USERNAME \
+          --build-arg TOKEN_PAT=$$TOKEN_PAT \
+          -t europe-west1-docker.pkg.dev/book-publishing-backend/backend-repo/backend .
+
+images:
+  - europe-west1-docker.pkg.dev/book-publishing-backend/backend-repo/backend
+
+availableSecrets:
+  secretManager:
+    - versionName: projects/book-publishing-backend/secrets/github-username/versions/latest
+      env: GITHUB_USERNAME
+    - versionName: projects/book-publishing-backend/secrets/github-token-pat/versions/latest
+      env: TOKEN_PAT
