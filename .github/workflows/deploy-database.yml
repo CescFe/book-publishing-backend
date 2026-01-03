@@ -1,4 +1,4 @@
-name: Deploy Liquibase to pro
+name: Deploy Database to pro
 
 on:
   workflow_dispatch:
