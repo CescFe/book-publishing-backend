@@ -122,6 +122,7 @@ src/main/kotlin/org/cescfe/bookpublishing/
 - `GET /api/v1/books` - Get all books (paginated)
 - `POST /api/v1/books` - Create a new book
 - `GET /api/v1/books/{id}` - Get book by ID
+- `PUT /api/v1/books/{id}` - GUpdate book
 - `DELETE /api/v1/books/{id}` - Delete book
 
 ## Environment Profiles
@@ -161,8 +162,8 @@ Every pull request automatically runs:
 ### Release Process
 
 The release process is partially automated:
-- ✅ **Deploy Backend** - Render automatically deploys pro using Dockerfile when there is a Push to `main`
-- ✅ **Migrate Database** - Run manually **Deploy Liquibase to pro** GitHub Action
+- ✅ **Deploy Backend** - Automated: When there is a Push to `main` a GitHub Action deploys pro into Google Cloud Platform
+- ✅ **Migrate Database** - On demand: Run manually **Deploy Database to pro** GitHub Action
 
 ### Create Tag and Release
 
