@@ -22,6 +22,9 @@ class CollectionDomainException(
         fun nameTooLong(): CollectionDomainException =
             CollectionDomainException("Collection name must be between 1 and 80 characters", "NAME_TOO_LONG")
 
+        fun nameAlreadyExists(name: String): CollectionDomainException =
+            CollectionDomainException("Collection with name '$name' already exists", "NAME_ALREADY_EXISTS")
+
         // SecondaryLanguages exceptions
         fun secondaryLanguagesTooMany(): CollectionDomainException =
             CollectionDomainException("Secondary languages cannot exceed 3 items", "SECONDARY_LANGUAGES_TOO_MANY")

@@ -3,6 +3,7 @@ package org.cescfe.bookpublishing.collection.application.port.input.usecase
 import org.cescfe.bookpublishing.collection.application.port.input.mapper.CreateCollectionUseCaseMapper
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
 import org.cescfe.bookpublishing.collection.domain.port.CollectionRepository
+import org.cescfe.bookpublishing.collection.domain.service.CollectionDomainService
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionObjectMother
 import org.cescfe.bookpublishing.collection.objectMothers.CreateCollectionCommandObjectMother
 import org.junit.jupiter.api.Test
@@ -17,11 +18,16 @@ import kotlin.test.assertEquals
 class CreateCollectionInteractorTest {
     private val collectionRepository = mock<CollectionRepository>()
     private val mapper = mock<CreateCollectionUseCaseMapper>()
-    private val createCollectionUseCase = CreateCollectionInteractor(collectionRepository, mapper)
+    private val collectionDomainService = mock<CollectionDomainService>()
+    private val createCollectionUseCase =
+        CreateCollectionInteractor(collectionRepository, mapper, collectionDomainService)
 
     companion object {
-        private const val EXPECTED_ERROR_MESSAGE = "Collection name cannot be blank"
-        private const val EXPECTED_ERROR_SUBTYPE = "NAME_CANNOT_BE_BLANK"
+        private const val COLLECTION_NAME = "Collection name"
+        private const val NAME_BLANK_ERROR_MESSAGE = "Collection name cannot be blank"
+        private const val NAME_BLANK_ERROR_SUBTYPE = "NAME_CANNOT_BE_BLANK"
+        private const val NAME_EXISTS_ERROR_MESSAGE = "Collection with name '$COLLECTION_NAME' already exists"
+        private const val NAME_EXISTS_ERROR_SUBTYPE = "NAME_ALREADY_EXISTS"
     }
 
     @Test
@@ -39,6 +45,7 @@ class CreateCollectionInteractorTest {
         // Then
         assertEquals(expectedCollection, result)
 
+        verify(collectionDomainService).ensureNameUniqueness(input.name)
         verify(mapper).toDomain(input)
         verify(collectionRepository).save(any())
     }
@@ -58,6 +65,7 @@ class CreateCollectionInteractorTest {
         // Then
         assertEquals(expectedCollection, result)
 
+        verify(collectionDomainService).ensureNameUniqueness(input.name)
         verify(mapper).toDomain(input)
         verify(collectionRepository).save(expectedCollection)
     }
@@ -76,9 +84,34 @@ class CreateCollectionInteractorTest {
                 createCollectionUseCase.execute(input)
             }
 
-        assertEquals(EXPECTED_ERROR_MESSAGE, exception.message)
-        assertEquals(EXPECTED_ERROR_SUBTYPE, exception.subType)
+        assertEquals(NAME_BLANK_ERROR_MESSAGE, exception.message)
+        assertEquals(NAME_BLANK_ERROR_SUBTYPE, exception.subType)
+        verify(collectionDomainService).ensureNameUniqueness(input.name)
         verify(mapper).toDomain(input)
+        verify(collectionRepository, never()).save(any())
+    }
+
+    @Test
+    fun `should throw exception when collection name already exists`() {
+        // Given
+        val input =
+            CreateCollectionCommandObjectMother.create(
+                name = COLLECTION_NAME,
+            )
+
+        whenever(collectionDomainService.ensureNameUniqueness(COLLECTION_NAME))
+            .thenThrow(CollectionDomainException.nameAlreadyExists(COLLECTION_NAME))
+
+        // When & Then
+        val exception =
+            assertThrows<CollectionDomainException> {
+                createCollectionUseCase.execute(input)
+            }
+
+        assertEquals(NAME_EXISTS_ERROR_MESSAGE, exception.message)
+        assertEquals(NAME_EXISTS_ERROR_SUBTYPE, exception.subType)
+        verify(collectionDomainService).ensureNameUniqueness(COLLECTION_NAME)
+        verify(mapper, never()).toDomain(any())
         verify(collectionRepository, never()).save(any())
     }
 }

@@ -85,6 +85,7 @@ class CreateBookInteractorTest {
 
         assertEquals(TITLE_BLANK_ERROR_MESSAGE, exception.message)
         assertEquals(TITLE_BLANK_ERROR_SUBTYPE, exception.subType)
+        verify(bookDomainService).ensureIsbnUniqueness(input.isbn)
         verify(mapper).toDomain(input)
         verify(bookRepository, never()).save(any())
     }

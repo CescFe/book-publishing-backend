@@ -9,6 +9,7 @@ import org.cescfe.bookpublishing.book.objectMothers.BookObjectMother
 import org.cescfe.bookpublishing.book.objectMothers.UpdateBookCommandObjectMother
 import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
@@ -23,6 +24,8 @@ class UpdateBookInteractorTest {
     companion object {
         private const val EXISTING_ISBN = "9781234567890"
         private const val EXISTING_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
+        private const val BOOK_NOT_FOUND_ERROR_MESSAGE = "Book with id $EXISTING_ID not found"
+        private const val BOOK_NOT_FOUND_ERROR_SUBTYPE = "BOOK_NOT_FOUND"
     }
 
     @Test
@@ -38,7 +41,6 @@ class UpdateBookInteractorTest {
             )
 
         whenever(bookRepository.findById(bookId)).thenReturn(existingBook)
-        whenever(bookDomainService.ensureIsbnUniquenessForUpdate(command.isbn, EXISTING_ID)).then { }
         whenever(mapper.toDomain(command, existingBook)).thenReturn(updatedBook)
         whenever(bookRepository.save(updatedBook)).thenReturn(updatedBook)
 
@@ -66,8 +68,9 @@ class UpdateBookInteractorTest {
             assertThrows<BookDomainException> {
                 updateBookUseCase.execute(EXISTING_ID, command)
             }
-        assertEquals("Book with id $EXISTING_ID not found", exception.message)
-        assertEquals("BOOK_NOT_FOUND", exception.subType)
+        assertEquals(BOOK_NOT_FOUND_ERROR_MESSAGE, exception.message)
+        assertEquals(BOOK_NOT_FOUND_ERROR_SUBTYPE, exception.subType)
+        verify(bookDomainService, never()).ensureIsbnUniquenessForUpdate(command.isbn, EXISTING_ID)
         verify(bookRepository).findById(bookId)
     }
 
