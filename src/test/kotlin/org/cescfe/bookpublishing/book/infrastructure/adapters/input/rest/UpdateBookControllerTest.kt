@@ -6,12 +6,12 @@ import org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper.
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBookRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class UpdateBookControllerTest {
     private lateinit var updateBookUseCase: UpdateBookUseCase
@@ -57,7 +57,7 @@ class UpdateBookControllerTest {
 
         // When & Then
         val exception =
-            assertThrows<BookDomainException> {
+            assertFailsWith<BookDomainException> {
                 updateBookController.updateBook(bookId, requestDTO)
             }
         assertEquals(String.format(NOT_FOUND_MESSAGE, NON_EXISTENT_BOOK_ID), exception.message)
@@ -88,7 +88,7 @@ class UpdateBookControllerTest {
 
         // When & Then
         val exception =
-            assertThrows<BookDomainException> {
+            assertFailsWith<BookDomainException> {
                 updateBookController.updateBook(bookId, requestDTO)
             }
         assertEquals(String.format(ISBN_CONFLICT_MESSAGE, EXISTING_ISBN), exception.message)
