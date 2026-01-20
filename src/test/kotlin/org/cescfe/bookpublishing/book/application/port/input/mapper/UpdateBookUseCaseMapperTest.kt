@@ -44,7 +44,6 @@ class UpdateBookUseCaseMapperTest {
 
         // Then
         assertEquals(existingBook.id, result.id)
-        assertEquals(existingBook.id, result.id)
         assertEquals(input.title, result.title.value)
         assertEquals(input.authorId, result.authorId.value)
         assertEquals(input.collectionId, result.collectionId.value)
