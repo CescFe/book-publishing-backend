@@ -21,5 +21,6 @@ class UpdateCollectionUseCaseMapper {
             secondaryLanguages = command.secondaryLanguages?.let(::SecondaryLanguages),
             primaryGenre = command.primaryGenre,
             secondaryGenres = command.secondaryGenres?.let(::SecondaryGenres),
+            audit = existingCollection.audit,
         )
 }

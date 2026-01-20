@@ -8,6 +8,8 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
+import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -41,6 +43,7 @@ class UpdateBookUseCaseMapperTest {
         val result = mapper.toDomain(input, existingBook)
 
         // Then
+        assertEquals(existingBook.id, result.id)
         assertEquals(existingBook.id, result.id)
         assertEquals(input.title, result.title.value)
         assertEquals(input.authorId, result.authorId.value)
@@ -102,12 +105,12 @@ class UpdateBookUseCaseMapperTest {
     @Test
     fun `should preserve existing book id and audit`() {
         // Given
-        val existingBookId = java.util.UUID.randomUUID()
+        val existingBookId = UUID.randomUUID()
         val existingAudit =
             Metadata(
-                createdAt = java.time.LocalDateTime.of(2023, 1, 1, 10, 0),
+                createdAt = LocalDateTime.of(2023, 1, 1, 10, 0),
                 createdBy = "test-user",
-                updatedAt = java.time.LocalDateTime.of(2023, 1, 2, 10, 0),
+                updatedAt = LocalDateTime.of(2023, 1, 2, 10, 0),
                 updatedBy = "test-user-updated",
             )
         val existingBook =
