@@ -51,7 +51,9 @@ value class SecondaryLanguages(
     val value: List<Language>,
 ) {
     init {
-        require(value.size <= 3) { throw CollectionDomainException.secondaryLanguagesTooMany() }
+        require(value.size <= 3) {
+            throw CollectionDomainException.secondaryLanguagesTooMany()
+        }
         require(value.size == value.distinct().size) {
             throw CollectionDomainException.secondaryLanguageDuplicated()
         }
@@ -69,7 +71,9 @@ value class SecondaryGenres(
     val value: List<Genre>,
 ) {
     init {
-        require(value.size <= 3) { throw CollectionDomainException.secondaryGenresTooMany() }
+        require(value.size <= 3) {
+            throw CollectionDomainException.secondaryGenresTooMany()
+        }
         require(value.size == value.distinct().size) {
             throw CollectionDomainException.secondaryGenreDuplicated()
         }
