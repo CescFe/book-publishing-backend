@@ -41,10 +41,10 @@ class CreateCollectionController(
     private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.Command =
         CreateCollectionUseCase.Command(
             name = dto.name,
-            readingLevel = ReadingLevel.valueOf(dto.readingLevel.toString()),
-            primaryLanguage = Language.valueOf(dto.primaryLanguage.toString()),
-            secondaryLanguages = dto.secondaryLanguages?.map { Language.valueOf(it.toString()) },
-            primaryGenre = Genre.valueOf(dto.primaryGenre.toString()),
-            secondaryGenres = dto.secondaryGenres?.map { Genre.valueOf(it.toString()) },
+            readingLevel = dto.readingLevel?.let { ReadingLevel.valueOf(it.name) },
+            primaryLanguage = dto.primaryLanguage?.let { Language.valueOf(it.name) },
+            secondaryLanguages = dto.secondaryLanguages?.map { Language.valueOf(it.name) },
+            primaryGenre = dto.primaryGenre?.let { Genre.valueOf(it.name) },
+            secondaryGenres = dto.secondaryGenres?.map { Genre.valueOf(it.name) },
         )
 }
