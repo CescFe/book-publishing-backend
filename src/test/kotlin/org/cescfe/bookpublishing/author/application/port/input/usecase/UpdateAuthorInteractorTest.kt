@@ -28,7 +28,7 @@ class UpdateAuthorInteractorTest {
     @Test
     fun `should update author successfully`() {
         // Given
-        val command = UpdateAuthorCommandObjectMother.createWithTolkienId()
+        val command = UpdateAuthorCommandObjectMother.create()
         val authorId = AuthorId.fromString(EXISTING_ID)
         val existingAuthor = AuthorObjectMother.createWithAllFields()
         val updatedAuthor =
@@ -56,7 +56,7 @@ class UpdateAuthorInteractorTest {
     @Test
     fun `should throw exception when author not found`() {
         // Given
-        val command = UpdateAuthorCommandObjectMother.createWithTolkienId()
+        val command = UpdateAuthorCommandObjectMother.create()
         val authorId = AuthorId.fromString(EXISTING_ID)
 
         whenever(authorRepository.findById(authorId)).thenReturn(null)

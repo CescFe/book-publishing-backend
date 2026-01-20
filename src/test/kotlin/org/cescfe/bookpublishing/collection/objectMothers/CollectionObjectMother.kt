@@ -5,6 +5,7 @@ import org.cescfe.bookpublishing.collection.domain.model.CollectionId
 import org.cescfe.bookpublishing.collection.domain.model.CollectionName
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryGenres
 import org.cescfe.bookpublishing.collection.domain.model.SecondaryLanguages
+import org.cescfe.bookpublishing.shared.domain.model.Metadata
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -21,6 +22,7 @@ object CollectionObjectMother {
         secondaryLanguages: List<Language>? = null,
         primaryGenre: Genre? = null,
         secondaryGenres: List<Genre>? = null,
+        audit: Metadata? = null,
     ): Collection =
         Collection(
             id = CollectionId(id),
@@ -30,6 +32,7 @@ object CollectionObjectMother {
             secondaryLanguages = secondaryLanguages?.let { SecondaryLanguages(it) },
             primaryGenre = primaryGenre,
             secondaryGenres = secondaryGenres?.let { SecondaryGenres(it) },
+            audit = audit,
         )
 
     fun createWithAllFields(): Collection =

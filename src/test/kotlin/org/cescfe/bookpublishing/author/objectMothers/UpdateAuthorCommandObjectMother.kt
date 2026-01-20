@@ -17,6 +17,4 @@ object UpdateAuthorCommandObjectMother {
             email = email,
             website = website,
         )
-
-    fun createWithTolkienId(): UpdateAuthorUseCase.Command = create()
 }
