@@ -23,4 +23,6 @@ interface CollectionRepository {
     fun existsById(id: CollectionId): Boolean
 
     fun findByName(name: String): Collection?
+
+    fun existsByName(name: String): Boolean
 }

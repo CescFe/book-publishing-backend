@@ -11,6 +11,8 @@ import java.util.UUID
 interface CollectionJpaEntityRepository : JpaRepository<CollectionEntity, UUID> {
     fun findByName(name: String): CollectionEntity?
 
+    fun existsByName(name: String): Boolean
+
     fun findAllProjectedByOrderByNameAsc(): List<CollectionSummaryProjection>
 
     fun findAllProjectedByOrderByNameAsc(pageable: Pageable): List<CollectionSummaryProjection>

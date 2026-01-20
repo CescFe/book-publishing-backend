@@ -52,4 +52,6 @@ class JpaCollectionRepository(
         collectionJpaEntityRepository
             .findByName(name)
             ?.let { collectionMapper.toDomain(it) }
+
+    override fun existsByName(name: String): Boolean = collectionJpaEntityRepository.existsByName(name)
 }
