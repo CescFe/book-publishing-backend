@@ -7,6 +7,7 @@ import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.Creat
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.rest.TestResources
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -94,17 +95,7 @@ class UpdateCollectionControllerIT {
     @Test
     fun `maps http request to UpdateCollectionCommand correctly`() {
         // Given
-        val requestBody =
-            """
-            {
-              "name": "Updated Collection Name",
-              "reading_level": "ADULT",
-              "primary_language": "ENGLISH",
-              "secondary_languages": ["CATALAN", "SPANISH"],
-              "primary_genre": "FANTASY",
-              "secondary_genres": ["ADVENTURE"]
-            }
-            """.trimIndent()
+        val requestBody = TestResources.json("payloads/collections/update-collection-request.json")
 
         // When / Then
         mockMvc
