@@ -1,9 +1,9 @@
 package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.cescfe.bookpublishing.collection.application.port.input.CreateCollectionUseCase
+import org.cescfe.bookpublishing.collection.application.port.input.UpdateCollectionUseCase
 import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper.CollectionRestMapper
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateCollectionApi
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.UpdateCollectionByIdApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollection201ResponseDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollectionRequestDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
@@ -11,35 +11,26 @@ import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import java.net.URI
 import java.util.UUID
 
 @RestController
-@Tag(name = "CreateCollection")
-class CreateCollectionController(
-    private val createCollectionUseCase: CreateCollectionUseCase,
+@Tag(name = "UpdateCollectionById")
+class UpdateCollectionController(
+    private val updateCollectionUseCase: UpdateCollectionUseCase,
     private val mapper: CollectionRestMapper,
-) : CreateCollectionApi {
-    override fun createCollection(
+) : UpdateCollectionByIdApi {
+    override fun updateCollection(
+        id: UUID,
         createCollectionRequestDTO: CreateCollectionRequestDTO,
     ): ResponseEntity<CreateCollection201ResponseDTO> {
         val command = mapDtoToCommand(createCollectionRequestDTO)
-        val createdCollection = createCollectionUseCase.execute(command)
-        val responseDto = mapper.toDto(createdCollection)
-        val uri = buildResourceUri(createdCollection.id.value)
-        return ResponseEntity.created(uri).body(responseDto)
+        val updatedCollection = updateCollectionUseCase.execute(id.toString(), command)
+        val responseDto = mapper.toDto(updatedCollection)
+        return ResponseEntity.ok(responseDto)
     }
 
-    private fun buildResourceUri(collectionId: UUID): URI =
-        ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .path("/{id}")
-            .buildAndExpand(collectionId)
-            .toUri()
-
-    private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): CreateCollectionUseCase.Command =
-        CreateCollectionUseCase.Command(
+    private fun mapDtoToCommand(dto: CreateCollectionRequestDTO): UpdateCollectionUseCase.Command =
+        UpdateCollectionUseCase.Command(
             name = dto.name,
             readingLevel = dto.readingLevel?.let { ReadingLevel.valueOf(it.name) },
             primaryLanguage = dto.primaryLanguage?.let { Language.valueOf(it.name) },

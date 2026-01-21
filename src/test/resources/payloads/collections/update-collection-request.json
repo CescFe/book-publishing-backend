@@ -1,0 +1,8 @@
+{
+  "name": "Updated Collection Name",
+  "reading_level": "ADULT",
+  "primary_language": "ENGLISH",
+  "secondary_languages": ["CATALAN", "SPANISH"],
+  "primary_genre": "FANTASY",
+  "secondary_genres": ["ADVENTURE"]
+}
