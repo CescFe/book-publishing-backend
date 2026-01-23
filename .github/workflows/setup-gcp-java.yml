@@ -1,14 +1,16 @@
-name: Setup GCP + Java
+name: "Setup GCP + Java"
 
 on:
   workflow_call:
     inputs:
+      java_version:
+        required: true
+        type: string
+    secrets:
       gcp_service_account:
         required: true
-        type: string
       gcp_wif_provider:
         required: true
-        type: string
 
 jobs:
   setup:
@@ -20,17 +22,14 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: ${{ inputs.gcp_wif_provider }}
-          service_account: ${{ inputs.gcp_service_account }}
+          workload_identity_provider: ${{ secrets.gcp_wif_provider }}
+          service_account: ${{ secrets.gcp_service_account }}
 
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
       - uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: ${{ inputs.java_version }}
           distribution: 'corretto'
           cache: gradle
-
-      - name: Make gradlew executable
-        run: chmod +x gradlew
