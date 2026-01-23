@@ -6,12 +6,13 @@ plugins {
     id("io.spring.dependency-management") version "1.1.7"
     id("com.diffplug.spotless") version "8.0.0"
     id("com.google.cloud.tools.jib") version "3.4.5"
+    id("com.google.cloud.artifactregistry.gradle-plugin") version "2.2.0"
 }
 
 group = "org.cescfe"
 version = "0.3.3"
 
-val bookPublishingApiSpec = "1.1.0"
+val bookPublishingApiSpec = "1.2.0"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
@@ -27,12 +28,8 @@ java {
 repositories {
     mavenCentral()
     maven {
-        name = "GitHubPackages"
-        url = uri("https://maven.pkg.github.com/CescFe/book-publishing-api-spec")
-        credentials {
-            username = System.getenv("GITHUB_USERNAME") ?: project.findProperty("github.username") as String?
-            password = System.getenv("TOKEN_PAT") ?: project.findProperty("github.token") as String?
-        }
+        name = "ArtifactRegistry"
+        url = uri("artifactregistry://europe-west1-maven.pkg.dev/book-publishing-backend/maven-repo")
     }
 }
 
