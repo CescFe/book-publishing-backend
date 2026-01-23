@@ -13,6 +13,9 @@ jobs:
   setup:
     uses: ./.github/workflows/setup-gcp-java.yml
     with:
+      gcp_service_account: placeholder
+      gcp_wif_provider: placeholder
+    secrets:
       gcp_service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
       gcp_wif_provider: ${{ secrets.GCP_WIF_PROVIDER }}
 
