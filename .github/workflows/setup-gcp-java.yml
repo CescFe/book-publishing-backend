@@ -33,3 +33,6 @@ jobs:
           java-version: ${{ inputs.java_version }}
           distribution: 'corretto'
           cache: gradle
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
