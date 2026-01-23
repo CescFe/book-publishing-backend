@@ -10,22 +10,37 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs:
-  setup:
-    uses: ./.github/workflows/setup-gcp-java.yml
-    with:
-      java_version: '21'
-    secrets:
-      gcp_service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-      gcp_wif_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
-  build-test:
-    needs: setup
+jobs:
+  validate-pull-request:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'corretto'
+          cache: gradle
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
       - name: Run Spotless check
-        run: ./gradlew spotlessCheck --build-cache
+        run: ./gradlew spotlessCheck
 
       - name: Run all tests
-        run: ./gradlew test --parallel --build-cache
+        run: ./gradlew test --parallel
