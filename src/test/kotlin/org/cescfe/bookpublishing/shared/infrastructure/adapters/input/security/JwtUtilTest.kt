@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.userdetails.UserDetails
@@ -76,5 +77,32 @@ class JwtUtilTest {
 
         // Then
         assertFalse(isValid)
+    }
+
+    @Test
+    fun `should return expiration time`() {
+        // When
+        val expiration = jwtUtil.getExpirationTime()
+
+        // Then
+        assertEquals(3600L, expiration)
+    }
+
+    @Test
+    fun `should fail when secret is too short`() {
+        // Given
+        val badJwtUtil = JwtUtil()
+        ReflectionTestUtils.setField(badJwtUtil, "secret", "too-short-secret")
+        ReflectionTestUtils.setField(badJwtUtil, "expiration", 3600L)
+
+        val userDetails = mock<UserDetails>()
+        whenever(userDetails.username).thenReturn("user")
+
+        // When / Then
+        val ex =
+            assertThrows<IllegalArgumentException> {
+                badJwtUtil.generateToken(userDetails)
+            }
+        assertEquals("JWT secret must be at least 32 characters long for security", ex.message)
     }
 }
