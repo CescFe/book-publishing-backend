@@ -77,4 +77,23 @@ class UserServiceTest {
             userService.loadUserByUsername(username)
         }
     }
+
+    @Test
+    fun `should ignore users with null username or password`() {
+        // Given
+        val missingUsername = AuthProperties.User()
+        missingUsername.password = "pass"
+        missingUsername.roles = listOf("USER")
+
+        val missingPassword = AuthProperties.User()
+        missingPassword.username = "nullpass@example.com"
+        missingPassword.roles = listOf("USER")
+
+        whenever(authProperties.users).thenReturn(listOf(missingUsername, missingPassword))
+
+        // When & Then
+        assertThrows<UsernameNotFoundException> {
+            userService.loadUserByUsername("nullpass@example.com")
+        }
+    }
 }
