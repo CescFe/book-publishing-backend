@@ -1,6 +1,6 @@
 package org.cescfe.bookpublishing.auth.domain.service
 
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config.AuthProperties
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config.AuthProperties
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach

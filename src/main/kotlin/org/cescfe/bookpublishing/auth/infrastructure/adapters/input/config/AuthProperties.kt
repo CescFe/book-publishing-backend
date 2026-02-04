@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration

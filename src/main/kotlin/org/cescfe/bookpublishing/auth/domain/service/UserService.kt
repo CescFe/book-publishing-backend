@@ -1,6 +1,6 @@
 package org.cescfe.bookpublishing.auth.domain.service
 
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config.AuthProperties
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config.AuthProperties
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
