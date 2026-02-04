@@ -5,7 +5,7 @@ import org.cescfe.bookpublishing.auth.domain.model.enum.Permission
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
 import java.util.UUID
 
-data class Account(
+data class AuthUser(
     val id: UserId,
     val username: Username,
     val passwordHash: PasswordHash,

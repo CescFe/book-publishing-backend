@@ -6,6 +6,7 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
+import java.time.Instant
 import java.util.Date
 import javax.crypto.SecretKey
 
@@ -40,6 +41,11 @@ class JwtUtil {
     fun getUsernameFromToken(token: String): String = getClaimsFromToken(token).subject
 
     fun getExpirationTime(): Long = expiration
+
+    fun getExpirationInstant(token: String): Instant =
+        getClaimsFromToken(token)
+            .expiration
+            .toInstant()
 
     fun isTokenExpired(token: String): Boolean {
         val expiration = getClaimsFromToken(token).expiration

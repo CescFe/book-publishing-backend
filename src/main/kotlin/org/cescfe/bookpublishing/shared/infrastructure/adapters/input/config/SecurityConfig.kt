@@ -1,6 +1,6 @@
 package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config
 
-import org.cescfe.bookpublishing.auth.domain.service.UserService
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security.UserService
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtRequestFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

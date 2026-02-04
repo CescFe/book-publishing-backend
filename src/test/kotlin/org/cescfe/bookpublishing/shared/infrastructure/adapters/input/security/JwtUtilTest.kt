@@ -89,6 +89,17 @@ class JwtUtilTest {
     }
 
     @Test
+    fun `should get expiration instant from token`() {
+        val userDetails = mock<UserDetails>()
+        whenever(userDetails.username).thenReturn("user")
+        val token = jwtUtil.generateToken(userDetails)
+
+        val expirationInstant = jwtUtil.getExpirationInstant(token)
+
+        assertTrue(expirationInstant.isAfter(java.time.Instant.now()))
+    }
+
+    @Test
     fun `should fail when secret is too short`() {
         // Given
         val badJwtUtil = JwtUtil()

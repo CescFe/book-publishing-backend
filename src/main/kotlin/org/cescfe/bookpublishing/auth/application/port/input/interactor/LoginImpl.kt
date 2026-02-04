@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.auth.application.port.input.interactor
 
 import org.cescfe.bookpublishing.auth.application.port.input.LoginUseCase
 import org.cescfe.bookpublishing.auth.domain.service.ScopeService
-import org.cescfe.bookpublishing.auth.domain.service.UserService
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security.UserService
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
