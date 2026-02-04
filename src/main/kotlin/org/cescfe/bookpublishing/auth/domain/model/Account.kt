@@ -37,7 +37,7 @@ value class Username(
 ) {
     init {
         require(value.isNotBlank()) { throw AuthDomainException.usernameCannotBeBlank() }
-        require(value.length in 1..255) { throw AuthDomainException.usernameTooLong() }
+        require(value.length <= 255) { throw AuthDomainException.usernameTooLong() }
     }
 }
 
