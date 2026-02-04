@@ -39,9 +39,7 @@ class ConfigUserRepository(
             }.toMap()
     }
 
-    override fun findById(id: UserId): AuthUser? =
-        usersByUsername.values.firstOrNull { it.id == id }
+    override fun findById(id: UserId): AuthUser? = usersByUsername.values.firstOrNull { it.id == id }
 
-    override fun findByUsername(username: Username): AuthUser? =
-        usersByUsername[username.value]
+    override fun findByUsername(username: Username): AuthUser? = usersByUsername[username.value]
 }

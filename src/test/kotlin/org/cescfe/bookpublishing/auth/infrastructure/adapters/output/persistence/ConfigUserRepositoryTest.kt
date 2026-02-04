@@ -47,14 +47,16 @@ class ConfigUserRepositoryTest {
 
     @Test
     fun `should ignore users with missing username or password`() {
-        val missingUsername = AuthProperties.User().apply {
-            password = "secret"
-            roles = listOf("USER")
-        }
-        val missingPassword = AuthProperties.User().apply {
-            username = "user@example.com"
-            roles = listOf("USER")
-        }
+        val missingUsername =
+            AuthProperties.User().apply {
+                password = "secret"
+                roles = listOf("USER")
+            }
+        val missingPassword =
+            AuthProperties.User().apply {
+                username = "user@example.com"
+                roles = listOf("USER")
+            }
 
         val authProperties = AuthProperties()
         authProperties.users = listOf(missingUsername, missingPassword)

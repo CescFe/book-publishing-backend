@@ -9,8 +9,7 @@ import org.springframework.stereotype.Component
 class SpringPasswordHasher(
     private val passwordEncoder: PasswordEncoder,
 ) : PasswordHasher {
-    override fun hash(rawPassword: String): PasswordHash =
-        PasswordHash(passwordEncoder.encode(rawPassword))
+    override fun hash(rawPassword: String): PasswordHash = PasswordHash(passwordEncoder.encode(rawPassword))
 
     override fun matches(
         rawPassword: String,

@@ -36,7 +36,9 @@ class JwtTokenServiceTest {
         assertEquals("token", token)
 
         val userDetailsCaptor = argumentCaptor<org.springframework.security.core.userdetails.UserDetails>()
-        org.mockito.kotlin.verify(jwtUtil).generateToken(userDetailsCaptor.capture())
+        org.mockito.kotlin
+            .verify(jwtUtil)
+            .generateToken(userDetailsCaptor.capture())
         val userDetails = userDetailsCaptor.firstValue
 
         assertEquals("user@example.com", userDetails.username)
