@@ -25,6 +25,11 @@ auth:
       roles:
         - ADMIN
         - USER
+    - username: ${MANAGER_NAME}
+      password: ${MANAGER_PASSWORD}
+      roles:
+        - MANAGER
+        - USER
     - username: ${USER_NAME}
       password: ${USER_PASSWORD}
       roles:
