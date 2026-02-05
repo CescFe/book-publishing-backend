@@ -31,6 +31,7 @@ class LoginImpl(
 
         val expiresIn = tokenService.getExpirationTime()
         val expiresAt = clock.now().plusSeconds(expiresIn)
+        val scope = scopePolicy.scopeFor(user.roles)
         val token =
             tokenService.issueToken(
                 TokenPayload(
@@ -38,10 +39,10 @@ class LoginImpl(
                     username = user.username,
                     roles = user.roles,
                     permissions = user.permissions,
+                    scope = scope,
                     expiresAt = expiresAt,
                 ),
             )
-        val scope = scopePolicy.scopeFor(user.roles)
 
         return LoginUseCase.OutputValues(
             accessToken = token,

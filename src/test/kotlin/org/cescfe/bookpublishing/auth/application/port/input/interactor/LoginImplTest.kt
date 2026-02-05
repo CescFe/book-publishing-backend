@@ -78,6 +78,7 @@ class LoginImplTest {
                 username = Username(input.username),
                 roles = setOf(Role.USER),
                 permissions = emptySet(),
+                scope = "read",
                 expiresAt = now.plusSeconds(expectedExpiration),
             ),
         )

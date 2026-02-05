@@ -5,7 +5,7 @@ import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Permission
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security.JwtUtil
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -28,6 +28,7 @@ class JwtTokenServiceTest {
                 username = Username("user@example.com"),
                 roles = setOf(Role.ADMIN),
                 permissions = emptySet(),
+                scope = "",
                 expiresAt = Instant.now(),
             )
 
@@ -59,6 +60,7 @@ class JwtTokenServiceTest {
         assertEquals(expiration, payload.expiresAt)
         assertEquals(emptySet<Role>(), payload.roles)
         assertEquals(emptySet<Permission>(), payload.permissions)
+        assertEquals("", payload.scope)
 
         val expectedUserId = UserId(UUID.nameUUIDFromBytes("user@example.com".toByteArray()))
         assertEquals(expectedUserId, payload.userId)

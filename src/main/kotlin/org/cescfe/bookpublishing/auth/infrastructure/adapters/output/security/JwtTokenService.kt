@@ -4,7 +4,7 @@ import org.cescfe.bookpublishing.auth.application.port.output.TokenPayload
 import org.cescfe.bookpublishing.auth.application.port.output.TokenService
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security.JwtUtil
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
@@ -35,6 +35,7 @@ class JwtTokenService(
             username = Username(username),
             roles = emptySet(),
             permissions = emptySet(),
+            scope = "",
             expiresAt = expiresAt,
         )
     }

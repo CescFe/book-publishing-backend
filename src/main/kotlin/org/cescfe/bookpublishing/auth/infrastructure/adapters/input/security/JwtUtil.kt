@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

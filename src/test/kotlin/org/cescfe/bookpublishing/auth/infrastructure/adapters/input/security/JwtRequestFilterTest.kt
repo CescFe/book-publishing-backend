@@ -63,6 +63,7 @@ class JwtRequestFilterTest {
                 username = Username(username),
                 roles = setOf(Role.USER),
                 permissions = emptySet(),
+                scope = "read",
                 expiresAt = Instant.now().plusSeconds(3600),
             ),
         )
@@ -107,6 +108,7 @@ class JwtRequestFilterTest {
                 username = Username(username),
                 roles = emptySet(),
                 permissions = emptySet(),
+                scope = "",
                 expiresAt = Instant.now().minusSeconds(10),
             ),
         )

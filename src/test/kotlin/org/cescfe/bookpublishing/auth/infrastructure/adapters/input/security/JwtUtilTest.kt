@@ -1,8 +1,6 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -10,6 +8,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.test.util.ReflectionTestUtils
+import java.time.Instant
 
 class JwtUtilTest {
     private lateinit var jwtUtil: JwtUtil
@@ -31,7 +30,7 @@ class JwtUtilTest {
         val token = jwtUtil.generateToken(userDetails)
 
         // Then
-        assertTrue(token.isNotEmpty())
+        Assertions.assertTrue(token.isNotEmpty())
     }
 
     @Test
@@ -45,7 +44,7 @@ class JwtUtilTest {
         val username = jwtUtil.getUsernameFromToken(token)
 
         // Then
-        assertEquals("user", username)
+        Assertions.assertEquals("user", username)
     }
 
     @Test
@@ -59,7 +58,7 @@ class JwtUtilTest {
         val isValid = jwtUtil.validateToken(token, userDetails)
 
         // Then
-        assertTrue(isValid)
+        Assertions.assertTrue(isValid)
     }
 
     @Test
@@ -76,7 +75,7 @@ class JwtUtilTest {
         val isValid = jwtUtil.validateToken(token, otherUserDetails)
 
         // Then
-        assertFalse(isValid)
+        Assertions.assertFalse(isValid)
     }
 
     @Test
@@ -85,7 +84,7 @@ class JwtUtilTest {
         val expiration = jwtUtil.getExpirationTime()
 
         // Then
-        assertEquals(3600L, expiration)
+        Assertions.assertEquals(3600L, expiration)
     }
 
     @Test
@@ -96,7 +95,7 @@ class JwtUtilTest {
 
         val expirationInstant = jwtUtil.getExpirationInstant(token)
 
-        assertTrue(expirationInstant.isAfter(java.time.Instant.now()))
+        Assertions.assertTrue(expirationInstant.isAfter(Instant.now()))
     }
 
     @Test
@@ -114,6 +113,6 @@ class JwtUtilTest {
             assertThrows<IllegalArgumentException> {
                 badJwtUtil.generateToken(userDetails)
             }
-        assertEquals("JWT secret must be at least 32 characters long for security", ex.message)
+        Assertions.assertEquals("JWT secret must be at least 32 characters long for security", ex.message)
     }
 }
