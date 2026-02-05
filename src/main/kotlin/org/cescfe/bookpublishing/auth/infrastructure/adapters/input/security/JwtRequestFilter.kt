@@ -4,7 +4,6 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.cescfe.bookpublishing.auth.application.port.output.TokenService
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtAuthenticationEntryPoint
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder

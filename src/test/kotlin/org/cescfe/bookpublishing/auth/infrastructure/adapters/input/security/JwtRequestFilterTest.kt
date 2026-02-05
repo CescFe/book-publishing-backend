@@ -6,7 +6,6 @@ import org.cescfe.bookpublishing.auth.application.port.output.TokenService
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtAuthenticationEntryPoint
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
