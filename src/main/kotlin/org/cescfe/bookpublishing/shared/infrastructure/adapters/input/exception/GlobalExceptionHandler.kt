@@ -1,6 +1,7 @@
 package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception
 
 import jakarta.validation.ConstraintViolationException
+import org.cescfe.bookpublishing.auth.domain.exception.AuthDomainException
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
@@ -95,6 +96,29 @@ class GlobalExceptionHandler {
         return buildErrorResponse(
             status = status,
             message = ex.message ?: "Invalid author data",
+            code = ex.subType,
+            details =
+                mapOf(
+                    "path" to getPath(request),
+                    "exceptionType" to ex.javaClass.simpleName,
+                ),
+        )
+    }
+
+    @ExceptionHandler(AuthDomainException::class)
+    fun handleAuthDomainException(
+        ex: AuthDomainException,
+        request: WebRequest,
+    ): ResponseEntity<ApiError> {
+        val status =
+            when (ex.subType) {
+                "INVALID_CREDENTIALS" -> HttpStatus.UNAUTHORIZED
+                else -> HttpStatus.BAD_REQUEST
+            }
+
+        return buildErrorResponse(
+            status = status,
+            message = ex.message ?: "Invalid auth data",
             code = ex.subType,
             details =
                 mapOf(

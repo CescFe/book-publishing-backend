@@ -11,6 +11,7 @@ data class TokenPayload(
     val username: Username,
     val roles: Set<Role>,
     val permissions: Set<Permission>,
+    val scope: String,
     val expiresAt: Instant,
 )
 
