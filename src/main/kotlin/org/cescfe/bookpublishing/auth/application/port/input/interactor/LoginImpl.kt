@@ -50,5 +50,4 @@ class LoginImpl(
             userId = user.id.value.toString(),
         )
     }
-
 }
