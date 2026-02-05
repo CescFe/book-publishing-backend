@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config
 
 import org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security.SpringUserDetailsService
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtRequestFilter
