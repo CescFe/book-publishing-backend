@@ -18,4 +18,6 @@ interface TokenService {
     fun issueToken(payload: TokenPayload): String
 
     fun parseToken(token: String): TokenPayload
+
+    fun getExpirationTime(): Long
 }

@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.auth.domain.service
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security
 
 import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config.AuthProperties
 import org.junit.jupiter.api.Assertions.assertEquals

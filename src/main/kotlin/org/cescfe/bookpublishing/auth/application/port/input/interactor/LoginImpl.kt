@@ -1,37 +1,59 @@
 package org.cescfe.bookpublishing.auth.application.port.input.interactor
 
 import org.cescfe.bookpublishing.auth.application.port.input.LoginUseCase
-import org.cescfe.bookpublishing.auth.domain.service.ScopeService
-import org.cescfe.bookpublishing.auth.domain.service.UserService
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
+import org.cescfe.bookpublishing.auth.application.port.output.Clock
+import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
+import org.cescfe.bookpublishing.auth.application.port.output.TokenPayload
+import org.cescfe.bookpublishing.auth.application.port.output.TokenService
+import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
+import org.cescfe.bookpublishing.auth.domain.exception.AuthDomainException
+import org.cescfe.bookpublishing.auth.domain.model.Username
+import org.cescfe.bookpublishing.auth.domain.model.enum.Role
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class LoginImpl(
-    private val authenticationManager: AuthenticationManager,
-    private val jwtUtil: JwtUtil,
-    private val userService: UserService,
-    private val scopeService: ScopeService,
+    private val userRepository: UserRepository,
+    private val passwordHasher: PasswordHasher,
+    private val tokenService: TokenService,
+    private val clock: Clock,
 ) : LoginUseCase {
     override fun execute(input: LoginUseCase.InputValues): LoginUseCase.OutputValues {
-        val authentication: Authentication =
-            authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(input.username, input.password),
-            )
+        val username = Username(input.username)
+        val user =
+            userRepository.findByUsername(username)
+                ?: throw AuthDomainException.invalidCredentials()
 
-        val userDetails = userService.loadUserByUsername(input.username)
-        val token = jwtUtil.generateToken(userDetails)
-        val scope = scopeService.getScopeFromAuthorities(userDetails.authorities)
+        if (!passwordHasher.matches(input.password, user.passwordHash)) {
+            throw AuthDomainException.invalidCredentials()
+        }
+
+        val expiresIn = tokenService.getExpirationTime()
+        val expiresAt = clock.now().plusSeconds(expiresIn)
+        val token =
+            tokenService.issueToken(
+                TokenPayload(
+                    userId = user.id,
+                    username = user.username,
+                    roles = user.roles,
+                    permissions = user.permissions,
+                    expiresAt = expiresAt,
+                ),
+            )
+        val scope = scopeFromRoles(user.roles)
 
         return LoginUseCase.OutputValues(
             accessToken = token,
-            expiresIn = jwtUtil.getExpirationTime(),
+            expiresIn = expiresIn,
             scope = scope,
-            userId = UUID.randomUUID().toString(),
+            userId = user.id.value.toString(),
         )
     }
+
+    private fun scopeFromRoles(roles: Set<Role>): String =
+        if (roles.contains(Role.ADMIN)) {
+            "read write delete"
+        } else {
+            "read"
+        }
 }

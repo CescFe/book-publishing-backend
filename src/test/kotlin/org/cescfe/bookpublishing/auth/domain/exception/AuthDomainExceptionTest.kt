@@ -35,4 +35,12 @@ class AuthDomainExceptionTest {
         assertEquals("PASSWORD_HASH_CANNOT_BE_BLANK", ex.subType)
         assertEquals("Password hash cannot be blank", ex.message)
     }
+
+    @Test
+    fun `should build invalid credentials exception`() {
+        val ex = AuthDomainException.invalidCredentials()
+
+        assertEquals("INVALID_CREDENTIALS", ex.subType)
+        assertEquals("Invalid credentials", ex.message)
+    }
 }

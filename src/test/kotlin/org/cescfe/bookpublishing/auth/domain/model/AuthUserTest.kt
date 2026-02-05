@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.UUID
 
-class AccountTest {
+class AuthUserTest {
     @Test
     fun `should create account with valid data`() {
         val id = UserId.generate()
@@ -17,7 +17,7 @@ class AccountTest {
         val passwordHash = PasswordHash("hashed")
 
         val account =
-            Account(
+            AuthUser(
                 id = id,
                 username = username,
                 passwordHash = passwordHash,
