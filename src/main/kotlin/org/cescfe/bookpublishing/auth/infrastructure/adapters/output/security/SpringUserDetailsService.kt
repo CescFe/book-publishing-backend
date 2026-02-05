@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService(
+class SpringUserDetailsService(
     private val passwordEncoder: PasswordEncoder,
     private val authProperties: AuthProperties,
 ) : UserDetailsService {

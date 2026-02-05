@@ -12,6 +12,7 @@ import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
+import org.cescfe.bookpublishing.auth.domain.policy.ScopePolicy
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -27,6 +28,7 @@ class LoginImplTest {
     private lateinit var passwordHasher: PasswordHasher
     private lateinit var tokenService: TokenService
     private lateinit var clock: Clock
+    private lateinit var scopePolicy: ScopePolicy
     private lateinit var loginImpl: LoginImpl
 
     @BeforeEach
@@ -35,7 +37,8 @@ class LoginImplTest {
         passwordHasher = mock()
         tokenService = mock()
         clock = mock()
-        loginImpl = LoginImpl(userRepository, passwordHasher, tokenService, clock)
+        scopePolicy = ScopePolicy()
+        loginImpl = LoginImpl(userRepository, passwordHasher, tokenService, clock, scopePolicy)
     }
 
     @Test
