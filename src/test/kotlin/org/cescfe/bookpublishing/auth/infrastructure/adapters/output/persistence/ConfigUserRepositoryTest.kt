@@ -1,10 +1,10 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.output.persistence
 
+import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
+import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
-import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
-import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
 import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config.AuthProperties
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull

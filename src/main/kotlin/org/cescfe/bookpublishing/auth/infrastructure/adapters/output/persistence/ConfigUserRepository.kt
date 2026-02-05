@@ -1,7 +1,7 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.output.persistence
 
-import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
 import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
+import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
 import org.cescfe.bookpublishing.auth.domain.model.AuthUser
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
