@@ -13,17 +13,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
 
-class UserServiceTest {
+class SpringUserDetailsServiceTest {
     private lateinit var passwordEncoder: PasswordEncoder
     private lateinit var authProperties: AuthProperties
-    private lateinit var userService: UserService
+    private lateinit var userService: SpringUserDetailsService
 
     @BeforeEach
     fun setup() {
         passwordEncoder = mock()
         authProperties = mock()
         whenever(passwordEncoder.encode(any())).thenReturn("encodedPassword")
-        userService = UserService(passwordEncoder, authProperties)
+        userService = SpringUserDetailsService(passwordEncoder, authProperties)
     }
 
     @Test

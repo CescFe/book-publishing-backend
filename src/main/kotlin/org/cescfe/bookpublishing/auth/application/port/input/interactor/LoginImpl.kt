@@ -8,7 +8,7 @@ import org.cescfe.bookpublishing.auth.application.port.output.TokenService
 import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
 import org.cescfe.bookpublishing.auth.domain.exception.AuthDomainException
 import org.cescfe.bookpublishing.auth.domain.model.Username
-import org.cescfe.bookpublishing.auth.domain.model.enum.Role
+import org.cescfe.bookpublishing.auth.domain.policy.ScopePolicy
 import org.springframework.stereotype.Service
 
 @Service
@@ -17,6 +17,7 @@ class LoginImpl(
     private val passwordHasher: PasswordHasher,
     private val tokenService: TokenService,
     private val clock: Clock,
+    private val scopePolicy: ScopePolicy,
 ) : LoginUseCase {
     override fun execute(input: LoginUseCase.InputValues): LoginUseCase.OutputValues {
         val username = Username(input.username)
@@ -40,7 +41,7 @@ class LoginImpl(
                     expiresAt = expiresAt,
                 ),
             )
-        val scope = scopeFromRoles(user.roles)
+        val scope = scopePolicy.scopeFor(user.roles)
 
         return LoginUseCase.OutputValues(
             accessToken = token,
@@ -49,11 +50,4 @@ class LoginImpl(
             userId = user.id.value.toString(),
         )
     }
-
-    private fun scopeFromRoles(roles: Set<Role>): String =
-        if (roles.contains(Role.ADMIN)) {
-            "read write delete"
-        } else {
-            "read"
-        }
 }
