@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
 import jakarta.servlet.FilterChain
 import org.cescfe.bookpublishing.auth.application.port.output.TokenPayload
@@ -6,6 +6,7 @@ import org.cescfe.bookpublishing.auth.application.port.output.TokenService
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
+import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtAuthenticationEntryPoint
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -26,6 +27,7 @@ import java.util.UUID
 class JwtRequestFilterTest {
     private lateinit var userDetailsService: UserDetailsService
     private lateinit var tokenService: TokenService
+    private lateinit var authenticationEntryPoint: JwtAuthenticationEntryPoint
     private lateinit var jwtRequestFilter: JwtRequestFilter
     private lateinit var request: MockHttpServletRequest
     private lateinit var response: MockHttpServletResponse
@@ -35,7 +37,8 @@ class JwtRequestFilterTest {
     fun setup() {
         userDetailsService = mock()
         tokenService = mock()
-        jwtRequestFilter = JwtRequestFilter(userDetailsService, tokenService)
+        authenticationEntryPoint = mock()
+        jwtRequestFilter = JwtRequestFilter(userDetailsService, tokenService, authenticationEntryPoint)
         request = MockHttpServletRequest()
         response = MockHttpServletResponse()
         filterChain = mock()
@@ -89,7 +92,8 @@ class JwtRequestFilterTest {
 
         jwtRequestFilter.doFilter(request, response, filterChain)
 
-        verify(filterChain).doFilter(request, response)
+        verify(authenticationEntryPoint).commence(any(), any(), any())
+        verify(filterChain, never()).doFilter(request, response)
         assert(SecurityContextHolder.getContext().authentication == null)
     }
 
@@ -110,7 +114,8 @@ class JwtRequestFilterTest {
 
         jwtRequestFilter.doFilter(request, response, filterChain)
 
-        verify(filterChain).doFilter(request, response)
+        verify(authenticationEntryPoint).commence(any(), any(), any())
+        verify(filterChain, never()).doFilter(request, response)
         assert(SecurityContextHolder.getContext().authentication == null)
     }
 
@@ -133,7 +138,8 @@ class JwtRequestFilterTest {
 
         jwtRequestFilter.doFilter(request, response, filterChain)
 
-        verify(filterChain).doFilter(request, response)
+        verify(authenticationEntryPoint).commence(any(), any(), any())
+        verify(filterChain, never()).doFilter(request, response)
         assert(SecurityContextHolder.getContext().authentication == null)
     }
 

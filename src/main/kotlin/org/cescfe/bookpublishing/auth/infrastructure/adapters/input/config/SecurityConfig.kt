@@ -1,7 +1,7 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config
 
+import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security.JwtRequestFilter
 import org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security.SpringUserDetailsService
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtRequestFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
