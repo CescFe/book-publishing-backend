@@ -20,7 +20,10 @@ auth:
       password: ${LOCAL_ADMIN_PASSWORD:admin123}
       roles:
         - ADMIN
-        - USER
+    - username: ${LOCAL_MANAGER_NAME:manager@example.com}
+      password: ${LOCAL_MANAGER_PASSWORD:manager123}
+      roles:
+        - MANAGER
     - username: ${LOCAL_USER_NAME:user@example.com}
       password: ${LOCAL_USER_PASSWORD:user123}
       roles:

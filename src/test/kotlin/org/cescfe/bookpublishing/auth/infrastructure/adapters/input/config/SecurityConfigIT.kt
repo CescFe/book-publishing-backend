@@ -1,6 +1,8 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -25,6 +27,9 @@ class SecurityConfigIT {
 
     companion object {
         private const val AUTHORS_URI = "/api/v1/authors"
+        private const val BOOKS_URI = "/api/v1/books"
+        private const val COLLECTIONS_URI = "/api/v1/collections"
+        private const val ANY_ID = "00000000-0000-0000-0000-000000000000"
 
         @Container
         @ServiceConnection
@@ -78,5 +83,42 @@ class SecurityConfigIT {
                     .get(AUTHORS_URI)
                     .with(SecurityMockMvcRequestPostProcessors.user("user").roles("USER")),
             ).andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [AUTHORS_URI, BOOKS_URI, COLLECTIONS_URI])
+    fun `manager should access POST resources`(uri: String) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .post(uri)
+                    .with(SecurityMockMvcRequestPostProcessors.user("manager").roles("MANAGER"))
+                    .contentType("application/json")
+                    .content("{}"),
+            ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [AUTHORS_URI, BOOKS_URI, COLLECTIONS_URI])
+    fun `manager should access PUT resources`(uri: String) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .put("$uri/$ANY_ID")
+                    .with(SecurityMockMvcRequestPostProcessors.user("manager").roles("MANAGER"))
+                    .contentType("application/json")
+                    .content("{}"),
+            ).andExpect(MockMvcResultMatchers.status().isBadRequest)
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = [AUTHORS_URI, BOOKS_URI, COLLECTIONS_URI])
+    fun `manager should not access DELETE resources`(uri: String) {
+        mockMvc
+            .perform(
+                MockMvcRequestBuilders
+                    .delete("$uri/$ANY_ID")
+                    .with(SecurityMockMvcRequestPostProcessors.user("manager").roles("MANAGER")),
+            ).andExpect(MockMvcResultMatchers.status().isForbidden)
     }
 }

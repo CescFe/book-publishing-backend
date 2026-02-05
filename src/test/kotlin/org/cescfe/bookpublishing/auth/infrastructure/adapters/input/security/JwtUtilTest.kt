@@ -1,6 +1,8 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -30,7 +32,7 @@ class JwtUtilTest {
         val token = jwtUtil.generateToken(userDetails)
 
         // Then
-        Assertions.assertTrue(token.isNotEmpty())
+        assertTrue(token.isNotEmpty())
     }
 
     @Test
@@ -44,7 +46,7 @@ class JwtUtilTest {
         val username = jwtUtil.getUsernameFromToken(token)
 
         // Then
-        Assertions.assertEquals("user", username)
+        assertEquals("user", username)
     }
 
     @Test
@@ -58,7 +60,7 @@ class JwtUtilTest {
         val isValid = jwtUtil.validateToken(token, userDetails)
 
         // Then
-        Assertions.assertTrue(isValid)
+        assertTrue(isValid)
     }
 
     @Test
@@ -75,7 +77,7 @@ class JwtUtilTest {
         val isValid = jwtUtil.validateToken(token, otherUserDetails)
 
         // Then
-        Assertions.assertFalse(isValid)
+        assertFalse(isValid)
     }
 
     @Test
@@ -84,7 +86,7 @@ class JwtUtilTest {
         val expiration = jwtUtil.getExpirationTime()
 
         // Then
-        Assertions.assertEquals(3600L, expiration)
+        assertEquals(3600L, expiration)
     }
 
     @Test
@@ -95,7 +97,7 @@ class JwtUtilTest {
 
         val expirationInstant = jwtUtil.getExpirationInstant(token)
 
-        Assertions.assertTrue(expirationInstant.isAfter(Instant.now()))
+        assertTrue(expirationInstant.isAfter(Instant.now()))
     }
 
     @Test
@@ -113,6 +115,6 @@ class JwtUtilTest {
             assertThrows<IllegalArgumentException> {
                 badJwtUtil.generateToken(userDetails)
             }
-        Assertions.assertEquals("JWT secret must be at least 32 characters long for security", ex.message)
+        assertEquals("JWT secret must be at least 32 characters long for security", ex.message)
     }
 }

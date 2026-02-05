@@ -28,7 +28,10 @@ auth:
       password: ${PRO_ADMIN_PASSWORD}
       roles:
         - ADMIN
-        - USER
+    - username: ${PRO_MANAGER_NAME}
+      password: ${PRO_MANAGER_PASSWORD}
+      roles:
+        - MANAGER
     - username: ${PRO_USER_NAME}
       password: ${PRO_USER_PASSWORD}
       roles:
