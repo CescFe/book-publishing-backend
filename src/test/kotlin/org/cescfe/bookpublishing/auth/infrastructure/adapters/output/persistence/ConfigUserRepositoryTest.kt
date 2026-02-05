@@ -3,10 +3,14 @@ package org.cescfe.bookpublishing.auth.infrastructure.adapters.output.persistenc
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
+import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
+import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
 import org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config.AuthProperties
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import java.util.UUID
 
 class ConfigUserRepositoryTest {
@@ -19,7 +23,9 @@ class ConfigUserRepositoryTest {
         userConfig.roles = listOf("ADMIN", "USER")
         authProperties.users = listOf(userConfig)
 
-        val repository = ConfigUserRepository(authProperties)
+        val passwordHasher = mock<PasswordHasher>()
+        whenever(passwordHasher.hash("secret")).thenReturn(PasswordHash("hashed-secret"))
+        val repository = ConfigUserRepository(authProperties, passwordHasher)
 
         val account = repository.findByUsername(Username("user@example.com"))
 
@@ -36,7 +42,9 @@ class ConfigUserRepositoryTest {
         userConfig.password = "secret"
         authProperties.users = listOf(userConfig)
 
-        val repository = ConfigUserRepository(authProperties)
+        val passwordHasher = mock<PasswordHasher>()
+        whenever(passwordHasher.hash("secret")).thenReturn(PasswordHash("hashed-secret"))
+        val repository = ConfigUserRepository(authProperties, passwordHasher)
         val expectedId = UserId(UUID.nameUUIDFromBytes("user@example.com".toByteArray()))
 
         val account = repository.findById(expectedId)
@@ -61,7 +69,8 @@ class ConfigUserRepositoryTest {
         val authProperties = AuthProperties()
         authProperties.users = listOf(missingUsername, missingPassword)
 
-        val repository = ConfigUserRepository(authProperties)
+        val passwordHasher = mock<PasswordHasher>()
+        val repository = ConfigUserRepository(authProperties, passwordHasher)
 
         assertNull(repository.findByUsername(Username("user@example.com")))
     }
@@ -75,7 +84,9 @@ class ConfigUserRepositoryTest {
         userConfig.roles = listOf("ADMIN", "UNKNOWN")
         authProperties.users = listOf(userConfig)
 
-        val repository = ConfigUserRepository(authProperties)
+        val passwordHasher = mock<PasswordHasher>()
+        whenever(passwordHasher.hash("secret")).thenReturn(PasswordHash("hashed-secret"))
+        val repository = ConfigUserRepository(authProperties, passwordHasher)
 
         val account = repository.findByUsername(Username("user@example.com"))
 

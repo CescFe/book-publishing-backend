@@ -1,129 +1,176 @@
 package org.cescfe.bookpublishing.auth.application.port.input.interactor
 
 import org.cescfe.bookpublishing.auth.application.port.input.LoginUseCase
-import org.cescfe.bookpublishing.auth.domain.service.ScopeService
-import org.cescfe.bookpublishing.auth.infrastructure.adapters.output.security.UserService
-import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security.JwtUtil
+import org.cescfe.bookpublishing.auth.application.port.output.Clock
+import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
+import org.cescfe.bookpublishing.auth.application.port.output.TokenPayload
+import org.cescfe.bookpublishing.auth.application.port.output.TokenService
+import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
+import org.cescfe.bookpublishing.auth.domain.exception.AuthDomainException
+import org.cescfe.bookpublishing.auth.domain.model.AuthUser
+import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
+import org.cescfe.bookpublishing.auth.domain.model.UserId
+import org.cescfe.bookpublishing.auth.domain.model.Username
+import org.cescfe.bookpublishing.auth.domain.model.enum.Role
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
+import java.time.Instant
+import java.util.UUID
 
 class LoginImplTest {
-    private lateinit var authenticationManager: AuthenticationManager
-    private lateinit var jwtUtil: JwtUtil
-    private lateinit var userService: UserService
-    private lateinit var scopeService: ScopeService
+    private lateinit var userRepository: UserRepository
+    private lateinit var passwordHasher: PasswordHasher
+    private lateinit var tokenService: TokenService
+    private lateinit var clock: Clock
     private lateinit var loginImpl: LoginImpl
 
     @BeforeEach
     fun setup() {
-        authenticationManager = mock()
-        jwtUtil = mock()
-        userService = mock()
-        scopeService = mock()
-        loginImpl = LoginImpl(authenticationManager, jwtUtil, userService, scopeService)
+        userRepository = mock()
+        passwordHasher = mock()
+        tokenService = mock()
+        clock = mock()
+        loginImpl = LoginImpl(userRepository, passwordHasher, tokenService, clock)
     }
 
     @Test
     fun `should return access token on successful authentication`() {
-        // Given
         val input =
             LoginUseCase.InputValues(
                 username = "user@example.com",
                 password = "password123",
             )
-        val authorities = listOf(SimpleGrantedAuthority("ROLE_USER"))
-        val userDetails: UserDetails =
-            User
-                .withUsername(input.username)
-                .password("encodedPassword")
-                .authorities(authorities)
-                .build()
-        val authentication: Authentication = mock()
+        val userId = UserId(UUID.randomUUID())
+        val authUser =
+            AuthUser(
+                id = userId,
+                username = Username(input.username),
+                passwordHash = PasswordHash("hashed"),
+                roles = setOf(Role.USER),
+            )
         val expectedToken = "jwt.token.here"
-        val expectedScope = "read"
         val expectedExpiration = 3600L
+        val now = Instant.parse("2030-01-01T00:00:00Z")
 
-        whenever(authenticationManager.authenticate(any<UsernamePasswordAuthenticationToken>()))
-            .thenReturn(authentication)
-        whenever(userService.loadUserByUsername(input.username)).thenReturn(userDetails)
-        whenever(jwtUtil.generateToken(userDetails)).thenReturn(expectedToken)
-        whenever(jwtUtil.getExpirationTime()).thenReturn(expectedExpiration)
-        whenever(scopeService.getScopeFromAuthorities(any())).thenReturn(expectedScope)
+        whenever(userRepository.findByUsername(Username(input.username))).thenReturn(authUser)
+        whenever(passwordHasher.matches(input.password, authUser.passwordHash)).thenReturn(true)
+        whenever(tokenService.getExpirationTime()).thenReturn(expectedExpiration)
+        whenever(clock.now()).thenReturn(now)
+        whenever(tokenService.issueToken(org.mockito.kotlin.any<TokenPayload>())).thenReturn(expectedToken)
 
-        // When
         val result = loginImpl.execute(input)
 
-        // Then
         assertEquals(expectedToken, result.accessToken)
         assertEquals(expectedExpiration, result.expiresIn)
-        assertEquals(expectedScope, result.scope)
-        assertNotNull(result.userId)
+        assertEquals("read", result.scope)
+        assertEquals(userId.value.toString(), result.userId)
+        verify(tokenService).issueToken(
+            TokenPayload(
+                userId = userId,
+                username = Username(input.username),
+                roles = setOf(Role.USER),
+                permissions = emptySet(),
+                expiresAt = now.plusSeconds(expectedExpiration),
+            ),
+        )
     }
 
     @Test
     fun `should throw exception for invalid credentials`() {
-        // Given
         val input =
             LoginUseCase.InputValues(
                 username = "user@example.com",
                 password = "wrongPassword",
             )
 
-        whenever(authenticationManager.authenticate(any<UsernamePasswordAuthenticationToken>()))
-            .thenThrow(BadCredentialsException("Bad credentials"))
+        whenever(userRepository.findByUsername(Username(input.username))).thenReturn(null)
 
-        // When & Then
-        assertThrows<BadCredentialsException> {
-            loginImpl.execute(input)
-        }
+        val ex =
+            assertThrows<AuthDomainException> {
+                loginImpl.execute(input)
+            }
+        assertEquals("INVALID_CREDENTIALS", ex.subType)
     }
 
     @Test
-    fun `should include correct scope based on user role`() {
-        // Given
+    fun `should throw exception when password does not match`() {
+        val input =
+            LoginUseCase.InputValues(
+                username = "user@example.com",
+                password = "wrongPassword",
+            )
+        val authUser =
+            AuthUser(
+                id = UserId(UUID.randomUUID()),
+                username = Username(input.username),
+                passwordHash = PasswordHash("hashed"),
+                roles = setOf(Role.USER),
+            )
+
+        whenever(userRepository.findByUsername(Username(input.username))).thenReturn(authUser)
+        whenever(passwordHasher.matches(input.password, authUser.passwordHash)).thenReturn(false)
+
+        val ex =
+            assertThrows<AuthDomainException> {
+                loginImpl.execute(input)
+            }
+        assertEquals("INVALID_CREDENTIALS", ex.subType)
+    }
+
+    @Test
+    fun `should include correct scope based on admin role`() {
         val input =
             LoginUseCase.InputValues(
                 username = "admin@example.com",
                 password = "admin123",
             )
-        val authorities =
-            listOf(
-                SimpleGrantedAuthority("ROLE_ADMIN"),
-                SimpleGrantedAuthority("ROLE_USER"),
+        val authUser =
+            AuthUser(
+                id = UserId(UUID.randomUUID()),
+                username = Username(input.username),
+                passwordHash = PasswordHash("hashed"),
+                roles = setOf(Role.ADMIN, Role.USER),
             )
-        val userDetails: UserDetails =
-            User
-                .withUsername(input.username)
-                .password("encodedPassword")
-                .authorities(authorities)
-                .build()
-        val authentication: Authentication = mock()
-        val expectedScope = "read write delete"
 
-        whenever(authenticationManager.authenticate(any<UsernamePasswordAuthenticationToken>()))
-            .thenReturn(authentication)
-        whenever(userService.loadUserByUsername(input.username)).thenReturn(userDetails)
-        whenever(jwtUtil.generateToken(userDetails)).thenReturn("token")
-        whenever(jwtUtil.getExpirationTime()).thenReturn(3600L)
-        whenever(scopeService.getScopeFromAuthorities(any())).thenReturn(expectedScope)
+        whenever(userRepository.findByUsername(Username(input.username))).thenReturn(authUser)
+        whenever(passwordHasher.matches(input.password, authUser.passwordHash)).thenReturn(true)
+        whenever(tokenService.getExpirationTime()).thenReturn(3600L)
+        whenever(clock.now()).thenReturn(Instant.parse("2030-01-01T00:00:00Z"))
+        whenever(tokenService.issueToken(org.mockito.kotlin.any<TokenPayload>())).thenReturn("token")
 
-        // When
         val result = loginImpl.execute(input)
 
-        // Then
-        assertEquals(expectedScope, result.scope)
+        assertEquals("read write delete", result.scope)
+    }
+
+    @Test
+    fun `should include correct scope based on user role`() {
+        val input =
+            LoginUseCase.InputValues(
+                username = "user@example.com",
+                password = "password123",
+            )
+        val authUser =
+            AuthUser(
+                id = UserId(UUID.randomUUID()),
+                username = Username(input.username),
+                passwordHash = PasswordHash("hashed"),
+                roles = setOf(Role.USER),
+            )
+
+        whenever(userRepository.findByUsername(Username(input.username))).thenReturn(authUser)
+        whenever(passwordHasher.matches(input.password, authUser.passwordHash)).thenReturn(true)
+        whenever(tokenService.getExpirationTime()).thenReturn(3600L)
+        whenever(clock.now()).thenReturn(Instant.parse("2030-01-01T00:00:00Z"))
+        whenever(tokenService.issueToken(org.mockito.kotlin.any<TokenPayload>())).thenReturn("token")
+
+        val result = loginImpl.execute(input)
+
+        assertEquals("read", result.scope)
     }
 }

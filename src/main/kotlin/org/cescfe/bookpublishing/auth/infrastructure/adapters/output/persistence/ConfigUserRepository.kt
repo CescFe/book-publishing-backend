@@ -1,8 +1,8 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.output.persistence
 
 import org.cescfe.bookpublishing.auth.application.port.output.UserRepository
+import org.cescfe.bookpublishing.auth.application.port.output.PasswordHasher
 import org.cescfe.bookpublishing.auth.domain.model.AuthUser
-import org.cescfe.bookpublishing.auth.domain.model.PasswordHash
 import org.cescfe.bookpublishing.auth.domain.model.UserId
 import org.cescfe.bookpublishing.auth.domain.model.Username
 import org.cescfe.bookpublishing.auth.domain.model.enum.Role
@@ -13,6 +13,7 @@ import java.util.UUID
 @Repository
 class ConfigUserRepository(
     private val authProperties: AuthProperties,
+    private val passwordHasher: PasswordHasher,
 ) : UserRepository {
     private val usersByUsername: Map<String, AuthUser> by lazy {
         authProperties.users
@@ -30,7 +31,7 @@ class ConfigUserRepository(
                     AuthUser(
                         id = UserId(UUID.nameUUIDFromBytes(username.toByteArray())),
                         username = Username(username),
-                        passwordHash = PasswordHash(password),
+                        passwordHash = passwordHasher.hash(password),
                         roles = roles,
                         permissions = emptySet(),
                     )

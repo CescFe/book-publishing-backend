@@ -38,4 +38,6 @@ class JwtTokenService(
             expiresAt = expiresAt,
         )
     }
+
+    override fun getExpirationTime(): Long = jwtUtil.getExpirationTime()
 }

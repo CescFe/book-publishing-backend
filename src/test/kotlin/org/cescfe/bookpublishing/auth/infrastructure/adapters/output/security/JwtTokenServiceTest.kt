@@ -63,4 +63,15 @@ class JwtTokenServiceTest {
         val expectedUserId = UserId(UUID.nameUUIDFromBytes("user@example.com".toByteArray()))
         assertEquals(expectedUserId, payload.userId)
     }
+
+    @Test
+    fun `should expose expiration time from jwt util`() {
+        val jwtUtil = mock<JwtUtil>()
+        whenever(jwtUtil.getExpirationTime()).thenReturn(900L)
+        val tokenService = JwtTokenService(jwtUtil)
+
+        val expiration = tokenService.getExpirationTime()
+
+        assertEquals(900L, expiration)
+    }
 }

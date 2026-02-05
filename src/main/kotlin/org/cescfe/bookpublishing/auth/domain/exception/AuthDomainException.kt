@@ -22,5 +22,8 @@ class AuthDomainException(
 
         fun passwordHashCannotBeBlank(): AuthDomainException =
             AuthDomainException("Password hash cannot be blank", "PASSWORD_HASH_CANNOT_BE_BLANK")
+
+        fun invalidCredentials(): AuthDomainException =
+            AuthDomainException("Invalid credentials", "INVALID_CREDENTIALS")
     }
 }
