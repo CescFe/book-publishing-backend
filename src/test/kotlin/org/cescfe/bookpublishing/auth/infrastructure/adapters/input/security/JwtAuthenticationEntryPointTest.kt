@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

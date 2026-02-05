@@ -1,11 +1,11 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.config
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.config
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
@@ -42,7 +42,7 @@ class SecurityConfigIT {
             .perform(
                 MockMvcRequestBuilders
                     .post(AUTHORS_URI)
-                    .with(user("admin").roles("ADMIN"))
+                    .with(SecurityMockMvcRequestPostProcessors.user("admin").roles("ADMIN"))
                     .contentType("application/json")
                     .content("{}"),
             ).andExpect(MockMvcResultMatchers.status().isBadRequest)
@@ -54,7 +54,7 @@ class SecurityConfigIT {
             .perform(
                 MockMvcRequestBuilders
                     .post(AUTHORS_URI)
-                    .with(user("user").roles("USER"))
+                    .with(SecurityMockMvcRequestPostProcessors.user("user").roles("USER"))
                     .contentType("application/json")
                     .content("{}"),
             ).andExpect(MockMvcResultMatchers.status().isForbidden)
@@ -66,7 +66,7 @@ class SecurityConfigIT {
             .perform(
                 MockMvcRequestBuilders
                     .get(AUTHORS_URI)
-                    .with(user("admin").roles("ADMIN")),
+                    .with(SecurityMockMvcRequestPostProcessors.user("admin").roles("ADMIN")),
             ).andExpect(MockMvcResultMatchers.status().isOk)
     }
 
@@ -76,7 +76,7 @@ class SecurityConfigIT {
             .perform(
                 MockMvcRequestBuilders
                     .get(AUTHORS_URI)
-                    .with(user("user").roles("USER")),
+                    .with(SecurityMockMvcRequestPostProcessors.user("user").roles("USER")),
             ).andExpect(MockMvcResultMatchers.status().isOk)
     }
 }

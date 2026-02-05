@@ -1,9 +1,10 @@
-package org.cescfe.bookpublishing.shared.infrastructure.adapters.input.security
+package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.security
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.cescfe.bookpublishing.auth.application.port.output.TokenService
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -16,6 +17,7 @@ import java.time.Instant
 class JwtRequestFilter(
     private val userDetailsService: UserDetailsService,
     private val tokenService: TokenService,
+    private val authenticationEntryPoint: JwtAuthenticationEntryPoint,
 ) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -34,18 +36,23 @@ class JwtRequestFilter(
 
             try {
                 val payload = tokenService.parseToken(token)
-                if (payload.expiresAt.isAfter(Instant.now())) {
-                    val userDetails = userDetailsService.loadUserByUsername(payload.username.value)
-                    val authToken =
-                        UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.authorities,
-                        )
-                    authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-                    SecurityContextHolder.getContext().authentication = authToken
+                val now = Instant.now()
+                if (!payload.expiresAt.isAfter(now)) {
+                    authenticationEntryPoint.commence(request, response, BadCredentialsException("Token expired"))
+                    return
                 }
-            } catch (_: Exception) {
+                val userDetails = userDetailsService.loadUserByUsername(payload.username.value)
+                val authToken =
+                    UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.authorities,
+                    )
+                authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+                SecurityContextHolder.getContext().authentication = authToken
+            } catch (ex: Exception) {
+                authenticationEntryPoint.commence(request, response, BadCredentialsException(ex.message, ex))
+                return
             }
         }
 
