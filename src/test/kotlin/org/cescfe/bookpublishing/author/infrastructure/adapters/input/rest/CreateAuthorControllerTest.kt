@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.CreateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,7 +13,6 @@ import kotlin.test.assertEquals
 
 class CreateAuthorControllerTest {
     private lateinit var createAuthorUseCase: CreateAuthorUseCase
-    private lateinit var mapper: AuthorRestMapper
     private lateinit var createAuthorController: CreateAuthorController
 
     companion object {
@@ -25,8 +23,7 @@ class CreateAuthorControllerTest {
     @BeforeEach
     fun setup() {
         createAuthorUseCase = mock()
-        mapper = mock()
-        createAuthorController = CreateAuthorController(createAuthorUseCase, mapper)
+        createAuthorController = CreateAuthorController(createAuthorUseCase)
     }
 
     @Test

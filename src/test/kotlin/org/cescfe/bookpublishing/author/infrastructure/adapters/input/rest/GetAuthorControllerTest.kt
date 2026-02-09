@@ -2,7 +2,6 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.GetAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -12,7 +11,6 @@ import java.util.UUID
 
 class GetAuthorControllerTest {
     private lateinit var getAuthorUseCase: GetAuthorUseCase
-    private lateinit var mapper: AuthorRestMapper
     private lateinit var getAuthorController: GetAuthorController
 
     companion object {
@@ -22,8 +20,7 @@ class GetAuthorControllerTest {
     @BeforeEach
     fun setup() {
         getAuthorUseCase = mock()
-        mapper = mock()
-        getAuthorController = GetAuthorController(getAuthorUseCase, mapper)
+        getAuthorController = GetAuthorController(getAuthorUseCase)
     }
 
     @Test
