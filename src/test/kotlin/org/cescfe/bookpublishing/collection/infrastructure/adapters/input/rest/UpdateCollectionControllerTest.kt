@@ -2,8 +2,7 @@ package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.collection.application.port.input.UpdateCollectionUseCase
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
-import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper.CollectionRestMapper
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollectionRequestDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateCollectionRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
@@ -15,7 +14,6 @@ import kotlin.test.assertFailsWith
 
 class UpdateCollectionControllerTest {
     private lateinit var updateCollectionUseCase: UpdateCollectionUseCase
-    private lateinit var mapper: CollectionRestMapper
     private lateinit var updateCollectionController: UpdateCollectionController
 
     companion object {
@@ -30,8 +28,7 @@ class UpdateCollectionControllerTest {
     @BeforeEach
     fun setup() {
         updateCollectionUseCase = mock()
-        mapper = mock()
-        updateCollectionController = UpdateCollectionController(updateCollectionUseCase, mapper)
+        updateCollectionController = UpdateCollectionController(updateCollectionUseCase)
     }
 
     @Test
@@ -39,7 +36,7 @@ class UpdateCollectionControllerTest {
         // Given
         val collectionId = UUID.fromString(NON_EXISTENT_COLLECTION_ID)
         val requestDTO =
-            CreateCollectionRequestDTO(
+            UpdateCollectionRequestDTO(
                 name = EXISTING_NAME,
             )
 
@@ -66,7 +63,7 @@ class UpdateCollectionControllerTest {
         // Given
         val collectionId = UUID.fromString(NON_EXISTENT_COLLECTION_ID)
         val requestDTO =
-            CreateCollectionRequestDTO(
+            UpdateCollectionRequestDTO(
                 name = EXISTING_NAME,
             )
 
