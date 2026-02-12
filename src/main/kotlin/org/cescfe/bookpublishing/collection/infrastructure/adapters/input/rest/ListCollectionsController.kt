@@ -6,8 +6,10 @@ import org.cescfe.bookpublishing.collection.application.port.input.ListCollectio
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllCollectionsApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseAllOfDataInnerDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseDataInnerDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,8 +19,6 @@ class ListCollectionsController(
     private val listCollectionsUseCase: ListCollectionsUseCase,
 ) : GetAllCollectionsApi {
     override fun getCollections(
-        page: Int,
-        limit: Int,
         search: String?,
     ): ResponseEntity<GetCollections200ResponseDTO> {
         val query = ListCollectionsUseCase.Query(page, limit)
@@ -31,29 +31,26 @@ class ListCollectionsController(
         GetCollections200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =
-                GetAuthors200ResponseAllOfMetaDTO(
+                GetAuthors200ResponseMetaDTO(
                     total = result.metadata.total.toInt(),
-                    page = result.metadata.page,
-                    limit = result.metadata.limit,
-                    totalPages = result.metadata.totalPages,
                 ),
         )
 
-    private fun toDto(domain: CollectionSummary): GetCollections200ResponseAllOfDataInnerDTO =
-        GetCollections200ResponseAllOfDataInnerDTO(
+    private fun toDto(domain: CollectionSummary): GetCollections200ResponseDataInnerDTO =
+        GetCollections200ResponseDataInnerDTO(
             id = domain.id.value,
             name = domain.name.value,
             readingLevel =
                 domain.readingLevel?.let {
-                    GetCollections200ResponseAllOfDataInnerDTO.ReadingLevel.valueOf(it.name)
+                    GetCollections200ResponseDataInnerDTO.ReadingLevel.valueOf(it.name)
                 },
             primaryLanguage =
                 domain.primaryLanguage?.let {
-                    GetCollections200ResponseAllOfDataInnerDTO.PrimaryLanguage.valueOf(it.name)
+                    GetCollections200ResponseDataInnerDTO.PrimaryLanguage.valueOf(it.name)
                 },
             primaryGenre =
                 domain.primaryGenre?.let {
-                    GetCollections200ResponseAllOfDataInnerDTO.PrimaryGenre.valueOf(it.name)
+                    GetCollections200ResponseDataInnerDTO.PrimaryGenre.valueOf(it.name)
                 },
         )
 }

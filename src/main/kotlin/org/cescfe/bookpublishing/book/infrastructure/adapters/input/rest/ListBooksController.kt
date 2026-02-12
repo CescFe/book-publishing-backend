@@ -5,8 +5,12 @@ import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.book.application.port.input.ListBooksUseCase
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllBooksApi
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseOneOfAllOfMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDataInnerAuthorDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDataInnerCollectionDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDataInnerDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseOneOfAllOfDataInnerAuthorDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseOneOfAllOfDataInnerCollectionDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseOneOfAllOfDataInnerDTO
@@ -19,9 +23,6 @@ class ListBooksController(
     private val listBooksUseCase: ListBooksUseCase,
 ) : GetAllBooksApi {
     override fun getBooks(
-        paginate: Boolean,
-        page: Int,
-        limit: Int,
         search: String?,
     ): ResponseEntity<GetBooks200ResponseDTO> {
         val query = ListBooksUseCase.Query(page, limit)
@@ -34,25 +35,22 @@ class ListBooksController(
         GetBooks200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =
-                GetAuthors200ResponseOneOfAllOfMetaDTO(
+                GetAuthors200ResponseMetaDTO(
                     total = result.metadata.total.toInt(),
-                    page = result.metadata.page,
-                    limit = result.metadata.limit,
-                    totalPages = result.metadata.totalPages,
                 ),
         )
 
-    private fun toDto(domain: BookSummary): GetBooks200ResponseOneOfAllOfDataInnerDTO =
-        GetBooks200ResponseOneOfAllOfDataInnerDTO(
+    private fun toDto(domain: BookSummary): GetBooks200ResponseDataInnerDTO =
+        GetBooks200ResponseDataInnerDTO(
             id = domain.id.value,
             title = domain.title.value,
             author =
-                GetBooks200ResponseOneOfAllOfDataInnerAuthorDTO(
+                GetBooks200ResponseDataInnerAuthorDTO(
                     id = domain.authorId.value,
                     name = domain.authorName,
                 ),
             collection =
-                GetBooks200ResponseOneOfAllOfDataInnerCollectionDTO(
+                GetBooks200ResponseDataInnerCollectionDTO(
                     id = domain.collectionId.value,
                     name = domain.collectionName,
                 ),
@@ -61,7 +59,7 @@ class ListBooksController(
             isbn = domain.isbn?.value,
             status =
                 domain.status?.let {
-                    GetBooks200ResponseOneOfAllOfDataInnerDTO.Status.valueOf(it.name)
+                    GetBooks200ResponseDataInnerDTO.Status.valueOf(it.name)
                 },
         )
 }
