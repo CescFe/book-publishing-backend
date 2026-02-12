@@ -2,8 +2,7 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.book.application.port.input.UpdateBookUseCase
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
-import org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest.mapper.BookRestMapper
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBookRequestDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateBookRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -15,7 +14,6 @@ import kotlin.test.assertFailsWith
 
 class UpdateBookControllerTest {
     private lateinit var updateBookUseCase: UpdateBookUseCase
-    private lateinit var mapper: BookRestMapper
     private lateinit var updateBookController: UpdateBookController
 
     companion object {
@@ -30,8 +28,7 @@ class UpdateBookControllerTest {
     @BeforeEach
     fun setup() {
         updateBookUseCase = mock()
-        mapper = mock()
-        updateBookController = UpdateBookController(updateBookUseCase, mapper)
+        updateBookController = UpdateBookController(updateBookUseCase)
     }
 
     @Test
@@ -39,7 +36,7 @@ class UpdateBookControllerTest {
         // Given
         val bookId = UUID.fromString(NON_EXISTENT_BOOK_ID)
         val requestDTO =
-            CreateBookRequestDTO(
+            UpdateBookRequestDTO(
                 title = "Updated Book",
                 authorId = UUID.fromString("223e4567-e89b-12d3-a456-426614174001"),
                 collectionId = UUID.fromString("223e4567-e89b-12d3-a456-426614174002"),
@@ -69,7 +66,7 @@ class UpdateBookControllerTest {
         // Given
         val bookId = UUID.fromString(NON_EXISTENT_BOOK_ID)
         val requestDTO =
-            CreateBookRequestDTO(
+            UpdateBookRequestDTO(
                 title = "Updated Book",
                 authorId = UUID.fromString("223e4567-e89b-12d3-a456-426614174001"),
                 collectionId = UUID.fromString("223e4567-e89b-12d3-a456-426614174002"),

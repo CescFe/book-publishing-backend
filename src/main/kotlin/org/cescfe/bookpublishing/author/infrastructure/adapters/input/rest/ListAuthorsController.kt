@@ -5,9 +5,9 @@ import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCas
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfDataInnerDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseOneOf1MetaDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseOneOfAllOfDataInnerDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,6 +17,7 @@ class ListAuthorsController(
     private val listAuthorsUseCase: ListAuthorsUseCase,
 ) : GetAllAuthorsApi {
     override fun getAuthors(
+        paginate: Boolean,
         page: Int,
         limit: Int,
         search: String?,
@@ -31,7 +32,7 @@ class ListAuthorsController(
         GetAuthors200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =
-                GetAuthors200ResponseAllOfMetaDTO(
+                GetAuthors200ResponseOneOf1MetaDTO(
                     total = result.metadata.total.toInt(),
                     page = result.metadata.page,
                     limit = result.metadata.limit,
@@ -39,8 +40,8 @@ class ListAuthorsController(
                 ),
         )
 
-    private fun toDto(domain: AuthorSummary): GetAuthors200ResponseAllOfDataInnerDTO =
-        GetAuthors200ResponseAllOfDataInnerDTO(
+    private fun toDto(domain: AuthorSummary): GetAuthors200ResponseOneOfAllOfDataInnerDTO =
+        GetAuthors200ResponseOneOfAllOfDataInnerDTO(
             id = domain.id.value,
             fullName = domain.fullName.value,
             pseudonym = domain.pseudonym?.value,
