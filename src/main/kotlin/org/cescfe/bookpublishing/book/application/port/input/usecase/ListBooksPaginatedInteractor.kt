@@ -1,23 +1,23 @@
 package org.cescfe.bookpublishing.book.application.port.input.usecase
 
-import org.cescfe.bookpublishing.book.application.port.input.ListBooksUseCase
+import org.cescfe.bookpublishing.book.application.port.input.ListBooksPaginatedUseCase
 import org.cescfe.bookpublishing.book.application.port.input.mapper.ListBooksUseCaseMapper
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
 import org.cescfe.bookpublishing.book.domain.port.BookRepository
-import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional(readOnly = true)
-class ListBooksInteractor(
+class ListBooksPaginatedInteractor(
     private val bookRepository: BookRepository,
     private val mapper: ListBooksUseCaseMapper,
-) : ListBooksUseCase {
-    override fun execute(): NonPaginatedResult<BookSummary> {
-        val books = bookRepository.findAllSummary()
+) : ListBooksPaginatedUseCase {
+    override fun execute(query: ListBooksPaginatedUseCase.Query): PaginatedResult<BookSummary> {
+        val books = bookRepository.findAllSummary(query.page, query.limit)
         val totalCount = bookRepository.countAll()
 
-        return mapper.toNonPaginatedResult(books, totalCount)
+        return mapper.toPaginatedResult(books, totalCount, query.page, query.limit)
     }
 }

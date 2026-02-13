@@ -5,8 +5,8 @@ import org.cescfe.bookpublishing.book.application.port.input.GetBookUseCase
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetBookByIdApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBookByID200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseOneOfAllOfDataInnerAuthorDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseOneOfAllOfDataInnerCollectionDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.ZoneOffset
@@ -29,12 +29,12 @@ class GetBookController(
             id = domain.id.value,
             title = domain.title.value,
             author =
-                GetBooks200ResponseOneOfAllOfDataInnerAuthorDTO(
+                ListBooksPaginated200ResponseDataInnerAuthorDTO(
                     id = domain.authorId.value,
                     name = domain.authorName!!,
                 ),
             collection =
-                GetBooks200ResponseOneOfAllOfDataInnerCollectionDTO(
+                ListBooksPaginated200ResponseDataInnerCollectionDTO(
                     id = domain.collectionId.value,
                     name = domain.collectionName!!,
                 ),

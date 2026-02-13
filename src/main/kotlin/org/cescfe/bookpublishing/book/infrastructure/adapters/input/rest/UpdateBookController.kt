@@ -5,8 +5,8 @@ import org.cescfe.bookpublishing.book.application.port.input.UpdateBookUseCase
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.UpdateBookByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDataInnerAuthorDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBooks200ResponseDataInnerCollectionDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateBook200ResponseDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateBookRequestDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
@@ -57,12 +57,12 @@ class UpdateBookController(
             id = domain.id.value,
             title = domain.title.value,
             author =
-                GetBooks200ResponseDataInnerAuthorDTO(
+                ListBooksPaginated200ResponseDataInnerAuthorDTO(
                     id = domain.authorId.value,
                     name = domain.authorName!!,
                 ),
             collection =
-                GetBooks200ResponseDataInnerCollectionDTO(
+                ListBooksPaginated200ResponseDataInnerCollectionDTO(
                     id = domain.collectionId.value,
                     name = domain.collectionName!!,
                 ),
