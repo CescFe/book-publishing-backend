@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllAuthorsApi
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseDataInnerDTO
@@ -16,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 class ListAuthorsController(
     private val listAuthorsUseCase: ListAuthorsUseCase,
 ) : GetAllAuthorsApi {
-    override fun getAuthors(
-        search: String?,
-    ): ResponseEntity<GetAuthors200ResponseDTO> {
-        val query = ListAuthorsUseCase.Query(page, limit)
-        val result = listAuthorsUseCase.execute(query)
+    override fun getAuthors(): ResponseEntity<GetAuthors200ResponseDTO> {
+        val result = listAuthorsUseCase.execute()
         val responseDto = mapResultToDto(result)
         return ResponseEntity.ok(responseDto)
     }
 
-    private fun mapResultToDto(result: PaginatedResult<AuthorSummary>): GetAuthors200ResponseDTO =
+    private fun mapResultToDto(result: NonPaginatedResult<AuthorSummary>): GetAuthors200ResponseDTO =
         GetAuthors200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =

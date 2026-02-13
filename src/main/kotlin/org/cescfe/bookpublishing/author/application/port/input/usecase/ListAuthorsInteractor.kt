@@ -3,7 +3,7 @@ package org.cescfe.bookpublishing.author.application.port.input.usecase
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
 import org.cescfe.bookpublishing.author.application.port.input.mapper.ListAuthorsUseCaseMapper
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
 import org.cescfe.bookpublishing.author.domain.port.AuthorRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -14,10 +14,10 @@ class ListAuthorsInteractor(
     private val authorRepository: AuthorRepository,
     private val mapper: ListAuthorsUseCaseMapper,
 ) : ListAuthorsUseCase {
-    override fun execute(query: ListAuthorsUseCase.Query): PaginatedResult<AuthorSummary> {
-        val authors = authorRepository.findAllSummary(query.page, query.limit)
+    override fun execute(): NonPaginatedResult<AuthorSummary> {
+        val authors = authorRepository.findAllSummary()
         val totalCount = authorRepository.countAll()
 
-        return mapper.toPaginatedResult(authors, totalCount, query.page, query.limit)
+        return mapper.toNonPaginatedResult(authors, totalCount)
     }
 }

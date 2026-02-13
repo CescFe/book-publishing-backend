@@ -1,15 +1,13 @@
 package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsUseCase
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetAllCollectionsApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseAllOfMetaDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetAuthors200ResponseMetaDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseAllOfDataInnerDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseDTO
 import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollections200ResponseDataInnerDTO
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 
@@ -18,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController
 class ListCollectionsController(
     private val listCollectionsUseCase: ListCollectionsUseCase,
 ) : GetAllCollectionsApi {
-    override fun getCollections(
-        search: String?,
-    ): ResponseEntity<GetCollections200ResponseDTO> {
-        val query = ListCollectionsUseCase.Query(page, limit)
-        val result = listCollectionsUseCase.execute(query)
+    override fun getCollections(): ResponseEntity<GetCollections200ResponseDTO> {
+        val result = listCollectionsUseCase.execute()
         val responseDto = mapResultToDto(result)
         return ResponseEntity.ok(responseDto)
     }
 
-    private fun mapResultToDto(result: PaginatedResult<CollectionSummary>): GetCollections200ResponseDTO =
+    private fun mapResultToDto(result: NonPaginatedResult<CollectionSummary>): GetCollections200ResponseDTO =
         GetCollections200ResponseDTO(
             data = result.data.map { toDto(it) },
             meta =
