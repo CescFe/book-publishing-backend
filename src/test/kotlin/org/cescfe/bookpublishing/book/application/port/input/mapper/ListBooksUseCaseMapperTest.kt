@@ -67,4 +67,36 @@ class ListBooksUseCaseMapperTest {
         assertEquals(10, result.metadata.limit)
         assertEquals(0, result.metadata.totalPages)
     }
+
+    @Test
+    fun `should map to non paginated result correctly`() {
+        // Given
+        val books =
+            listOf(
+                BookSummaryObjectMother.createFirstBookSummary(),
+                BookSummaryObjectMother.createSecondBookSummary(),
+            )
+        val totalCount = 2L
+
+        // When
+        val result = mapper.toNonPaginatedResult(books, totalCount)
+
+        // Then
+        assertEquals(books, result.data)
+        assertEquals(2, result.metadata.total)
+    }
+
+    @Test
+    fun `should handle empty non paginated result correctly`() {
+        // Given
+        val books = emptyList<BookSummary>()
+        val totalCount = 0L
+
+        // When
+        val result = mapper.toNonPaginatedResult(books, totalCount)
+
+        // Then
+        assertEquals(books, result.data)
+        assertEquals(0, result.metadata.total)
+    }
 }
