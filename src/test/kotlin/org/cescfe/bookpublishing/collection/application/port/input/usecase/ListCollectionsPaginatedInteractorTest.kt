@@ -1,27 +1,27 @@
 package org.cescfe.bookpublishing.collection.application.port.input.usecase
 
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsUseCase
+import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsPaginatedUseCase
 import org.cescfe.bookpublishing.collection.application.port.input.mapper.ListCollectionsUseCaseMapper
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
 import org.cescfe.bookpublishing.collection.domain.port.CollectionRepository
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionSummaryObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class ListCollectionsInteractorTest {
+class ListCollectionsPaginatedInteractorTest {
     private val collectionRepository: CollectionRepository = mock()
     private val mapper: ListCollectionsUseCaseMapper = mock()
-    private val listCollectionsUseCase = ListCollectionsInteractor(collectionRepository, mapper)
+    private val listCollectionsUseCase = ListCollectionsPaginatedInteractor(collectionRepository, mapper)
 
     @Test
     fun `should return paginated result when collections found`() {
         // Given
-        val query = ListCollectionsUseCase.Query(page = 1, limit = 2)
+        val query = ListCollectionsPaginatedUseCase.Query(page = 1, limit = 2)
         val collections =
             listOf(
                 CollectionSummaryObjectMother.createFirstCollectionSummary(),
@@ -58,7 +58,7 @@ class ListCollectionsInteractorTest {
     @Test
     fun `should return empty result when no collections found`() {
         // Given
-        val query = ListCollectionsUseCase.Query(page = 1, limit = 10)
+        val query = ListCollectionsPaginatedUseCase.Query(page = 1, limit = 10)
         val collections = emptyList<CollectionSummary>()
         val totalCount = 0L
         val expectedResult =
@@ -91,7 +91,7 @@ class ListCollectionsInteractorTest {
     @Test
     fun `should handle pagination correctly for multiple pages`() {
         // Given
-        val query = ListCollectionsUseCase.Query(page = 2, limit = 2)
+        val query = ListCollectionsPaginatedUseCase.Query(page = 2, limit = 2)
         val collections = listOf(CollectionSummaryObjectMother.createFirstCollectionSummary())
         val totalCount = 5L
         val expectedResult =

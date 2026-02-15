@@ -1,9 +1,9 @@
 package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsUseCase
+import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsPaginatedUseCase
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionSummaryObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -29,12 +29,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
             "org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration",
     ],
 )
-class ListCollectionsControllerIT {
+class ListCollectionsPaginatedControllerIT {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockitoBean
-    private lateinit var listCollectionsUseCase: ListCollectionsUseCase
+    private lateinit var listCollectionsPaginatedUseCase: ListCollectionsPaginatedUseCase
 
     companion object {
         private const val URI = "/api/v1/collections"
@@ -58,7 +58,7 @@ class ListCollectionsControllerIT {
                     ),
             )
 
-        whenever(listCollectionsUseCase.execute(any())).thenReturn(paginatedResult)
+        whenever(listCollectionsPaginatedUseCase.execute(any())).thenReturn(paginatedResult)
     }
 
     @Test

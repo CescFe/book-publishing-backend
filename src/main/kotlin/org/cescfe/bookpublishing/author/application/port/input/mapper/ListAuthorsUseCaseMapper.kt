@@ -2,9 +2,9 @@ package org.cescfe.bookpublishing.author.application.port.input.mapper
 
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
 import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginationMeta
 import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.shared.domain.model.NonPaginationMeta
 import org.springframework.stereotype.Component
 
 @Component
@@ -32,13 +32,12 @@ class ListAuthorsUseCaseMapper {
     fun toNonPaginatedResult(
         authors: List<AuthorSummary>,
         totalCount: Long,
-    ): NonPaginatedResult<AuthorSummary> {
-        return NonPaginatedResult(
+    ): NonPaginatedResult<AuthorSummary> =
+        NonPaginatedResult(
             data = authors,
             metadata =
                 NonPaginationMeta(
                     total = totalCount,
                 ),
         )
-    }
 }

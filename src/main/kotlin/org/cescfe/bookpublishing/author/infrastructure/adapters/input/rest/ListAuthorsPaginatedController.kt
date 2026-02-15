@@ -18,7 +18,7 @@ class ListAuthorsPaginatedController(
 ) : ListAuthorsPaginatedApi {
     override fun listAuthorsPaginated(
         limit: Int,
-        page: Int
+        page: Int,
     ): ResponseEntity<ListAuthorsPaginated200ResponseDTO> {
         val query = ListAuthorsPaginatedUseCase.Query(page, limit)
         val result = listAuthorsUseCase.execute(query)

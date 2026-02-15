@@ -20,7 +20,7 @@ class ListBooksPaginatedController(
 ) : ListBooksPaginatedApi {
     override fun listBooksPaginated(
         limit: Int,
-        page: Int
+        page: Int,
     ): ResponseEntity<ListBooksPaginated200ResponseDTO> {
         val query = ListBooksPaginatedUseCase.Query(page, limit)
         val result = listBooksPaginatedUseCase.execute(query)

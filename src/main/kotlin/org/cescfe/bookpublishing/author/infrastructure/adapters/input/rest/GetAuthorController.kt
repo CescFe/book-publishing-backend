@@ -23,8 +23,8 @@ class GetAuthorController(
         return ResponseEntity.ok(responseDto)
     }
 
-private fun toDto(author: Author): GetAuthorByID200ResponseDTO =
-    GetAuthorByID200ResponseDTO(
+    private fun toDto(author: Author): GetAuthorByID200ResponseDTO =
+        GetAuthorByID200ResponseDTO(
             id = author.id.value,
             fullName = author.fullName.value,
             pseudonym = author.pseudonym?.value,
