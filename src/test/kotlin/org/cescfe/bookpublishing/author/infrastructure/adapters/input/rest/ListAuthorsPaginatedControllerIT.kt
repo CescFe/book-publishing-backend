@@ -1,8 +1,8 @@
 package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
-import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
+import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsPaginatedUseCase
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
             "org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration",
     ],
 )
-class ListAuthorsControllerIT {
+class ListAuthorsPaginatedControllerIT {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockitoBean
-    private lateinit var listAuthorsUseCase: ListAuthorsUseCase
+    private lateinit var listAuthorsUseCase: ListAuthorsPaginatedUseCase
 
     companion object {
         private const val URI = "/api/v1/authors"
