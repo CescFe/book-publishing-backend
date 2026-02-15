@@ -1,9 +1,9 @@
-package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
+package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
-import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsUseCase
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.author.objectMothers.AuthorSummaryObjectMother
+import org.cescfe.bookpublishing.collection.application.port.input.ListCollectionsPaginatedUseCase
+import org.cescfe.bookpublishing.collection.objectMothers.CollectionSummaryObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -29,26 +29,26 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
             "org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration",
     ],
 )
-class ListAuthorsControllerIT {
+class ListCollectionsPaginatedControllerIT {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockitoBean
-    private lateinit var listAuthorsUseCase: ListAuthorsUseCase
+    private lateinit var listCollectionsPaginatedUseCase: ListCollectionsPaginatedUseCase
 
     companion object {
-        private const val URI = "/api/v1/authors"
+        private const val URI = "/api/v1/collections"
         private const val ROLE = "ROLE_USER"
-        private const val AUTHOR_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
+        private const val COLLECTION_ID = "477537ff-7e8b-4930-bd41-d7f3589120b1"
     }
 
     @BeforeEach
     fun setup() {
-        val testAuthorSummary = AuthorSummaryObjectMother.createFirstAuthorSummary()
+        val testCollectionSummary = CollectionSummaryObjectMother.createFirstCollectionSummary()
 
         val paginatedResult =
             PaginatedResult(
-                data = listOf(testAuthorSummary),
+                data = listOf(testCollectionSummary),
                 metadata =
                     PaginationMeta(
                         total = 1L,
@@ -57,11 +57,12 @@ class ListAuthorsControllerIT {
                         totalPages = 1,
                     ),
             )
-        whenever(listAuthorsUseCase.execute(any())).thenReturn(paginatedResult)
+
+        whenever(listCollectionsPaginatedUseCase.execute(any())).thenReturn(paginatedResult)
     }
 
     @Test
-    fun `should list authors successfully`() {
+    fun `should list collections successfully`() {
         mockMvc
             .perform(
                 MockMvcRequestBuilders
@@ -71,8 +72,8 @@ class ListAuthorsControllerIT {
                     .param("limit", "20"),
             ).andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(AUTHOR_ID))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].full_name").value("J.R.R. Tolkien"))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].id").value(COLLECTION_ID))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.data[0].name").value("Fantasy Classics"))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.total").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.page").value(1))
             .andExpect(MockMvcResultMatchers.jsonPath("$.meta.limit").value(20))

@@ -1,27 +1,27 @@
 package org.cescfe.bookpublishing.book.application.port.input.usecase
 
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
-import org.cescfe.bookpublishing.book.application.port.input.ListBooksUseCase
+import org.cescfe.bookpublishing.book.application.port.input.ListBooksPaginatedUseCase
 import org.cescfe.bookpublishing.book.application.port.input.mapper.ListBooksUseCaseMapper
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
 import org.cescfe.bookpublishing.book.domain.port.BookRepository
 import org.cescfe.bookpublishing.book.objectMothers.BookSummaryObjectMother
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ListBooksInteractorTest {
+class ListBooksPaginatedInteractorTest {
     private val bookRepository: BookRepository = mock()
     private val mapper: ListBooksUseCaseMapper = mock()
-    private val listBooksUseCase = ListBooksInteractor(bookRepository, mapper)
+    private val listBooksUseCase = ListBooksPaginatedInteractor(bookRepository, mapper)
 
     @Test
     fun `should return paginated result when books found`() {
         // Given
-        val query = ListBooksUseCase.Query(page = 1, limit = 2)
+        val query = ListBooksPaginatedUseCase.Query(page = 1, limit = 2)
         val books =
             listOf(
                 BookSummaryObjectMother.createFirstBookSummary(),
@@ -58,7 +58,7 @@ class ListBooksInteractorTest {
     @Test
     fun `should return empty result when no books found`() {
         // Given
-        val query = ListBooksUseCase.Query(page = 1, limit = 10)
+        val query = ListBooksPaginatedUseCase.Query(page = 1, limit = 10)
         val books = emptyList<BookSummary>()
         val totalCount = 0L
         val expectedResult =
@@ -91,7 +91,7 @@ class ListBooksInteractorTest {
     @Test
     fun `should handle pagination correctly for multiple pages`() {
         // Given
-        val query = ListBooksUseCase.Query(page = 2, limit = 2)
+        val query = ListBooksPaginatedUseCase.Query(page = 2, limit = 2)
         val books = listOf(BookSummaryObjectMother.createFirstBookSummary())
         val totalCount = 5L
         val expectedResult =

@@ -10,9 +10,9 @@ plugins {
 }
 
 group = "org.cescfe"
-version = "0.3.3"
+version = "0.4.0"
 
-val bookPublishingApiSpec = "1.2.0"
+val bookPublishingApiSpec = "1.4.0"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"

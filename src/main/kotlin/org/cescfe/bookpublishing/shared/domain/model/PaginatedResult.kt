@@ -1,4 +1,4 @@
-package org.cescfe.bookpublishing.author.domain.model
+package org.cescfe.bookpublishing.shared.domain.model
 
 data class PaginatedResult<T>(
     val data: List<T>,

@@ -1,8 +1,10 @@
 package org.cescfe.bookpublishing.book.application.port.input.mapper
 
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
-import org.cescfe.bookpublishing.author.domain.model.PaginationMeta
 import org.cescfe.bookpublishing.book.domain.model.BookSummary
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.NonPaginationMeta
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
+import org.cescfe.bookpublishing.shared.domain.model.PaginationMeta
 import org.springframework.stereotype.Component
 
 @Component
@@ -26,4 +28,16 @@ class ListBooksUseCaseMapper {
                 ),
         )
     }
+
+    fun toNonPaginatedResult(
+        books: List<BookSummary>,
+        totalCount: Long,
+    ): NonPaginatedResult<BookSummary> =
+        NonPaginatedResult(
+            data = books,
+            metadata =
+                NonPaginationMeta(
+                    total = totalCount,
+                ),
+        )
 }

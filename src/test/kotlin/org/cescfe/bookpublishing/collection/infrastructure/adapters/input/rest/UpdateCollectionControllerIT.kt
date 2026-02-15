@@ -1,9 +1,7 @@
 package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.collection.application.port.input.UpdateCollectionUseCase
-import org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest.mapper.CollectionRestMapper
 import org.cescfe.bookpublishing.collection.objectMothers.CollectionObjectMother
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollection201ResponseDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel
@@ -24,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import java.time.ZoneOffset
 import java.util.UUID
 import kotlin.test.assertEquals
 
@@ -37,9 +34,6 @@ class UpdateCollectionControllerIT {
 
     @MockitoBean
     private lateinit var updateCollectionUseCase: UpdateCollectionUseCase
-
-    @MockitoBean
-    private lateinit var mapper: CollectionRestMapper
 
     @BeforeEach
     fun setup() {
@@ -55,39 +49,6 @@ class UpdateCollectionControllerIT {
                 secondaryLanguages = command.secondaryLanguages,
                 primaryGenre = command.primaryGenre,
                 secondaryGenres = command.secondaryGenres,
-            )
-        }
-
-        whenever(mapper.toDto(any())).thenAnswer { invocation ->
-            val collection = invocation.getArgument<org.cescfe.bookpublishing.collection.domain.model.Collection>(0)
-
-            CreateCollection201ResponseDTO(
-                id = collection.id.value,
-                name = collection.name.value,
-                readingLevel =
-                    collection.readingLevel?.let {
-                        CreateCollection201ResponseDTO.ReadingLevel.valueOf(it.name)
-                    },
-                primaryLanguage =
-                    collection.primaryLanguage?.let {
-                        CreateCollection201ResponseDTO.PrimaryLanguage.valueOf(it.name)
-                    },
-                secondaryLanguages =
-                    collection.secondaryLanguages?.value?.map { lang ->
-                        CreateCollection201ResponseDTO.SecondaryLanguages.valueOf(lang.name)
-                    },
-                primaryGenre =
-                    collection.primaryGenre?.let {
-                        CreateCollection201ResponseDTO.PrimaryGenre.valueOf(it.name)
-                    },
-                secondaryGenres =
-                    collection.secondaryGenres?.value?.map { genre ->
-                        CreateCollection201ResponseDTO.SecondaryGenres.valueOf(genre.name)
-                    },
-                createdAt = collection.audit?.createdAt?.atOffset(ZoneOffset.UTC),
-                createdBy = collection.audit?.createdBy,
-                updatedAt = collection.audit?.updatedAt?.atOffset(ZoneOffset.UTC),
-                updatedBy = collection.audit?.updatedBy,
             )
         }
     }

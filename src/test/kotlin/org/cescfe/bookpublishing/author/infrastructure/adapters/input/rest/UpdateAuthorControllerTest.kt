@@ -2,8 +2,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest.mapper.AuthorRestMapper
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateAuthorRequestDTO
+import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,7 +15,6 @@ import kotlin.test.assertEquals
 
 class UpdateAuthorControllerTest {
     private lateinit var updateAuthorUseCase: UpdateAuthorUseCase
-    private lateinit var mapper: AuthorRestMapper
     private lateinit var updateAuthorController: UpdateAuthorController
 
     companion object {
@@ -28,8 +26,7 @@ class UpdateAuthorControllerTest {
     @BeforeEach
     fun setup() {
         updateAuthorUseCase = mock()
-        mapper = mock()
-        updateAuthorController = UpdateAuthorController(updateAuthorUseCase, mapper)
+        updateAuthorController = UpdateAuthorController(updateAuthorUseCase)
     }
 
     @Test
@@ -37,7 +34,7 @@ class UpdateAuthorControllerTest {
         // Given
         val authorId = UUID.fromString(NON_EXISTENT_AUTHOR_ID)
         val requestDTO =
-            CreateAuthorRequestDTO(
+            UpdateAuthorRequestDTO(
                 fullName = "Updated J.R.R. Tolkien",
                 pseudonym = "Updated Tolkien",
                 biography = "Updated English writer and philologist",

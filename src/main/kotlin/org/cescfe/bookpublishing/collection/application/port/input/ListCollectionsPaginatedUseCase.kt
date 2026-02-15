@@ -1,9 +1,9 @@
 package org.cescfe.bookpublishing.collection.application.port.input
 
-import org.cescfe.bookpublishing.author.domain.model.PaginatedResult
 import org.cescfe.bookpublishing.collection.domain.model.CollectionSummary
+import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
 
-interface ListCollectionsUseCase {
+interface ListCollectionsPaginatedUseCase {
     fun execute(query: Query): PaginatedResult<CollectionSummary>
 
     data class Query(
