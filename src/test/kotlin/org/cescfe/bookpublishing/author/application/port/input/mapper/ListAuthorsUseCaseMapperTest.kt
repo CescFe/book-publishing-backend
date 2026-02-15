@@ -67,4 +67,36 @@ class ListAuthorsUseCaseMapperTest {
         assertEquals(10, result.metadata.limit)
         assertEquals(0, result.metadata.totalPages)
     }
+
+    @Test
+    fun `should map to non paginated result correctly`() {
+        // Given
+        val authors =
+            listOf(
+                AuthorSummaryObjectMother.createFirstAuthorSummary(),
+                AuthorSummaryObjectMother.createSecondAuthorSummary(),
+            )
+        val totalCount = 2L
+
+        // When
+        val result = mapper.toNonPaginatedResult(authors, totalCount)
+
+        // Then
+        assertEquals(authors, result.data)
+        assertEquals(2, result.metadata.total)
+    }
+
+    @Test
+    fun `should handle empty non paginated result correctly`() {
+        // Given
+        val authors = emptyList<AuthorSummary>()
+        val totalCount = 0L
+
+        // When
+        val result = mapper.toNonPaginatedResult(authors, totalCount)
+
+        // Then
+        assertEquals(emptyList(), result.data)
+        assertEquals(0, result.metadata.total)
+    }
 }

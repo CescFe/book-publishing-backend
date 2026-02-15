@@ -67,4 +67,36 @@ class ListCollectionsUseCaseMapperTest {
         assertEquals(10, result.metadata.limit)
         assertEquals(0, result.metadata.totalPages)
     }
+
+    @Test
+    fun `should map to non paginated result correctly`() {
+        // Given
+        val collections =
+            listOf(
+                CollectionSummaryObjectMother.createFirstCollectionSummary(),
+                CollectionSummaryObjectMother.createSecondCollectionSummary(),
+            )
+        val totalCount = 2L
+
+        // When
+        val result = mapper.toNonPaginatedResult(collections, totalCount)
+
+        // Then
+        assertEquals(collections, result.data)
+        assertEquals(2, result.metadata.total)
+    }
+
+    @Test
+    fun `should handle empty non paginated result correctly`() {
+        // Given
+        val collections = emptyList<CollectionSummary>()
+        val totalCount = 0L
+
+        // When
+        val result = mapper.toNonPaginatedResult(collections, totalCount)
+
+        // Then
+        assertEquals(collections, result.data)
+        assertEquals(0, result.metadata.total)
+    }
 }
