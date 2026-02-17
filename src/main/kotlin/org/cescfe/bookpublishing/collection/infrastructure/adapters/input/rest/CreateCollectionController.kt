@@ -3,9 +3,9 @@ package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.collection.application.port.input.CreateCollectionUseCase
 import org.cescfe.bookpublishing.collection.domain.model.Collection
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateCollectionApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollection201ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateCollectionRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.CreateCollectionApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.CreateCollection201ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.CreateCollectionRequestDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel

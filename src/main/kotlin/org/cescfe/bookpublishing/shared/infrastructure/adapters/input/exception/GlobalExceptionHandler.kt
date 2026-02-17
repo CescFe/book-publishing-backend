@@ -5,8 +5,8 @@ import org.cescfe.bookpublishing.auth.domain.exception.AuthDomainException
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
 import org.cescfe.bookpublishing.collection.domain.exception.CollectionDomainException
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.ApiException
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.NotFoundException
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.ApiException
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.NotFoundException
 import org.cescfe.bookpublishing.shared.infrastructure.adapters.input.exception.model.ApiError
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

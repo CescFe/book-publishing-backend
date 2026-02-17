@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.exception.AuthorDomainException
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows

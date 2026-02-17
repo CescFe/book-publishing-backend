@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.collection.application.port.input.DeleteCollectionUseCase
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.DeleteCollectionByIdApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.DeleteCollectionByIdApi
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
