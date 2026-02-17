@@ -5,15 +5,17 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle.kts .
 COPY settings.gradle.kts .
-COPY src src
+COPY app app
+COPY ms-catalog ms-catalog
+COPY api-catalog api-catalog
 
 RUN chmod +x gradlew
-RUN ./gradlew clean bootJar --no-daemon -x test
+RUN ./gradlew :app:clean :app:bootJar --no-daemon -x test
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder /app/app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 

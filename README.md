@@ -92,7 +92,7 @@ src/main/kotlin/org/cescfe/bookpublishing/
 #### 1. Start infrastructure (PostgreSQL + Liquibase)
 >docker-compose up -d
 #### 2. Run the application
->./gradlew bootRun --args='--spring.profiles.active=local'
+>./gradlew :app:bootRun --args='--spring.profiles.active=local'
 
 #### Stop services (preserving data)
 >docker-compose down
