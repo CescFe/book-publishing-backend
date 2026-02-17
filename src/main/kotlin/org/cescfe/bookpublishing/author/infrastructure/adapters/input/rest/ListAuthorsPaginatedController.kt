@@ -3,10 +3,10 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.ListAuthorsPaginatedUseCase
 import org.cescfe.bookpublishing.author.domain.model.AuthorSummary
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.ListAuthorsPaginatedApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseDataInnerDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseMetaDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.ListAuthorsPaginatedApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseDataInnerDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListAuthorsPaginated200ResponseMetaDTO
 import org.cescfe.bookpublishing.shared.domain.model.PaginatedResult
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController

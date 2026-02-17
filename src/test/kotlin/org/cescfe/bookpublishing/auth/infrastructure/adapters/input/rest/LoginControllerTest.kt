@@ -1,8 +1,8 @@
 package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.auth.application.port.input.LoginUseCase
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.Login200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.LoginRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.Login200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.LoginRequestDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

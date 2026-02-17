@@ -3,8 +3,8 @@ package org.cescfe.bookpublishing.collection.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.collection.application.port.input.GetCollectionUseCase
 import org.cescfe.bookpublishing.collection.domain.model.Collection
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetCollectionByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetCollectionByID200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.GetCollectionByIdApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.GetCollectionByID200ResponseDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.ZoneOffset

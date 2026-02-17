@@ -4,11 +4,11 @@ import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.book.application.port.input.CreateBookUseCase
 import org.cescfe.bookpublishing.book.domain.model.Book
 import org.cescfe.bookpublishing.book.domain.model.enum.Status
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.CreateBookApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBook201ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.CreateBookRequestDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.CreateBookApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.CreateBook201ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.CreateBookRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
 import org.cescfe.bookpublishing.shared.domain.model.enum.Genre
 import org.cescfe.bookpublishing.shared.domain.model.enum.Language
 import org.cescfe.bookpublishing.shared.domain.model.enum.ReadingLevel

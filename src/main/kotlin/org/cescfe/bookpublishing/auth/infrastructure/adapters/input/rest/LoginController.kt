@@ -2,9 +2,9 @@ package org.cescfe.bookpublishing.auth.infrastructure.adapters.input.rest
 
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.auth.application.port.input.LoginUseCase
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.LoginApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.Login200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.LoginRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.LoginApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.Login200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.LoginRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 

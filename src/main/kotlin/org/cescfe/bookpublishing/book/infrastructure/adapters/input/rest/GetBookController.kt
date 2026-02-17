@@ -3,10 +3,10 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.book.application.port.input.GetBookUseCase
 import org.cescfe.bookpublishing.book.domain.model.Book
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.GetBookByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.GetBookByID200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.GetBookByIdApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.GetBookByID200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerAuthorDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.ListBooksPaginated200ResponseDataInnerCollectionDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.time.ZoneOffset

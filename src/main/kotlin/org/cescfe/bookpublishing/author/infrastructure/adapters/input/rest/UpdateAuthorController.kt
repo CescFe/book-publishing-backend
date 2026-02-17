@@ -3,9 +3,9 @@ package org.cescfe.bookpublishing.author.infrastructure.adapters.input.rest
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.cescfe.bookpublishing.author.application.port.input.UpdateAuthorUseCase
 import org.cescfe.bookpublishing.author.domain.model.Author
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.UpdateAuthorByIdApi
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateAuthor200ResponseDTO
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.UpdateAuthorByIdApi
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.UpdateAuthor200ResponseDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.UpdateAuthorRequestDTO
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI

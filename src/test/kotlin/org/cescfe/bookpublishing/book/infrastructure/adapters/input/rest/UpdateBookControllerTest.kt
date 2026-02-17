@@ -2,7 +2,7 @@ package org.cescfe.bookpublishing.book.infrastructure.adapters.input.rest
 
 import org.cescfe.bookpublishing.book.application.port.input.UpdateBookUseCase
 import org.cescfe.bookpublishing.book.domain.exception.BookDomainException
-import org.cescfe.bookpublishing.infrastructure.openapi.http.inbound.model.UpdateBookRequestDTO
+import org.cescfe.bookpublishing.ms.catalog.infrastructure.openapi.http.inbound.model.UpdateBookRequestDTO
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any

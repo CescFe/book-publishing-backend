@@ -12,7 +12,7 @@ plugins {
 group = "org.cescfe"
 version = "0.4.0"
 
-val bookPublishingApiSpec = "1.4.0"
+val bookPublishingMsCatalogApiSpec = "1.5.0"
 val ktLint = "1.7.1"
 val postgresql = "42.7.8"
 val liquibase = "4.33.0"
@@ -46,7 +46,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     // API Specification Library
-    implementation("org.cescfe:book-publishing-api-spec:$bookPublishingApiSpec")
+    implementation("org.cescfe:book-publishing-ms-catalog-api-spec:$bookPublishingMsCatalogApiSpec")
 
     // Swagger/OpenAPI dependencies
     implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
